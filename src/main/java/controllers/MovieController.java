@@ -23,7 +23,7 @@ public class MovieController {
         List<Movie> movieList = new ArrayList<>();
         movieList.add(new Movie("Kumki",4,"./images/kumki.jpeg"));
         movieList.add(new Movie("MS Dhoni",5,"./images/dhoni.jpeg"));
-        movieList.add(new Movie("Arjun Reddy",5,"./images/Reddy.jpg"));
+        movieList.add(new Movie("Arjun Reddy",5,"./images/Reddy.jpeg"));
         movieList.add(new Movie("Interstellar",5,"./images/interstellar.jpeg"));
         movieList.add(new Movie("Thor Ragnarok",5,"./images/thor.jpg"));
         movieList.add(new Movie("Rush",5,"./images/rush.jpeg"));
