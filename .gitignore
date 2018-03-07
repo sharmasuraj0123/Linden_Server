@@ -1,0 +1,15 @@
+
+\.idea/
+gradlew
+
+*.bat
+.gradle/
+build.gradle
+build/
+gradle/
+wrapper/
+caches/
+daemon/
+native/
+out/
+web/
