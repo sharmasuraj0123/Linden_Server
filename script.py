@@ -19,7 +19,7 @@ username = sys.argv[1]
 password = sys.argv[2]
 
 try:
-	db = MySQLdb.connect(user=username, passwd=password, host='127.0.0.1', db='backpackers')
+	db = MySQLdb.connect(user=username, passwd=password, host='127.0.0.1')
 	cur = db.cursor()
 	print 'Connected to MySQL Server.'
 	cur.execute('CREATE DATABASE IF NOT EXISTS linden')
