@@ -27,7 +27,8 @@ public class MovieController {
         movieList.add(new Movie("Interstellar",5,"./images/interstellar.jpeg"));
         movieList.add(new Movie("Thor Ragnarok",5,"./images/thor.jpg"));
         movieList.add(new Movie("Orient Express",2,"./images/murder.jpeg"));
-        
+        movieList.add(new Movie("Rush",5,"./images/rush.jpeg"));
+
         return new DataResponse(true, movieList.size(), movieList);
     }
 

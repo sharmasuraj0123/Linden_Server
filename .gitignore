@@ -4,7 +4,6 @@ gradlew
 
 *.bat
 .gradle/
-build.gradle
 build/
 gradle/
 wrapper/

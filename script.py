@@ -37,7 +37,7 @@ try:
 	print 'Table Created!'
 	#sys.exit()
 
-except MySQLdb.Error, e:
+except MySQLdb.Error as e:
 	print 'MySQL Error [%d]: %s' % (e.args[0], e.args[1])
 	sys.exit()
 
