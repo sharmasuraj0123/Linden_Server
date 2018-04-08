@@ -1,21 +1,26 @@
-package controllers;
+package com.linden.controllers;
 
-import models.DataResponse;
-import models.Movie;
+import com.linden.models.DataResponse;
+import com.linden.models.Movie;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 public class MovieController {
 
-    @RequestMapping("/")
-    public String index() {
+    @RequestMapping(value = "/hello", method = RequestMethod.GET)
+    public String index(HttpServletResponse response, HttpServletRequest request, Model model) throws Exception {
+        model.addAttribute("accept", "text/plain");
+        response.setContentType("text/plain");
+        response.setCharacterEncoding("UTF-8");
         return "Welcome to Linden!";
     }
 
-    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/movies/featured")
     @ResponseBody
     public DataResponse getMovies(){
