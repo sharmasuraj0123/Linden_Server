@@ -6,7 +6,6 @@ buildscript {
         // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-gradle-plugin
         classpath group: 'org.springframework.boot', name: 'spring-boot-gradle-plugin', version: '2.0.1.RELEASE'
     }
-
 }
 
 apply plugin: 'java'

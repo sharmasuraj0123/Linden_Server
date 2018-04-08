@@ -12,3 +12,4 @@ daemon/
 native/
 out/
 web/
+local.properties
