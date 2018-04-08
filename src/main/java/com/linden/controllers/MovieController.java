@@ -2,6 +2,9 @@ package com.linden.controllers;
 
 import com.linden.models.DataResponse;
 import com.linden.models.Movie;
+import com.linden.repositories.MovieRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,13 +16,26 @@ import java.util.List;
 @RestController
 public class MovieController {
 
+    @Autowired
+    private MovieRepository movieRepository;
+
+    @Transactional
     @RequestMapping(value = "/hello", method = RequestMethod.GET)
-    public String index(HttpServletResponse response, HttpServletRequest request, Model model) throws Exception {
-        model.addAttribute("accept", "text/plain");
+    public String index(HttpServletResponse response, HttpServletRequest request) throws Exception {
+        //model.addAttribute("accept", "text/plain");
         response.setContentType("text/plain");
         response.setCharacterEncoding("UTF-8");
+        Movie m = new Movie("Kumki",4,"./images/kumki.jpeg");
+        movieRepository.save(m);
         return "Welcome to Linden!";
     }
+
+    @GetMapping("/all")
+    @ResponseBody
+    public Iterable<Movie> getAll(){
+        return movieRepository.findAll();
+    }
+
 
     @GetMapping("/movies/featured")
     @ResponseBody

@@ -15,6 +15,10 @@ public class Movie {
     private int rating;
     private String imageURL;
 
+    public Movie(){
+
+    }
+
     public Movie(String name, int rating, String imageURL) {
         this.name = name;
         this.rating = rating;
