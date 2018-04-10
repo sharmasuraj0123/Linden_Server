@@ -1,6 +1,6 @@
 package com.linden.controllers;
 
-import com.linden.models.DataResponse;
+import com.linden.util.DataResponse;
 import com.linden.models.Movie;
 import com.linden.repositories.MovieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
