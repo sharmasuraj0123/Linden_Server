@@ -1,4 +1,4 @@
-package com.linden.models;
+package com.linden.util;
 
 import java.util.List;
 
