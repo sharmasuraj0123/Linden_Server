@@ -1,4 +1,14 @@
 package com.linden.models;
 
-public class Genre {
+public enum Genre {
+
+    THRILLER,
+    COMEDY,
+    DRAMA,
+    ROMANTIC,
+    ACTION,
+    SCIFI,
+    HORROR,
+    ANIMATED
+
 }

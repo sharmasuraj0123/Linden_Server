@@ -1,4 +1,13 @@
 package com.linden.repositories;
 
-public class TvShowRepository {
+import com.linden.models.TvShow;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+
+@Repository
+public interface TvShowRepository extends JpaRepository<TvShow, Long>{
+
+    List<TvShow> findTvShowByNameContains(String keywords);
 }

@@ -1,36 +1,65 @@
 package com.linden.models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.sql.Time;
+import java.util.List;
 
 @Entity // Tell persistence layer to make a table for this class
-public class Movie {
+public class Movie extends Content{
 
-    @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
-    private Long id;
-    private String name;
+    @NotNull
     private int rating;
-    private String imageURL;
 
-    public Movie(){
+    private Genre genre;
 
-    }
+    @OneToMany
+    private List<Review> reviews;
 
-    public Movie(String name, int rating, String imageURL) {
-        this.name = name;
+    private double revenue;
+
+    private Time duration;
+
+    public Movie(){}
+
+    public Movie(@NotNull int rating, Genre genre, List<Review> reviews, double revenue, Time duration) {
         this.rating = rating;
-        this.imageURL = imageURL;
+        this.genre = genre;
+        this.reviews = reviews;
+        this.revenue = revenue;
+        this.duration = duration;
     }
 
-    public String getName() {
-        return name;
+    public Genre getGenre() {
+        return genre;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setGenre(Genre genre) {
+        this.genre = genre;
+    }
+
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
+    }
+
+    public double getRevenue() {
+        return revenue;
+    }
+
+    public void setRevenue(double revenue) {
+        this.revenue = revenue;
+    }
+
+    public Time getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Time duration) {
+        this.duration = duration;
     }
 
     public int getRating() {
@@ -41,11 +70,5 @@ public class Movie {
         this.rating = rating;
     }
 
-    public String getImageURL() {
-        return imageURL;
-    }
 
-    public void setImageURL(String imageURL) {
-        this.imageURL = imageURL;
-    }
 }

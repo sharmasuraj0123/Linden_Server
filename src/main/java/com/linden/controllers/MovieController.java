@@ -25,32 +25,22 @@ public class MovieController {
         //model.addAttribute("accept", "text/plain");
         response.setContentType("text/plain");
         response.setCharacterEncoding("UTF-8");
-        Movie m = new Movie("Kumki",4,"./images/kumki.jpeg");
-        movieRepository.save(m);
+        //Movie m = new Movie("Kumki",4,"./images/kumki.jpeg");
+        //movieRepository.save(m);
         return "Welcome to Linden!";
     }
 
-    @GetMapping("/all")
+    @GetMapping("/search/{keyword}")
     @ResponseBody
-    public Iterable<Movie> getAll(){
-        return movieRepository.findAll();
+    public Iterable<Movie> search(@PathVariable("keyword") String keyword){
+        return movieRepository.findMoviesByNameContains(keyword);
     }
 
-
-    @GetMapping("/movies/featured")
-    @ResponseBody
-    public DataResponse getMovies(){
-
-        List<Movie> movieList = new ArrayList<>();
-        movieList.add(new Movie("Kumki",4,"./images/kumki.jpeg"));
-        movieList.add(new Movie("MS Dhoni",5,"./images/dhoni.jpeg"));
-        movieList.add(new Movie("Arjun Reddy",5,"./images/Reddy.jpeg"));
-        movieList.add(new Movie("Interstellar",5,"./images/interstellar.jpeg"));
-        movieList.add(new Movie("Thor Ragnarok",5,"./images/thor.jpg"));
-        movieList.add(new Movie("Orient Express",2,"./images/murder.jpeg"));
-        movieList.add(new Movie("Rush",5,"./images/rush.jpeg"));
-
-        return new DataResponse(true, movieList.size(), movieList);
-    }
+//
+//    @GetMapping("/movies/featured")
+//    @ResponseBody
+//    public DataResponse getMovies(){
+//
+//    }
 
 }
