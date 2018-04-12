@@ -1,14 +1,35 @@
 package com.linden.models;
 
 public enum Genre {
-
-    THRILLER,
-    COMEDY,
+    SHORT,
     DRAMA,
-    ROMANTIC,
+    COMEDY,
+    DOCUMENTARY,
+    ADULT,
     ACTION,
-    SCIFI,
+    ROMANCE,
+    THRILLER,
+    ANIMATION,
+    FAMILY,
+    CRIME,
     HORROR,
-    ANIMATED
-
+    MUSIC,
+    ADVENTURE
+    FANTASY,
+    SCI_FI,
+    MYSTERY,
+    BIOGRAPHY,
+    SPORT,
+    HISTORY,
+    MUSICAL,
+    WESTERN,
+    WAR,
+    REALITY_TV,
+    NEWS,
+    TALK_SHOW,
+    GAME_SHOW,
+    FILM_NOIR,
+    LIFESTYLE,
+    EXPERIMENTAL,
+    COMMERCIAL
 }
