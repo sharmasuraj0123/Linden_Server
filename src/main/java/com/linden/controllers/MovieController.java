@@ -1,16 +1,12 @@
 package com.linden.controllers;
 
-import com.linden.util.DataResponse;
 import com.linden.models.Movie;
 import com.linden.repositories.MovieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.List;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class MovieController {
@@ -18,28 +14,10 @@ public class MovieController {
     @Autowired
     private MovieRepository movieRepository;
 
-    @Transactional
-    @RequestMapping(value = "/hello", method = RequestMethod.GET)
-    public String index(HttpServletResponse response, HttpServletRequest request) throws Exception {
-        //model.addAttribute("accept", "text/plain");
-        response.setContentType("text/plain");
-        response.setCharacterEncoding("UTF-8");
-        //Movie m = new Movie("Kumki",4,"./images/kumki.jpeg");
-        //movieRepository.save(m);
-        return "Welcome to Linden!";
-    }
-
     @GetMapping("/search/{keyword}")
     @ResponseBody
     public Iterable<Movie> search(@PathVariable("keyword") String keyword){
         return movieRepository.findMoviesByNameContains(keyword);
     }
-
-//
-//    @GetMapping("/movies/featured")
-//    @ResponseBody
-//    public DataResponse getMovies(){
-//
-//    }
 
 }

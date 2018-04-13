@@ -1,17 +1,15 @@
 package com.linden.models;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.util.Date;
-import java.util.List;
+import java.util.Set;
 
 @MappedSuperclass
 public abstract class Content {
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
-    @NotNull
-    private String id;
+    private long id;
 
     private String name;
 
@@ -24,16 +22,16 @@ public abstract class Content {
     @ElementCollection
     @CollectionTable(name="content_photos", joinColumns = @JoinColumn(name = "content_id"))
     @Column(name = "photos")
-    private List<String> photos;
+    private Set<String> photos;
 
     @OneToMany
-    private List<Cast> cast;
+    private Set<Cast> cast;
 
-    public String getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -69,19 +67,19 @@ public abstract class Content {
         this.videos = videos;
     }
 
-    public List<String> getPhotos() {
+    public Set<String> getPhotos() {
         return photos;
     }
 
-    public void setPhotos(List<String> photos) {
+    public void setPhotos(Set<String> photos) {
         this.photos = photos;
     }
 
-    public List<Cast> getCast() {
+    public Set<Cast> getCast() {
         return cast;
     }
 
-    public void setCast(List<Cast> cast) {
+    public void setCast(Set<Cast> cast) {
         this.cast = cast;
     }
 }

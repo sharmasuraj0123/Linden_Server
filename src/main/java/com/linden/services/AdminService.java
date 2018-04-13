@@ -1,7 +1,10 @@
 package com.linden.services;
 
 import com.linden.models.Admin;
+import com.linden.models.Movie;
 import com.linden.repositories.AdminRepository;
+import com.linden.repositories.CastRepository;
+import com.linden.repositories.MovieRepository;
 import com.linden.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,7 +17,18 @@ public class AdminService {
     @Autowired
     private AdminRepository adminRepository;
 
+    @Autowired
+    private MovieRepository movieRepository;
+
+    @Autowired
+    private CastRepository castRepository;
+
     public Admin getAdminByEmail(String email){
         return adminRepository.findByEmail(email);
+    }
+
+    public void addMovie(Movie movie){
+        movie.getCast().forEach(castRepository::save);
+        movieRepository.save(movie);
     }
 }

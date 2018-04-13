@@ -14,7 +14,7 @@ public enum Genre {
     CRIME,
     HORROR,
     MUSIC,
-    ADVENTURE
+    ADVENTURE,
     FANTASY,
     SCI_FI,
     MYSTERY,

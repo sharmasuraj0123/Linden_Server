@@ -1,12 +1,10 @@
 package com.linden.controllers;
 
 import com.linden.models.Movie;
-import com.linden.services.MovieService;
 import com.linden.models.TvShow;
-import com.linden.services.TvShowService;
-import com.linden.models.Cast;
 import com.linden.services.CastService;
-
+import com.linden.services.MovieService;
+import com.linden.services.TvShowService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,7 +27,7 @@ public class SearchController {
 
         List<Movie> movies = movieService.searchMovie(keywords);
         List<TvShow> tvShows = tvShowService.searchTvShow(keywords);
-        List<Cast> cast = castService.searchCast(keywords);
+//        List<Cast> cast = castService.searchCast(keywords);
 
         //List<List<Object>> searchResults = new List<List<Object>>;
         //searchResults.add(movies);
