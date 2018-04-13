@@ -13,9 +13,9 @@ public class CastService {
 
     public List<Cast> searchCast(String keywords){
 
-        List<Cast> cast = castRepository.findCastByNameContains(keywords);
+//        List<Cast> cast = castRepository.findCastByNameContains(keywords);
 
-        return cast;
+        return null;
     }
 
 }

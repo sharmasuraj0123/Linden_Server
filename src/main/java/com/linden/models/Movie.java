@@ -2,8 +2,8 @@ package com.linden.models;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.sql.Time;
 import java.util.List;
+import java.util.Set;
 
 @Entity // Tell persistence layer to make a table for this class
 public class Movie extends Content{
@@ -11,18 +11,20 @@ public class Movie extends Content{
     @NotNull
     private int rating;
 
-    private Genre genre;
+    @ElementCollection(targetClass=Genre.class)
+    @Enumerated(EnumType.STRING)
+    private Set<Genre> genre;
 
     @OneToMany
     private List<Review> reviews;
 
     private double revenue;
 
-    private Time duration;
+    private long duration;
 
     public Movie(){}
 
-    public Movie(@NotNull int rating, Genre genre, List<Review> reviews, double revenue, Time duration) {
+    public Movie(@NotNull int rating, Set<Genre> genre, List<Review> reviews, double revenue, long duration) {
         this.rating = rating;
         this.genre = genre;
         this.reviews = reviews;
@@ -30,11 +32,11 @@ public class Movie extends Content{
         this.duration = duration;
     }
 
-    public Genre getGenre() {
+    public Set<Genre> getGenre() {
         return genre;
     }
 
-    public void setGenre(Genre genre) {
+    public void setGenre(Set<Genre> genre) {
         this.genre = genre;
     }
 
@@ -54,11 +56,11 @@ public class Movie extends Content{
         this.revenue = revenue;
     }
 
-    public Time getDuration() {
+    public long getDuration() {
         return duration;
     }
 
-    public void setDuration(Time duration) {
+    public void setDuration(long duration) {
         this.duration = duration;
     }
 
