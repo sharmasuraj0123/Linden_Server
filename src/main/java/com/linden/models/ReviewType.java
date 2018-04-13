@@ -1,4 +1,8 @@
 package com.linden.models;
 
-public class ReviewType {
+public enum ReviewType {
+
+    NORMAL,
+    CRITIC,
+    TOP_CRITIC
 }

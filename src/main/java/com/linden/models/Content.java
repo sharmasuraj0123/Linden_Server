@@ -11,6 +11,8 @@ public abstract class Content {
     @GeneratedValue(strategy= GenerationType.AUTO)
     private long id;
 
+    private String imdbId;
+
     private String name;
 
     private String details;
@@ -23,6 +25,30 @@ public abstract class Content {
     @CollectionTable(name="content_photos", joinColumns = @JoinColumn(name = "content_id"))
     @Column(name = "photos")
     private Set<String> photos;
+
+    public Content(){
+
+    }
+
+    public Content(String imdbId, String name, String details, Date releaseDate, List<Cast> cast) {
+        this.imdbId = imdbId;
+        this.name = name;
+        this.details = details;
+        this.releaseDate = releaseDate;
+        this.cast = cast;
+    }
+
+    public String getImdbId() {
+        return imdbId;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setImdbId(String imdbId) {
+        this.imdbId = imdbId;
+    }
 
     @OneToMany
     private Set<Cast> cast;

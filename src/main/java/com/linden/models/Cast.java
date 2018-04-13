@@ -21,6 +21,11 @@ public class Cast {
 
     public Cast(){}
 
+    public Cast(@NotNull String firstName, @NotNull String lastName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
     public Cast(@NotNull String firstName, @NotNull String lastName, int rating, String imageURL) {
         this.firstName = firstName;
         this.lastName = lastName;

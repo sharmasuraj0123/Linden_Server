@@ -2,6 +2,8 @@ package com.linden.models;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.sql.Time;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -24,7 +26,14 @@ public class Movie extends Content{
 
     public Movie(){}
 
-    public Movie(@NotNull int rating, Set<Genre> genre, List<Review> reviews, double revenue, long duration) {
+    public Movie(String imdbId, String name, String details, Date releaseDate, List<Cast> cast, @NotNull int rating, Genre genre, Time duration) {
+        super(imdbId, name, details, releaseDate, cast);
+        this.rating = rating;
+        this.genre = genre;
+        this.duration = duration;
+    }
+
+    public Movie(@NotNull int rating, Genre genre, List<Review> reviews, double revenue, Time duration) {
         this.rating = rating;
         this.genre = genre;
         this.reviews = reviews;

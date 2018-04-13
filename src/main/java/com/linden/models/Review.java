@@ -11,14 +11,10 @@ public class Review {
     @GeneratedValue(strategy= GenerationType.AUTO)
     @NotNull
     private Long id;
-
     private Date date;
-
     @OneToOne
     private User postedBy;
-
     private String details;
-
     private int rating;
 
     public Review(){}
@@ -30,9 +26,7 @@ public class Review {
         this.rating = rating;
     }
 
-
     public Long getId() {
-
         return id;
     }
 
