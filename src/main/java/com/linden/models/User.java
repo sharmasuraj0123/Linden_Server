@@ -1,9 +1,6 @@
 package com.linden.models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
@@ -11,6 +8,8 @@ public class User extends Account implements Serializable {
 
     private String username;
     private boolean verifiedAccount;
+
+    @Enumerated(EnumType.STRING)
     private UserType userType = UserType.GUEST;
 
     public User(){

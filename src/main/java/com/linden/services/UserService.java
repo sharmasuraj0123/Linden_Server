@@ -1,8 +1,8 @@
 package com.linden.services;
 
+import com.linden.models.Account;
 import com.linden.models.User;
 import com.linden.models.UserType;
-import com.linden.repositories.AccountRepository;
 import com.linden.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,9 +13,6 @@ public class UserService {
     public enum RegistrationStatus{
         OK, USERNAME_TAKEN, EMAIL_TAKEN
     }
-
-    @Autowired
-    private AccountRepository accountRepository;
 
     @Autowired
     private UserRepository userRepository;
@@ -32,12 +29,13 @@ public class UserService {
         return userRepository.findByUserType(userType);
     }
 
-    public boolean verifyUserCredentials(String username, String password){
-        User user = getUserByUsername(username);
-        if(user.getUsername().equals(username))
-            return true;
-        else
-            return false;
+    public boolean checkCredentials(User user, Account databaseAccount){
+        return user.getEmail().equals(databaseAccount.getEmail())
+                && user.getPassword().equals(databaseAccount.getPassword());
+    }
+
+    public boolean checkCredentials(User user){
+        return checkCredentials(user, getUserByEmail(user.getEmail()));
     }
 
     public RegistrationStatus registerUser(User user){

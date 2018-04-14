@@ -1,5 +1,6 @@
 package com.linden.services;
 
+import com.linden.models.Account;
 import com.linden.models.Admin;
 import com.linden.models.Movie;
 import com.linden.repositories.AdminRepository;
@@ -26,6 +27,15 @@ public class AdminService {
 
     public Admin getAdminByEmail(String email){
         return adminRepository.findByEmail(email);
+    }
+
+    public boolean checkCredentials(Admin admin, Account databaseAccount){
+        return admin.getEmail().equals(databaseAccount.getEmail())
+                && admin.getPassword().equals(databaseAccount.getPassword());
+    }
+
+    public boolean checkCredentials(Admin admin){
+        return checkCredentials(admin, getAdminByEmail(admin.getEmail()));
     }
 
     public void addMovie(Movie movie){

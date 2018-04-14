@@ -3,9 +3,9 @@ package com.linden.controllers;
 import com.linden.models.Account;
 import com.linden.models.Admin;
 import com.linden.models.User;
-import com.linden.services.AccountService;
 import com.linden.services.AdminService;
 import com.linden.services.UserService;
+import com.linden.util.ObjectStatusResponse;
 import com.linden.util.StatusResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -18,9 +18,6 @@ import javax.servlet.http.HttpSession;
 public class LoginController {
 
     @Autowired
-    private AccountService accountService;
-
-    @Autowired
     private UserService userService;
 
     @Autowired
@@ -28,49 +25,64 @@ public class LoginController {
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
-    public StatusResponse login(HttpServletRequest request, HttpServletResponse response,
+    public ObjectStatusResponse<?> login(HttpServletRequest request, HttpServletResponse response,
                                         @RequestBody Account account) {
         HttpSession session = request.getSession(true);
-        Account sessionAccount = (Account) session.getAttribute("account");
-        if (sessionAccount == null) {
-            Account accountInDatabase = accountService.getAccountByEmail(account.getEmail());
-            if(accountInDatabase == null) {
-                return new StatusResponse("ERROR", "Account not registered!");
+        User userAccount = (User) session.getAttribute("user");
+        Admin adminAccount = (Admin) session.getAttribute("admin");
+
+        if(userAccount == null && adminAccount == null){
+            User userFromDb = userService.getUserByEmail(account.getEmail());
+            Admin adminFromDb = adminService.getAdminByEmail(account.getEmail());
+            if(userFromDb == null && adminFromDb == null){
+                return new ObjectStatusResponse(null,"ERROR", "Account not registered!");
             }
             else {
-                if(accountService.checkCredentials(account, accountInDatabase)) {
-                    if (accountInDatabase instanceof User) {
-                        return handleUserLogin(accountInDatabase, session);
-                    } else if (accountInDatabase instanceof Admin) {
-                        return handleAdminLogin(accountInDatabase, session);
-                    } else {
-                        return new StatusResponse("ERROR", "Account not yet verified.");
-                    }
+                if(userFromDb != null){
+                    return handleUserLogin(
+                            new User(account.getEmail(), account.getPassword()),
+                            session
+                    );
                 }
                 else {
-                    return new StatusResponse("ERROR", "Invalid credentials!");
+                    return handleAdminLogin(
+                            new Admin(account.getEmail(), account.getPassword()),
+                            session
+                    );
                 }
             }
-        } else {
-            return new StatusResponse("ERROR", "Already logged in!");
+        }
+        else{
+            return new ObjectStatusResponse(null,"ERROR", "Already logged in!");
         }
     }
 
-    private StatusResponse handleUserLogin(Account account, HttpSession session) {
-        if(((User)account).isVerifiedAccount()) {
-            session.setAttribute("account", account);
-            session.setAttribute("user", userService.getUserByEmail(account.getEmail()));
-            return new StatusResponse("OK");
+    private ObjectStatusResponse handleUserLogin(User user, HttpSession session) {
+        if(userService.checkCredentials(user)){
+            User userInDb = userService.getUserByEmail(user.getEmail());
+            if(userInDb.isVerifiedAccount()) {
+                session.setAttribute("user", userInDb);
+                return new ObjectStatusResponse<>(userInDb, "OK");
+            }
+            else {
+                return new ObjectStatusResponse(null,"ERROR", "Account not verified!");
+            }
         }
         else {
-            return new StatusResponse("ERROR", "Account not verified!");
+            return new ObjectStatusResponse(null,"ERROR", "Invalid Credentials!");
         }
     }
 
-    private StatusResponse handleAdminLogin(Account account, HttpSession session){
-        session.setAttribute("account", account);
-        session.setAttribute("admin", adminService.getAdminByEmail(account.getEmail()));
-        return new StatusResponse("OK");
+    private ObjectStatusResponse handleAdminLogin(Admin admin, HttpSession session){
+        if(adminService.checkCredentials(admin)){
+            Admin adminInDb = adminService.getAdminByEmail(admin.getEmail());
+            session.setAttribute("admin", adminInDb);
+            return new ObjectStatusResponse<>(adminInDb, "OK");
+        }
+        else {
+            return new ObjectStatusResponse(null,"ERROR", "Invalid Credentials!");
+        }
+
     }
 
     @RequestMapping(value = "/logout", method = RequestMethod.GET)

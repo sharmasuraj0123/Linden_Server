@@ -8,10 +8,10 @@ import java.util.function.Function;
 /**
  * Functional interface used to define a ranking (a.k.a scoring function) for each
  * movie. This interface must map an object to a key value pair consisting of
- * (object, order). With the only requirement that order must extend Comparable.
+ * (object, rank). With the only requirement that order must extend Comparable.
  *
  * Functional diagram:
- * (object) -> (object, order)
+ * (object) -> (object, rank)
  */
 @FunctionalInterface
 public interface Ranker<X> extends Function<X, Pair<X, ? extends Comparable>> {

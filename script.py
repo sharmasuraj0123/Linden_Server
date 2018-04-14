@@ -78,7 +78,7 @@ while counter < 100:
     if 'Rated' in data:
         print('Rating: ' + data['Rated'])
     if 'imdbRating' in data:
-        movieObject['score'] = float(data['imdbRating'])/10.0
+        movieObject['score'] = float(data['imdbRating'])/2
     print('----------------------------------------------------------')
     movieObject['cast'] = cast
     print(movieObject)

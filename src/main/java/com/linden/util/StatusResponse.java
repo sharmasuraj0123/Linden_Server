@@ -1,9 +1,11 @@
 package com.linden.util;
 
-public class StatusResponse {
+import java.io.Serializable;
 
-    private String status;
-    private String message = "";
+public class StatusResponse implements Serializable {
+
+    protected String status;
+    protected String message = "";
 
     public StatusResponse(String status){
         this.status = status;
