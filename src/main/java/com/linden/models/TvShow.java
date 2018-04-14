@@ -1,51 +1,16 @@
 package com.linden.models;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import javax.persistence.Entity;
+import java.util.Date;
+import java.util.Set;
 
 @Entity
-public class TvShow {
-
-    @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
-    private Long id;
-
-    @NotNull
-    private String name;
-    private int rating;
-    private String imageURL;
-
+public class TvShow extends Content{
     public TvShow(){
-
+        super();
     }
 
-    public TvShow(String name, int rating, String imageURL) {
-        this.name = name;
-        this.rating = rating;
-        this.imageURL = imageURL;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getRating() {
-        return rating;
-    }
-
-    public void setRating(int rating) {
-        this.rating = rating;
-    }
-
-    public String getImageURL() {
-        return imageURL;
-    }
-
-    public void setImageURL(String imageURL) {
-        this.imageURL = imageURL;
+    public TvShow(String name, String details, Date releaseDate, double score, Set<Cast> cast, Set<Genre> genre){
+        super(name, details, releaseDate, score, cast, genre);
     }
 }

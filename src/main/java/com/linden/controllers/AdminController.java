@@ -25,6 +25,7 @@ public class AdminController {
         System.out.println("Duration = "+movie.getDuration());
         System.out.println("Cast = "+movie.getCast());
         System.out.println("Genre = "+movie.getGenre());
+        System.out.println("Score = "+movie.getScore());
         try{
             adminService.addMovie(movie);
             return new StatusResponse("OK");

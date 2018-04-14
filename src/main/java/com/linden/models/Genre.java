@@ -31,5 +31,6 @@ public enum Genre {
     FILM_NOIR,
     LIFESTYLE,
     EXPERIMENTAL,
-    COMMERCIAL
+    COMMERCIAL,
+    OTHER
 }

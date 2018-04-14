@@ -21,6 +21,8 @@ while counter < 100:
     tmdb_response = requests.get(url=tmdb_url + str(movie_id) + '?api_key=' + tmdb_key)
     tmdb_data = tmdb_response.json()
 
+    print(tmdb_data)
+
     if 'status_code' in tmdb_data:
         movie_id += 1
         continue
@@ -75,9 +77,11 @@ while counter < 100:
         print('Genre: ' + data['Genre'])
     if 'Rated' in data:
         print('Rating: ' + data['Rated'])
+    if 'imdbRating' in data:
+        movieObject['score'] = float(data['imdbRating'])/10.0
     print('----------------------------------------------------------')
     movieObject['cast'] = cast
     print(movieObject)
-    requests.post(url=linden_url, data=json.dumps(movieObject))
+    print(requests.post(url=linden_url, json=movieObject))
     movie_id += 1
     counter += 1
