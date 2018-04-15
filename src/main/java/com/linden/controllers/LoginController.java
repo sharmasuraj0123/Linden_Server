@@ -35,7 +35,11 @@ public class LoginController {
             User userFromDb = userService.getUserByEmail(account.getEmail());
             Admin adminFromDb = adminService.getAdminByEmail(account.getEmail());
             if(userFromDb == null && adminFromDb == null){
-                return new ObjectStatusResponse(null,"ERROR", "Account not registered!");
+                return new ObjectStatusResponse(
+                    null,
+                    "ERROR",
+                    "Account not registered!"
+                );
             }
             else {
                 if(userFromDb != null){
@@ -53,7 +57,11 @@ public class LoginController {
             }
         }
         else{
-            return new ObjectStatusResponse(null,"ERROR", "Already logged in!");
+            return new ObjectStatusResponse(
+                null,
+                "ERROR",
+                "Already logged in!"
+            );
         }
     }
 

@@ -23,7 +23,12 @@ public class SearchResponse implements Serializable {
     }
 
     public SearchResponse(List<Movie> movies,
-                          List<TvShow> tvShows, List<Cast> actors) {
+                          List<TvShow> tvShows,
+                          List<Cast> actors,
+                          int movieCount,
+                          int tvCount,
+                          int castCount,
+                          int totalResultCount) {
         this.movies = movies.stream()
                             .map(MovieResult::new)
                             .collect(Collectors.toCollection(ArrayList::new));
@@ -34,7 +39,7 @@ public class SearchResponse implements Serializable {
                             .map(ActorResult::new)
                             .collect(Collectors.toCollection(ArrayList::new));
         this.resultCount = new SearchResultCount(
-                movies.size(), tvShows.size(), actors.size()
+                movieCount, tvCount, castCount, totalResultCount
         );
     }
 

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.function.Function;
 
 @Service
 public class TvShowService {
@@ -14,13 +15,26 @@ public class TvShowService {
     @Autowired
     private TvShowRepository tvShowRepository;
 
-    public List<TvShow> searchTvShow(String keywords) {
-        return searchTvShow(keywords, new ContentRanker<>());
+    public List<TvShow> searchTvShow(String keywords){
+        return searchTvShow(keywords, new ContentRanker<>(), true);
     }
 
-    public List<TvShow> searchTvShow(String keywords, ContentRanker<TvShow> ranker){
-        List<TvShow> tvShows = tvShowRepository.findTvShowByNameContains(keywords);
+    public List<TvShow> searchTvShow(String keywords,
+                                     Function<TvShow, ? extends Comparable> pairingFunction){
+        return searchTvShow(keywords, new ContentRanker<>(pairingFunction), true);
+    }
+
+    public List<TvShow> searchTvShow(String keywords,
+                                     Function<TvShow, ? extends Comparable> pairingFunction,
+                                     boolean desc){
+        return searchTvShow(keywords, new ContentRanker<>(pairingFunction), desc);
+    }
+
+    public List<TvShow> searchTvShow(String keywords,
+                                     ContentRanker<TvShow> ranker,
+                                     boolean desc){
+        List<TvShow> TvShows = tvShowRepository.findTvShowsByNameContains(keywords);
         // Return sorted list based on ranker supplied
-        return ranker.order(tvShows);
+        return  ranker.order(TvShows, desc);
     }
 }

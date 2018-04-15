@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 public interface TvShowRepository extends JpaRepository<TvShow, Long>{
 
-    List<TvShow> findTvShowByNameContains(String keywords);
+    List<TvShow> findTvShowsByNameContains(String keywords);
 }

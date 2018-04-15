@@ -2,19 +2,63 @@ package com.linden.util.search.rank;
 
 import javafx.util.Pair;
 
-import java.util.Comparator;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
-/**
- * Functional interface used to define a ranking (a.k.a scoring function) for each
- * movie. This interface must map an object to a key value pair consisting of
- * (object, rank). With the only requirement that order must extend Comparable.
- *
- * Functional diagram:
- * (object) -> (object, rank)
- */
-@FunctionalInterface
-public interface Ranker<X> extends Function<X, Pair<X, ? extends Comparable>> {
-    Comparator<Pair<?, ? extends Comparable>> COMPARATOR = Comparator.comparing(Pair::getValue);
-    Pair<X, Double> apply(X obj);
+public class Ranker<X> implements PairingFunction<X> {
+
+    protected PairingFunction<X> scoringFunction;
+
+    protected Function<X, ? extends Comparable> pairTransformation;
+
+    public Ranker() {
+        
+    }
+
+    public Ranker(Function<X, ? extends Comparable> pairTransformation) {
+        this.pairTransformation = pairTransformation;
+        this.scoringFunction = content -> new Pair<>(
+                content,
+                pairTransformation.apply(content)
+        );
+    }
+
+    public PairingFunction<X> getScoringFunction() {
+        return scoringFunction;
+    }
+
+    public void setScoringFunction(PairingFunction<X> scoringFunction) {
+        this.scoringFunction = scoringFunction;
+    }
+
+    public Function<X, ? extends Comparable> getPairTransformation() {
+        return pairTransformation;
+    }
+
+    public void setPairTransformation(Function<X, ? extends Comparable> pairTransformation) {
+        this.pairTransformation = pairTransformation;
+    }
+
+    @Override
+    public Pair<X, ? extends Comparable> apply(X obj) {
+        return scoringFunction.apply(obj);
+    }
+
+    public List<X> order(Collection<X> collection) {
+        return order(collection, true);
+    }
+
+    public List<X> order(Collection<X> collection, boolean desc) {
+        return collection.parallelStream()
+                .map(this)
+                .sorted((desc) ?
+                    PairingFunction.COMPARATOR.reversed()
+                    : PairingFunction.COMPARATOR
+                )
+                .map(Pair::getKey)
+                .collect(Collectors.toCollection(ArrayList::new));
+    }
 }

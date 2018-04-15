@@ -20,7 +20,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @ComponentScan(basePackages = { "com.linden.*" })
 @EntityScan("com.linden.*")
 @EnableTransactionManagement
-@PropertySource("classpath:application.properties")
+@PropertySource({
+        "classpath:application.properties",
+        "classpath:linden.properties"
+})
 public class ApplicationConfig {
     @Bean
     public WebMvcConfigurer corsConfigurer() {

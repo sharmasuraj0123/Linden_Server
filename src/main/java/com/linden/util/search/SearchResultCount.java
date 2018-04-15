@@ -3,51 +3,51 @@ package com.linden.util.search;
 import java.io.Serializable;
 
 public class SearchResultCount implements Serializable {
-    private long movies;
-    private long tvShow;
-    private long actors;
-    private long all;
+    private int movies;
+    private int tvShow;
+    private int actors;
+    private int all;
 
     public SearchResultCount(){
 
     }
 
-    public SearchResultCount(long movies, long tvShow, long actors) {
+    public SearchResultCount(int movies, int tvShow, int actors, int all) {
         this.movies = movies;
         this.tvShow = tvShow;
         this.actors = actors;
-        this.all = movies + tvShow + actors;
+        this.all = all;
     }
 
-    public long getMovies() {
+    public int getMovies() {
         return movies;
     }
 
-    public void setMovies(long movies) {
+    public void setMovies(int movies) {
         this.movies = movies;
     }
 
-    public long getTvShow() {
+    public int getTvShow() {
         return tvShow;
     }
 
-    public void setTvShow(long tvShow) {
+    public void setTvShow(int tvShow) {
         this.tvShow = tvShow;
     }
 
-    public long getActors() {
+    public int getActors() {
         return actors;
     }
 
-    public void setActors(long actors) {
+    public void setActors(int actors) {
         this.actors = actors;
     }
 
-    public long getAll() {
+    public int getAll() {
         return all;
     }
 
-    public void setAll(long all) {
+    public void setAll(int all) {
         this.all = all;
     }
 }

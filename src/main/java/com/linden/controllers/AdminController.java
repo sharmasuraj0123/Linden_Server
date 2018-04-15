@@ -20,12 +20,6 @@ public class AdminController {
     @ResponseBody
     public StatusResponse addMovie(HttpServletRequest request, HttpServletResponse response,
                                    @RequestBody Movie movie){
-        System.out.println("Name = "+movie.getName());
-        System.out.println("Release Date = "+movie.getReleaseDate());
-        System.out.println("Duration = "+movie.getDuration());
-        System.out.println("Cast = "+movie.getCast());
-        System.out.println("Genre = "+movie.getGenre());
-        System.out.println("Score = "+movie.getScore());
         try{
             adminService.addMovie(movie);
             return new StatusResponse("OK");
