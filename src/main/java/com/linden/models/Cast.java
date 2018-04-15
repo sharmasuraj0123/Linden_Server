@@ -2,9 +2,10 @@ package com.linden.models;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 
 @Entity
-public class Cast {
+public class Cast implements Serializable {
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)

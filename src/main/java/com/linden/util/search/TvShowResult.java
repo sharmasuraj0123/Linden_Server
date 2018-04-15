@@ -6,8 +6,10 @@ import java.io.Serializable;
 
 public class TvShowResult implements Serializable {
 
-    public TvShowResult(TvShow tvShow){
+    private TvShow tvShow;
 
+    public TvShowResult(TvShow tvShow){
+        this.tvShow = tvShow;
     }
 
 }
