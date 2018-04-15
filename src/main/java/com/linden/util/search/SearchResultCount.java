@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class SearchResultCount implements Serializable {
     private int movies;
-    private int tvShow;
+    private int tvShows;
     private int actors;
     private int all;
 
@@ -12,9 +12,9 @@ public class SearchResultCount implements Serializable {
 
     }
 
-    public SearchResultCount(int movies, int tvShow, int actors, int all) {
+    public SearchResultCount(int movies, int tvShows, int actors, int all) {
         this.movies = movies;
-        this.tvShow = tvShow;
+        this.tvShows = tvShows;
         this.actors = actors;
         this.all = all;
     }
@@ -27,12 +27,12 @@ public class SearchResultCount implements Serializable {
         this.movies = movies;
     }
 
-    public int getTvShow() {
-        return tvShow;
+    public int getTvShows() {
+        return tvShows;
     }
 
-    public void setTvShow(int tvShow) {
-        this.tvShow = tvShow;
+    public void setTvShows(int tvShows) {
+        this.tvShows = tvShows;
     }
 
     public int getActors() {

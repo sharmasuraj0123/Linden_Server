@@ -8,6 +8,7 @@ import com.linden.services.UserService;
 import com.linden.util.ObjectStatusResponse;
 import com.linden.util.StatusResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,6 +24,9 @@ public class LoginController {
     @Autowired
     private AdminService adminService;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
     public ObjectStatusResponse<?> login(HttpServletRequest request, HttpServletResponse response,
@@ -35,7 +39,7 @@ public class LoginController {
             User userFromDb = userService.getUserByEmail(account.getEmail());
             Admin adminFromDb = adminService.getAdminByEmail(account.getEmail());
             if(userFromDb == null && adminFromDb == null){
-                return new ObjectStatusResponse(
+                return new ObjectStatusResponse<>(
                     null,
                     "ERROR",
                     "Account not registered!"
@@ -57,7 +61,7 @@ public class LoginController {
             }
         }
         else{
-            return new ObjectStatusResponse(
+            return new ObjectStatusResponse<>(
                 null,
                 "ERROR",
                 "Already logged in!"
