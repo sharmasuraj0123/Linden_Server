@@ -39,6 +39,7 @@ public class UserService {
     }
 
     public RegistrationStatus registerUser(User user){
+        user.setVerifiedAccount(false);
         if(getUserByUsername(user.getUsername()) != null) {
             return RegistrationStatus.USERNAME_TAKEN;
         }

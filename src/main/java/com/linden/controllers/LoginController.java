@@ -105,18 +105,21 @@ public class LoginController {
     @ResponseBody
     public StatusResponse register(HttpServletRequest request, HttpServletResponse response,
                                    @RequestBody User user){
-        UserService.RegistrationStatus status = userService.registerUser(user);
-        switch (status){
-            case OK:
-                return new StatusResponse("OK");
-            case EMAIL_TAKEN:
-            case USERNAME_TAKEN:
-                return new StatusResponse("ERROR", status.toString());
-            default:
-                // This should never occur, just placed here for consistency.
-                return new StatusResponse("ERROR", "An unknown error occurred!");
+        if(user != null) {
+            UserService.RegistrationStatus status = userService.registerUser(user);
+            switch (status) {
+                case OK:
+                    return new StatusResponse("OK");
+                case EMAIL_TAKEN:
+                case USERNAME_TAKEN:
+                    return new StatusResponse("ERROR", status.toString());
+                default:
+                    // This should never occur, just placed here for consistency.
+                    return new StatusResponse("ERROR", "An unknown error occurred!");
+            }
+        }
+        else {
+            return new StatusResponse("ERROR", "Invalid data!");
         }
     }
-
-
 }
