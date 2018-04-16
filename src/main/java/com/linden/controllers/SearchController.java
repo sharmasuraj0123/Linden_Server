@@ -28,8 +28,16 @@ public class SearchController {
     @Autowired
     private CastService castService;
 
-    @Value("${search.result.limit}")
+    @Value("${search.result.limit:10}")
     private int RESULT_LIMIT;
+
+    @RequestMapping(
+            value = "/search",
+            params = {"keywords"}
+    )
+    public SearchResponse search(String keywords){
+        return search(keywords, 1);
+    }
 
     @RequestMapping(
         value = "/search",

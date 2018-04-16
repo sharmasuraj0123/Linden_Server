@@ -8,11 +8,9 @@ import com.linden.services.UserService;
 import com.linden.util.ObjectStatusResponse;
 import com.linden.util.StatusResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 @RestController
@@ -24,13 +22,9 @@ public class LoginController {
     @Autowired
     private AdminService adminService;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
-    public ObjectStatusResponse<?> login(HttpServletRequest request, HttpServletResponse response,
-                                        @RequestBody Account account) {
+    public ObjectStatusResponse<?> login(HttpServletRequest request, @RequestBody Account account) {
         HttpSession session = request.getSession(true);
         User userAccount = (User) session.getAttribute("user");
         Admin adminAccount = (Admin) session.getAttribute("admin");
@@ -69,7 +63,7 @@ public class LoginController {
         }
     }
 
-    private ObjectStatusResponse handleUserLogin(User user, HttpSession session) {
+    private ObjectStatusResponse<?> handleUserLogin(User user, HttpSession session) {
         if(userService.checkCredentials(user)){
             User userInDb = userService.getUserByEmail(user.getEmail());
             if(userInDb.isVerifiedAccount()) {
@@ -77,29 +71,29 @@ public class LoginController {
                 return new ObjectStatusResponse<>(userInDb, "OK");
             }
             else {
-                return new ObjectStatusResponse(null,"ERROR", "Account not verified!");
+                return new ObjectStatusResponse<>(null,"ERROR", "Account not verified!");
             }
         }
         else {
-            return new ObjectStatusResponse(null,"ERROR", "Invalid Credentials!");
+            return new ObjectStatusResponse<>(null,"ERROR", "Invalid Credentials!");
         }
     }
 
-    private ObjectStatusResponse handleAdminLogin(Admin admin, HttpSession session){
+    private ObjectStatusResponse<?> handleAdminLogin(Admin admin, HttpSession session){
         if(adminService.checkCredentials(admin)){
             Admin adminInDb = adminService.getAdminByEmail(admin.getEmail());
             session.setAttribute("admin", adminInDb);
             return new ObjectStatusResponse<>(adminInDb, "OK");
         }
         else {
-            return new ObjectStatusResponse(null,"ERROR", "Invalid Credentials!");
+            return new ObjectStatusResponse<>(null,"ERROR", "Invalid Credentials!");
         }
 
     }
 
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
     @ResponseBody
-    public StatusResponse logout(HttpServletRequest request, HttpServletResponse response) {
+    public StatusResponse logout(HttpServletRequest request) {
         HttpSession session = request.getSession();
         session.invalidate();
         return new StatusResponse("OK", "Logged out.");
@@ -107,23 +101,15 @@ public class LoginController {
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     @ResponseBody
-    public StatusResponse register(HttpServletRequest request, HttpServletResponse response,
-                                   @RequestBody User user){
-        if(user != null) {
-            UserService.RegistrationStatus status = userService.registerUser(user);
-            switch (status) {
-                case OK:
-                    return new StatusResponse("OK");
-                case EMAIL_TAKEN:
-                case USERNAME_TAKEN:
-                    return new StatusResponse("ERROR", status.toString());
-                default:
-                    // This should never occur, just placed here for consistency.
-                    return new StatusResponse("ERROR", "An unknown error occurred!");
-            }
+    public StatusResponse register(@RequestBody User user){
+        UserService.RegistrationStatus status = userService.registerUser(user);
+        switch (status) {
+            case OK:
+                return new StatusResponse("OK");
+            case EMAIL_TAKEN:
+                return new StatusResponse("ERROR", "Email already taken!");
         }
-        else {
-            return new StatusResponse("ERROR", "Invalid data!");
-        }
+        // Should never be reached
+        return new StatusResponse("ERROR", "An unknown error has occurred...");
     }
 }
