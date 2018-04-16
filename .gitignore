@@ -1,4 +1,5 @@
-
+lib/
+*.iml
 \.idea/
 gradlew
 
@@ -12,3 +13,5 @@ daemon/
 native/
 out/
 web/
+local.properties
+src/resources/application.properties
