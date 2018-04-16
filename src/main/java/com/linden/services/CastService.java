@@ -17,7 +17,7 @@ public class CastService {
     @Autowired
     private CastRepository castRepository;
 
-    public List<Cast> searchCast(String keywords){
+    public List<Cast> searchCast(String keywords) {
         return searchCast(keywords, true);
     }
 
@@ -25,21 +25,17 @@ public class CastService {
         return searchCast(keywords, Cast::getRating, true);
     }
 
-    public List<Cast> searchCast(String keywords, boolean desc){
+    public List<Cast> searchCast(String keywords, boolean desc) {
         return searchCast(keywords, Cast::getRating, desc);
     }
 
-    public List<Cast> searchCast(String keywords,
-                                 Function<Cast, ? extends Comparable> pairingFunction,
-                                 boolean desc) {
+    public List<Cast> searchCast(String keywords, Function<Cast, ? extends Comparable> pairingFunction, boolean desc) {
         Set<Cast> result = new HashSet<>();
         String[] tokens = keywords.split("[ ]");
-        if(tokens.length > 1){
-            String  firstName = tokens[0],
-                    lastName = keywords.substring(keywords.indexOf(' '));
+        if (tokens.length > 1) {
+            String firstName = tokens[0], lastName = keywords.substring(keywords.indexOf(' '));
             result.addAll(castRepository.findCastsByFirstNameAndLastName(firstName, lastName));
-        }
-        else if (tokens.length == 1){
+        } else if (tokens.length == 1) {
             result.addAll(castRepository.findCastsByFirstName(tokens[0]));
             result.addAll(castRepository.findCastsByLastName(tokens[0]));
         }

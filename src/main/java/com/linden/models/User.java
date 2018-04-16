@@ -7,15 +7,14 @@ import java.io.Serializable;
 public class User extends Account implements Serializable {
 
     private boolean verifiedAccount;
-
     @Enumerated(EnumType.STRING)
     private UserType userType = UserType.GUEST;
 
-    public User(){
+    public User() {
         super();
     }
 
-    public User(String email, String password){
+    public User(String email, String password) {
         super(email, password);
     }
 

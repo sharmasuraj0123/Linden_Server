@@ -8,19 +8,16 @@ import java.io.Serializable;
 public class Cast implements Serializable {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
     @NotNull
     private String firstName;
-
     @NotNull
     private String lastName;
-
     private int rating;
     private String imageURL;
 
-    public Cast(){}
+    public Cast() { }
 
     public Cast(@NotNull String firstName, @NotNull String lastName, int rating, String imageURL) {
         this.firstName = firstName;

@@ -1,6 +1,7 @@
 package com.linden.models;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -9,45 +10,33 @@ import java.util.Set;
 public abstract class Content {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     protected long id;
-
+    @NotNull
     protected String name;
-
     protected String details;
-
     protected Date releaseDate;
-
     protected String videos;
-
     protected double score;
 
     @ElementCollection
     @CollectionTable(
-        name="content_photos",
-        joinColumns = @JoinColumn(
-            name = "content_id", referencedColumnName = "id"
-        )
+            name = "content_photos",
+            joinColumns = @JoinColumn(name = "content_id", referencedColumnName = "id")
     )
     @Column(name = "photos")
     protected Set<String> photos;
-
     @OneToMany
     protected Set<Cast> cast;
-
-    @ElementCollection(targetClass=Genre.class)
+    @ElementCollection(targetClass = Genre.class)
     @Enumerated(EnumType.STRING)
     protected Set<Genre> genre;
-
     @OneToMany
     protected List<Review> reviews;
 
-    public Content(){
+    public Content() { }
 
-    }
-
-    public Content(String name, String details, Date releaseDate, double score,
-                   Set<Cast> cast, Set<Genre> genre) {
+    public Content(@NotNull String name, String details, Date releaseDate, double score, Set<Cast> cast, Set<Genre> genre) {
         this.name = name;
         this.details = details;
         this.releaseDate = releaseDate;
@@ -55,7 +44,6 @@ public abstract class Content {
         this.cast = cast;
         this.genre = genre;
     }
-
 
 
     public long getId() {

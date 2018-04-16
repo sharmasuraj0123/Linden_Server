@@ -21,13 +21,10 @@ public class SearchController {
 
     @Autowired
     private MovieService movieService;
-
     @Autowired
     private TvShowService tvShowService;
-
     @Autowired
     private CastService castService;
-
     @Value("${search.result.limit:10}")
     private int RESULT_LIMIT;
 
@@ -35,18 +32,23 @@ public class SearchController {
             value = "/search",
             params = {"keywords"}
     )
-    public SearchResponse search(String keywords){
+    public SearchResponse search(String keywords) {
+
         return search(keywords, 1);
     }
 
     @RequestMapping(
-        value = "/search",
-        params = {"keywords", "page"}
+            value = "/search",
+            params = {"keywords", "page"}
     )
     @ResponseBody
-    public SearchResponse search(String keywords, int page){
-        int movieCount = 0, tvCount = 0, castCount = 0, totalResultCount = 0;
-        if(page > 0) {
+    public SearchResponse search(String keywords, int page) {
+        int movieCount = 0;
+        int tvCount = 0;
+        int castCount = 0;
+        int totalResultCount = 0;
+
+        if (page > 0) {
             keywords = keywords.replaceAll("[+]", "[ ]");
             List<Movie> movies = movieService.searchMovie(keywords);
             List<TvShow> tvShows = tvShowService.searchTvShow(keywords);
@@ -62,45 +64,36 @@ public class SearchController {
 
             if ((page - 1) * RESULT_LIMIT <= movies.size()) {
                 movies = movies.subList(
-                    (page - 1) * RESULT_LIMIT,
-                    (page * RESULT_LIMIT > movies.size()) ?
-                        movies.size() : page * RESULT_LIMIT
+                        (page - 1) * RESULT_LIMIT,
+                        (page * RESULT_LIMIT > movies.size()) ?
+                                movies.size() : page * RESULT_LIMIT
                 );
             }
             if ((page - 1) * RESULT_LIMIT <= tvShows.size()) {
                 tvShows = tvShows.subList(
-                    (page - 1) * RESULT_LIMIT,
-                    (page * RESULT_LIMIT > tvShows.size()) ?
-                        tvShows.size() : page * RESULT_LIMIT
+                        (page - 1) * RESULT_LIMIT,
+                        (page * RESULT_LIMIT > tvShows.size()) ?
+                                tvShows.size() : page * RESULT_LIMIT
                 );
             }
             if ((page - 1) * RESULT_LIMIT <= cast.size()) {
                 cast = cast.subList(
-                    (page - 1) * RESULT_LIMIT,
-                    (page * RESULT_LIMIT > cast.size()) ?
-                        cast.size() : page * RESULT_LIMIT
+                        (page - 1) * RESULT_LIMIT,
+                        (page * RESULT_LIMIT > cast.size()) ?
+                                cast.size() : page * RESULT_LIMIT
                 );
             }
 
+            return new SearchResponse(movies, tvShows, cast, movieCount, tvCount, castCount, totalResultCount);
+        } else {
             return new SearchResponse(
-                movies,
-                tvShows,
-                cast,
-                movieCount,
-                tvCount,
-                castCount,
-                totalResultCount
-            );
-        }
-        else {
-            return new SearchResponse(
-                Collections.EMPTY_LIST,
-                Collections.EMPTY_LIST,
-                Collections.EMPTY_LIST,
-                movieCount,
-                tvCount,
-                castCount,
-                totalResultCount
+                    Collections.EMPTY_LIST,
+                    Collections.EMPTY_LIST,
+                    Collections.EMPTY_LIST,
+                    movieCount,
+                    tvCount,
+                    castCount,
+                    totalResultCount
             );
         }
     }

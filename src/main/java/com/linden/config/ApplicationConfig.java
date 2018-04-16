@@ -23,7 +23,7 @@ import java.security.SecureRandom;
 @Configuration
 @EnableJdbcHttpSession
 @EnableJpaRepositories("com.linden.*")
-@ComponentScan(basePackages = { "com.linden.*" })
+@ComponentScan(basePackages = {"com.linden.*"})
 @EntityScan("com.linden.*")
 @EnableTransactionManagement
 @PropertySource({
@@ -38,7 +38,7 @@ public class ApplicationConfig {
     @Value("${security.random.algorithm}")
     private String randomAlgorithm;
 
-    private SecureRandom getNativeSecureRandom(){
+    private SecureRandom getNativeSecureRandom() {
         String os = System.getProperty("os.name").toLowerCase();
         try {
             if (!os.contains("win")) {
@@ -56,16 +56,16 @@ public class ApplicationConfig {
     public PasswordEncoder passwordEncoder() {
         SecureRandom secureRandom = null;
         try {
-            if(randomAlgorithm != null){
+            if (randomAlgorithm != null) {
                 secureRandom = SecureRandom.getInstance(randomAlgorithm);
             }
-        } catch (NoSuchAlgorithmException e){
+        } catch (NoSuchAlgorithmException e) {
             secureRandom = getNativeSecureRandom();
         }
         BCryptPasswordEncoder passwordEncoder;
         try {
             passwordEncoder = new BCryptPasswordEncoder(hashStrength, secureRandom);
-        } catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             // Revert to default configuration with custom SecureRandom
             passwordEncoder = new BCryptPasswordEncoder(-1, secureRandom);
         }

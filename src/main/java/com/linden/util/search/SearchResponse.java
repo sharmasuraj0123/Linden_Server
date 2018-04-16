@@ -15,32 +15,19 @@ public class SearchResponse implements Serializable {
     private List<TvShowResult> tvShows;
     private List<ActorResult> actors;
 
-    public SearchResponse(){
+    public SearchResponse() {
         resultCount = new SearchResultCount();
         movies = new ArrayList<>();
         tvShows = new ArrayList<>();
         actors = new ArrayList<>();
     }
 
-    public SearchResponse(List<Movie> movies,
-                          List<TvShow> tvShows,
-                          List<Cast> actors,
-                          int movieCount,
-                          int tvCount,
-                          int castCount,
-                          int totalResultCount) {
-        this.movies = movies.stream()
-                            .map(MovieResult::new)
-                            .collect(Collectors.toCollection(ArrayList::new));
-        this.tvShows = tvShows.stream()
-                              .map(TvShowResult::new)
-                              .collect(Collectors.toCollection(ArrayList::new));
-        this.actors = actors.stream()
-                            .map(ActorResult::new)
-                            .collect(Collectors.toCollection(ArrayList::new));
-        this.resultCount = new SearchResultCount(
-                movieCount, tvCount, castCount, totalResultCount
-        );
+    public SearchResponse(List<Movie> movies, List<TvShow> tvShows, List<Cast> actors,
+                          int movieCount, int tvCount, int castCount, int totalResultCount) {
+        this.movies = movies.stream().map(MovieResult::new).collect(Collectors.toCollection(ArrayList::new));
+        this.tvShows = tvShows.stream().map(TvShowResult::new).collect(Collectors.toCollection(ArrayList::new));
+        this.actors = actors.stream().map(ActorResult::new).collect(Collectors.toCollection(ArrayList::new));
+        this.resultCount = new SearchResultCount(movieCount, tvCount, castCount, totalResultCount);
     }
 
     public SearchResultCount getResultCount() {

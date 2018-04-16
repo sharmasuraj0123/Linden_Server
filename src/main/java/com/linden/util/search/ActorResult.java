@@ -8,7 +8,7 @@ public class ActorResult implements Serializable {
 
     private Cast cast;
 
-    public ActorResult(Cast cast){
+    public ActorResult(Cast cast) {
         this.cast = cast;
     }
 

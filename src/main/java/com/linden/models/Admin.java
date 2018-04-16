@@ -5,13 +5,14 @@ import java.io.Serializable;
 
 @Entity
 public class Admin extends Account implements Serializable {
+
     private double salary;
 
-    public Admin(){
+    public Admin() {
         super();
     }
 
-    public Admin(String email, String password){
+    public Admin(String email, String password) {
         super(email, password);
     }
 

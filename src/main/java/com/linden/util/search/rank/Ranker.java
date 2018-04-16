@@ -15,7 +15,7 @@ public class Ranker<X> implements PairingFunction<X> {
     protected Function<X, ? extends Comparable> pairTransformation;
 
     public Ranker() {
-        
+
     }
 
     public Ranker(Function<X, ? extends Comparable> pairTransformation) {
@@ -55,8 +55,8 @@ public class Ranker<X> implements PairingFunction<X> {
         return collection.parallelStream()
                 .map(this)
                 .sorted((desc) ?
-                    PairingFunction.COMPARATOR.reversed()
-                    : PairingFunction.COMPARATOR
+                        PairingFunction.COMPARATOR.reversed()
+                        : PairingFunction.COMPARATOR
                 )
                 .map(Pair::getKey)
                 .collect(Collectors.toCollection(ArrayList::new));

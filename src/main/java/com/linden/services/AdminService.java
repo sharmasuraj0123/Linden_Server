@@ -16,33 +16,29 @@ public class AdminService {
 
     @Autowired
     private UserRepository userRepository;
-
     @Autowired
     private AdminRepository adminRepository;
-
     @Autowired
     private MovieRepository movieRepository;
-
     @Autowired
     private CastRepository castRepository;
-
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public Admin getAdminByEmail(String email){
+    public Admin getAdminByEmail(String email) {
         return adminRepository.findByEmail(email);
     }
 
-    public boolean checkCredentials(Admin admin, Account databaseAccount){
+    public boolean checkCredentials(Admin admin, Account databaseAccount) {
         return admin.getEmail().equals(databaseAccount.getEmail())
                 && passwordEncoder.matches(admin.getPassword(), databaseAccount.getPassword());
     }
 
-    public boolean checkCredentials(Admin admin){
+    public boolean checkCredentials(Admin admin) {
         return checkCredentials(admin, getAdminByEmail(admin.getEmail()));
     }
 
-    public void addMovie(Movie movie){
+    public void addMovie(Movie movie) {
         movie.getCast().forEach(castRepository::save);
         movieRepository.save(movie);
     }

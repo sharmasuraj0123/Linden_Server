@@ -17,7 +17,7 @@ public class MovieResult implements Serializable {
     private Set<Cast> cast;
     private double score;
 
-    public MovieResult(){
+    public MovieResult() {
 
     }
 
@@ -32,7 +32,7 @@ public class MovieResult implements Serializable {
         this.score = score;
     }
 
-    public MovieResult(Movie movie){
+    public MovieResult(Movie movie) {
         this.contentId = movie.getId();
         this.name = movie.getName();
         this.releaseDate = movie.getReleaseDate();

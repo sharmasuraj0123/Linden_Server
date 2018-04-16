@@ -7,7 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface TvShowRepository extends JpaRepository<TvShow, Long>{
-
+public interface TvShowRepository extends JpaRepository<TvShow, Long> {
     List<TvShow> findTvShowsByNameContains(String keywords);
 }

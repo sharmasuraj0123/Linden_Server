@@ -5,12 +5,12 @@ import java.io.Serializable;
 public class ObjectStatusResponse<T extends Serializable> extends StatusResponse {
     T obj;
 
-    public ObjectStatusResponse(T obj, String status){
+    public ObjectStatusResponse(T obj, String status) {
         super(status);
         this.obj = obj;
     }
 
-    public ObjectStatusResponse(T obj, String status, String message){
+    public ObjectStatusResponse(T obj, String status, String message) {
         super(status, message);
         this.obj = obj;
     }

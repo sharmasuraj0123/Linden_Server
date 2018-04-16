@@ -8,9 +8,7 @@ public class SearchResultCount implements Serializable {
     private int actors;
     private int all;
 
-    public SearchResultCount(){
-
-    }
+    public SearchResultCount() { }
 
     public SearchResultCount(int movies, int tvShows, int actors, int all) {
         this.movies = movies;

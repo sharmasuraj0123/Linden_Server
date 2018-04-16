@@ -15,11 +15,11 @@ public class AdminController {
 
     @RequestMapping(value = "/addMovie", method = RequestMethod.POST)
     @ResponseBody
-    public StatusResponse addMovie(@RequestBody Movie movie){
-        try{
+    public StatusResponse addMovie(@RequestBody Movie movie) {
+        try {
             adminService.addMovie(movie);
             return new StatusResponse("OK");
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return new StatusResponse("ERROR", e.getMessage());
         }

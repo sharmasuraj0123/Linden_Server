@@ -5,13 +5,12 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-public class Movie extends Content{
+public class Movie extends Content {
 
     private double revenue;
-
     private long duration;
 
-    public Movie(){}
+    public Movie() { }
 
     public Movie(double score, Set<Genre> genre, List<Review> reviews, double revenue, long duration) {
         this.score = score;

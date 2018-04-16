@@ -7,22 +7,18 @@ import java.util.Date;
 public class Review {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
     private Date date;
-
     @OneToOne
     private User postedBy;
-
     private String details;
-
     private int rating;
-
     @Enumerated(EnumType.STRING)
     private ReviewType reviewType;
 
-    public Review(){}
+    public Review() {
+    }
 
     public Review(Date date, User postedBy, String details, int rating) {
         this.date = date;
@@ -33,7 +29,6 @@ public class Review {
 
 
     public Long getId() {
-
         return id;
     }
 

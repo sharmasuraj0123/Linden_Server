@@ -7,11 +7,11 @@ public class StatusResponse implements Serializable {
     protected String status;
     protected String message = "";
 
-    public StatusResponse(String status){
+    public StatusResponse(String status) {
         this.status = status;
     }
 
-    public StatusResponse(String status, String message){
+    public StatusResponse(String status, String message) {
         this(status);
         this.message = message;
     }

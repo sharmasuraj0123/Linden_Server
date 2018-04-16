@@ -8,7 +8,7 @@ public class TvShowResult implements Serializable {
 
     private TvShow tvShow;
 
-    public TvShowResult(TvShow tvShow){
+    public TvShowResult(TvShow tvShow) {
         this.tvShow = tvShow;
     }
 
