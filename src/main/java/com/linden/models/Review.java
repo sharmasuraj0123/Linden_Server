@@ -1,7 +1,6 @@
 package com.linden.models;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Entity
@@ -9,7 +8,6 @@ public class Review {
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
-    @NotNull
     private Long id;
 
     private Date date;
@@ -20,6 +18,9 @@ public class Review {
     private String details;
 
     private int rating;
+
+    @Enumerated(EnumType.STRING)
+    private ReviewType reviewType;
 
     public Review(){}
 
@@ -72,4 +73,11 @@ public class Review {
         this.rating = rating;
     }
 
+    public ReviewType getReviewType() {
+        return reviewType;
+    }
+
+    public void setReviewType(ReviewType reviewType) {
+        this.reviewType = reviewType;
+    }
 }

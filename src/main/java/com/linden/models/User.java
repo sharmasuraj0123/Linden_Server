@@ -6,7 +6,6 @@ import java.io.Serializable;
 @Entity
 public class User extends Account implements Serializable {
 
-    private String username;
     private boolean verifiedAccount;
 
     @Enumerated(EnumType.STRING)
@@ -18,19 +17,6 @@ public class User extends Account implements Serializable {
 
     public User(String email, String password){
         super(email, password);
-    }
-
-    public User(String email, String password, String username){
-        this(email, password);
-        this.username = username;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public boolean isVerifiedAccount() {

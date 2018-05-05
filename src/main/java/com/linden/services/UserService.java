@@ -7,23 +7,23 @@ import com.linden.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserService {
 
     @Autowired
+    private AdminService adminService;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     public enum RegistrationStatus{
-        OK, USERNAME_TAKEN, EMAIL_TAKEN
+        OK, EMAIL_TAKEN
     }
 
     @Autowired
     private UserRepository userRepository;
-
-    public User getUserByUsername(String username){
-        return userRepository.findByUsername(username);
-    }
 
     public User getUserByEmail(String email){
         return userRepository.findByEmail(email);
@@ -42,13 +42,11 @@ public class UserService {
         return checkCredentials(user, getUserByEmail(user.getEmail()));
     }
 
+    @Transactional
     public RegistrationStatus registerUser(User user){
         user.setVerifiedAccount(false);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        if(getUserByUsername(user.getUsername()) != null) {
-            return RegistrationStatus.USERNAME_TAKEN;
-        }
-        else if (getUserByEmail(user.getEmail()) != null) {
+        if (getUserByEmail(user.getEmail()) != null || adminService.getAdminByEmail(user.getEmail()) != null) {
             return RegistrationStatus.EMAIL_TAKEN;
         }
         else {

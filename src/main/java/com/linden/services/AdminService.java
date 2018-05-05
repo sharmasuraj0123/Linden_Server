@@ -8,6 +8,7 @@ import com.linden.repositories.CastRepository;
 import com.linden.repositories.MovieRepository;
 import com.linden.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -25,13 +26,16 @@ public class AdminService {
     @Autowired
     private CastRepository castRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     public Admin getAdminByEmail(String email){
         return adminRepository.findByEmail(email);
     }
 
     public boolean checkCredentials(Admin admin, Account databaseAccount){
         return admin.getEmail().equals(databaseAccount.getEmail())
-                && admin.getPassword().equals(databaseAccount.getPassword());
+                && passwordEncoder.matches(admin.getPassword(), databaseAccount.getPassword());
     }
 
     public boolean checkCredentials(Admin admin){
