@@ -11,10 +11,6 @@ public class Season {
     @GeneratedValue(strategy= GenerationType.AUTO)
     protected long id;
 
-    protected String name;
-
-    protected String details;
-
     protected int seasonNumber;
 
     protected int numberOfEpisodes;
@@ -32,22 +28,6 @@ public class Season {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDetails() {
-        return details;
-    }
-
-    public void setDetails(String details) {
-        this.details = details;
     }
 
     public int getSeasonNumber() {
