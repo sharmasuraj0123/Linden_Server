@@ -19,8 +19,10 @@ for tv_id in tv_id_list:
 	no_of_seasons = data.get('number_of_seasons')
 	tv_obj = {}
 	tv_obj['name'] = data.get('name')
-	tv_obj['year'] = int(data.get('first_air_date').split('-')[0])
-
+	tv_obj['date'] = data.get('first_air_date')
+	tv_obj['overview'] = data.get('overview')
+	tv_obj['number_of_seasons'] = data.get('number_of_seasons')
+	tv_obj['poster_path'] = data.get('poster_path')
 	# created by
 	tv_obj['created_by'] = []
 	created_by = data.get('created_by')
