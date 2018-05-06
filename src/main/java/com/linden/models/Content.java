@@ -11,17 +11,11 @@ public abstract class Content {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     protected long id;
-
     protected String name;
-
     protected String details;
-
     protected Date releaseDate;
-
     protected String videos;
-
     protected double score;
-
     @ElementCollection
     @CollectionTable(
         name="content_photos",
@@ -31,16 +25,14 @@ public abstract class Content {
     )
     @Column(name = "photos")
     protected Set<String> photos;
-
     @OneToMany
     protected Set<Cast> cast;
-
     @ElementCollection(targetClass=Genre.class)
     @Enumerated(EnumType.STRING)
     protected Set<Genre> genre;
-
     @OneToMany
     protected List<Review> reviews;
+    protected String poster;
 
     public Content(){
 

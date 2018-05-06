@@ -3,10 +3,12 @@ package com.linden.services;
 import com.linden.models.Account;
 import com.linden.models.Admin;
 import com.linden.models.Movie;
+import com.linden.models.TvShow;
 import com.linden.repositories.AdminRepository;
 import com.linden.repositories.CastRepository;
 import com.linden.repositories.MovieRepository;
 import com.linden.repositories.UserRepository;
+import com.linden.repositories.TvShowRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -15,7 +17,7 @@ import org.springframework.stereotype.Service;
 public class AdminService {
 
     @Autowired
-    private UserRepository userRepository;
+    private TvShowRepository tvShowRepository;
 
     @Autowired
     private AdminRepository adminRepository;
@@ -45,5 +47,10 @@ public class AdminService {
     public void addMovie(Movie movie){
         movie.getCast().forEach(castRepository::save);
         movieRepository.save(movie);
+    }
+
+    public void addTvShow(TvShow tvShow){
+        tvShow.getCast().forEach(castRepository::save);
+        tvShowRepository.save(tvShow);
     }
 }
