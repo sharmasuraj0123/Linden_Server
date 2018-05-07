@@ -1,6 +1,4 @@
 import requests
-import json
-import sys
 from datetime import datetime
 
 # http://www.omdbapi.com/?i=tt0137523&apikey=12d0adae
@@ -11,7 +9,7 @@ omdb_key = '12d0adae'
 tmdb_key = '89a57552ff989080c44c82c3078fb543'
 tmdb_url = 'https://api.themoviedb.org/3/movie/'
 
-linden_url = 'http://127.0.0.1:8081/admin/addMovie'
+linden_url = 'http://127.0.0.1:8080/admin/addMovie'
 
 movie_id = 1
 counter = 0
