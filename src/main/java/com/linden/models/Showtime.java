@@ -10,35 +10,36 @@ public class Showtime {
     @GeneratedValue(strategy= GenerationType.AUTO)
     protected long id;
 
-//    protected Movie movie;
-//
-//    protected Theatre theatre;
+    @OneToOne
+    protected Movie movie;
+    @OneToOne
+    protected Theatre theatre;
 
     protected Time startTime;
 
     public Showtime (){}
 
-//    public Showtime(Movie movie, Theatre theatre, Time startTime) {
-//        this.movie = movie;
-//        this.theatre = theatre;
-//        this.startTime = startTime;
-//    }
-//
-//    public Movie getMovie() {
-//        return movie;
-//    }
-//
-//    public void setMovie(Movie movie) {
-//        this.movie = movie;
-//    }
-//
-//    public Theatre getTheatre() {
-//        return theatre;
-//    }
-//
-//    public void setTheatre(Theatre theatre) {
-//        this.theatre = theatre;
-//    }
+    public Showtime(Movie movie, Theatre theatre, Time startTime) {
+        this.movie = movie;
+        this.theatre = theatre;
+        this.startTime = startTime;
+    }
+
+    public Movie getMovie() {
+        return movie;
+    }
+
+    public void setMovie(Movie movie) {
+        this.movie = movie;
+    }
+
+    public Theatre getTheatre() {
+        return theatre;
+    }
+
+    public void setTheatre(Theatre theatre) {
+        this.theatre = theatre;
+    }
 
     public Time getStartTime() {
         return startTime;

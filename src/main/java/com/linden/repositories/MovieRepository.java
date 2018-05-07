@@ -10,5 +10,5 @@ import java.util.List;
 public interface MovieRepository extends JpaRepository<Movie, Long> {
     List<Movie> findMoviesByNameContains(String keywords);
 
-    //Movie getMovieById(long id);
+    Movie getMovieById(long id);
 }
