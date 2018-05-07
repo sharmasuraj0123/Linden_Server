@@ -6,12 +6,11 @@ linden_url = 'http://127.0.0.1:8080/admin/addMovie'
 omdb_url = 'http://www.omdbapi.com/'
 omdb_key = '12d0adae'
 
-page = requests.get('https://www.imdb.com/movies-in-theaters/?ref_=cs_inth')
+page = requests.get('https://www.imdb.com/movies-coming-soon/?ref_=inth_cs')
 
 soup = BeautifulSoup(page.content, 'html.parser')
 
-movie_table = soup.find(class_='list detail sub-list')
-
+movie_table = soup.find(class_='list detail')
 movie_list = []
 movie_list.extend(movie_table.findAll(class_='list_item odd'))
 movie_list.extend(movie_table.findAll(class_='list_item even'))
@@ -29,7 +28,8 @@ for movie in movie_list:
         print('Title: ' + data['Title'])
 
     if 'Released' in data:
-        movie_object['releaseDate'] = datetime.strptime(data['Released'], '%d %b %Y').date().strftime('%Y-%m-%d')
+        if data['Released'] != 'N/A':
+            movie_object['releaseDate'] = datetime.strptime(data['Released'], '%d %b %Y').date().strftime('%Y-%m-%d')
 
     if 'Year' in data:
         if type(data['Year']) is int:
