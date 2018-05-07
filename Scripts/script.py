@@ -1,6 +1,4 @@
 import requests
-import json
-import sys
 from datetime import datetime
 
 # http://www.omdbapi.com/?i=tt0137523&apikey=12d0adae
