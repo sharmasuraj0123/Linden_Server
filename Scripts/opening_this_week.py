@@ -44,8 +44,8 @@ for movie in movie_list:
     if 'Actors' in data:
         print('Actors: ' + data['Actors'])
         if data['Actors'].upper() != 'N/A':
-            for actor in data['Actors'].split(' '):
-                name_tokens = actor.split(' ')
+            for actor in data['Actors'].split(','):
+                name_tokens = actor.strip().split(' ')
                 if len(name_tokens) >= 2:
                     cast_object = {'firstName': name_tokens[0], 'lastName': ''.join(name_tokens[1:])}
                 else:

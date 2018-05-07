@@ -59,7 +59,7 @@ while counter < 100:
         print('Actors: ' + data['Actors'])
         if data['Actors'].upper() != 'N/A':
             for actor in data['Actors'].split(', '):
-                nameTokens = actor.split(' ')
+                nameTokens = actor.strip().split(' ')
                 if len(nameTokens) >= 2:
                     castObject = {'firstName': nameTokens[0], 'lastName': ''.join(nameTokens[1:])}
                 else:
