@@ -37,4 +37,9 @@ public class MovieService {
         // Return sorted list based on ranker supplied
         return  ranker.order(movies, desc);
     }
+
+//    public Movie getMovie(long movieId){
+//        Movie movie = movieRepository.getMovieById(movieId);
+//        return movie;
+//    }
 }
