@@ -16,10 +16,12 @@ public class TvShow extends Content{
 
     public TvShow(){
         super();
+        this.contentType = ContentType.TVSHOW;
     }
 
     public TvShow(String name, String details, Date releaseDate, double score, Set<Cast> cast, Set<Genre> genre){
         super(name, details, releaseDate, score, cast, genre);
+        this.contentType = ContentType.TVSHOW;
     }
 
     public List<Season> getSeasons() {

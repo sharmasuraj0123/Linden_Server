@@ -3,17 +3,43 @@ package com.linden.services;
 import com.linden.models.accounts.Account;
 import com.linden.models.accounts.User;
 import com.linden.models.accounts.UserType;
-import com.linden.repositories.UserRepository;
+import com.linden.models.content.*;
+import com.linden.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
 
     @Autowired
     private AdminService adminService;
+
+    @Autowired
+    private MovieRepository movieRepository;
+
+    @Autowired
+    private TvShowRepository tvShowRepository;
+
+    @Autowired
+    private SeasonRepository seasonRepository;
+
+    @Autowired
+    private EpisodeRepository episodeRepository;
+
+    @Autowired
+    private ReviewRepository reviewRepository;
+
+    @Autowired
+    private ReviewReportRepository reviewReportRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -58,5 +84,119 @@ public class UserService {
         }
     }
 
+    public void postAReview(User user, Review review){
+        review.setPostedBy(user);
+        review.setDate(Date.from(Instant.now()));
+        switch (user.getUserType()) {
+            default:
+            case AUDIENCE:
+                review.setReviewType(ReviewType.AUDIENCE);
+                break;
+            case CRITIC:
+                review.setReviewType(ReviewType.CRITIC);
+                break;
+            case TOPCRITIC:
+                review.setReviewType(ReviewType.TOP_CRITIC);
+                break;
+        }
+        reviewRepository.saveAndFlush(review);
+        Content content = review.getItem();
+        switch (content.getContentType()) {
+            case MOVIE:
+                content = movieRepository.findById(content.getId()).orElse(null);
+                if (content != null) {
+                    content.getReviews().add(review);
+                    movieRepository.save((Movie) content);
+                }
+                break;
+            case TVSHOW:
+                content = tvShowRepository.findById(content.getId()).orElse(null);
+                if (content != null) {
+                    content.getReviews().add(review);
+                    tvShowRepository.save((TvShow) content);
+                }
+                break;
+        }
+    }
 
+    public void editAReview(User user, long reviewId, Review review) {
+        Optional<Review> result = reviewRepository.findById(reviewId);
+        user = userRepository.findById(user.getAccountId()).orElse(user);
+        if (result.isPresent() && result.get().getPostedBy().equals(user)) {
+            Review oldReview = result.get();
+            switch (user.getUserType()) {
+                default:
+                case AUDIENCE:
+                    oldReview.setReviewType(ReviewType.AUDIENCE);
+                    break;
+                case CRITIC:
+                    oldReview.setReviewType(ReviewType.CRITIC);
+                    break;
+                case TOPCRITIC:
+                    oldReview.setReviewType(ReviewType.TOP_CRITIC);
+                    break;
+            }
+            oldReview.setDetails(review.getDetails());
+            oldReview.setDate(Date.from(Instant.now()));
+            reviewRepository.saveAndFlush(oldReview);
+            Content content = oldReview.getItem();
+            switch (content.getContentType()) {
+                case MOVIE:
+                    content = movieRepository.findById(content.getId()).orElse(null);
+                    if (content != null) {
+                        updateReviewList(content);
+                        movieRepository.save((Movie) content);
+                    }
+                    break;
+                case TVSHOW:
+                    content = tvShowRepository.findById(content.getId()).orElse(null);
+                    if (content != null) {
+                        updateReviewList(content);
+                        tvShowRepository.save((TvShow) content);
+                    }
+                    break;
+            }
+        }
+    }
+
+    private void updateReviewList(Content content) {
+        List<Review> updatedReviewList = content.getReviews().stream().map(
+                review -> reviewRepository.findById(review.getId()).get()
+        ).collect(Collectors.toCollection(ArrayList::new));
+        content.setReviews(updatedReviewList);
+    }
+
+    public void reportAReview(Review review, User user, ReviewReport report) {
+        review = reviewRepository.findById(review.getId()).orElse(review);
+        user = userRepository.findById(user.getAccountId()).orElse(user);
+        report.setReview(review);
+        report.setReportedBy(user);
+        reviewReportRepository.save(report);
+    }
+
+    public void deleteReview(User user, long reviewId) {
+        Review review = reviewRepository.findById(reviewId).orElse(null);
+        if(review != null && review.getPostedBy().equals(user)) {
+            Content content = review.getItem();
+            switch (content.getContentType()) {
+                case MOVIE:
+                    content = movieRepository.findById(content.getId()).orElse(null);
+                    if (content != null) {
+                        updateReviewList(content);
+                        content.getReviews().remove(review);
+                        movieRepository.save((Movie) content);
+                    }
+                    break;
+                case TVSHOW:
+                    content = tvShowRepository.findById(content.getId()).orElse(null);
+                    if (content != null) {
+                        updateReviewList(content);
+                        content.getReviews().remove(review);
+                        tvShowRepository.save((TvShow) content);
+                    }
+                    break;
+            }
+            reviewRepository.delete(review);
+        }
+    }
 }

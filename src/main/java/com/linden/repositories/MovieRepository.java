@@ -15,11 +15,9 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
 
     List<Movie> findByIsFeaturedTrue();
 
-    List<Movie> findAllByOrderByBoxOfficeDesc();
+    List<Movie> findByOrderByBoxOfficeDesc();
 
-    List<Movie> findAllByOrderByScoreDesc();
-
-    Movie getMovieById(long id);
+    List<Movie> findByOrderByScoreDesc();
 
     List<Movie> getMovieByReleaseDateAfter(Date today);
 

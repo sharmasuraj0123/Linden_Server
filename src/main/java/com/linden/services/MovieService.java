@@ -3,7 +3,6 @@ package com.linden.services;
 import com.linden.models.content.Movie;
 import com.linden.models.content.MovieType;
 import com.linden.repositories.MovieRepository;
-import com.linden.util.search.SearchResponse;
 import com.linden.util.search.rank.ContentRanker;
 import com.linden.util.search.rank.Ranker;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,16 +84,16 @@ public class MovieService {
     }
 
     public List<Movie> getTopBoxOffice() {
-        return movieRepository.findAllByOrderByBoxOfficeDesc();
+        return movieRepository.findByOrderByBoxOfficeDesc();
     }
 
     public List<Movie> getHighestRated() {
-        return movieRepository.findAllByOrderByScoreDesc();
+        return movieRepository.findByOrderByScoreDesc();
     }
 
     public Movie getMovie(long movieId){
-        Movie movie = movieRepository.getMovieById(movieId);
-        return movie;
+        Optional<Movie> movie = movieRepository.findById(movieId);
+        return movie.orElse(null);
     }
 
     public List<Movie> getUpcomingMovies(Date today){

@@ -34,4 +34,13 @@ public class User extends Account implements Serializable {
     public void setUserType(UserType userType) {
         this.userType = userType;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof User){
+            User user = (User) obj;
+            return user.email.equals(this.email) && user.password.equals(this.password);
+        }
+        else return false;
+    }
 }

@@ -1,4 +1,6 @@
 package com.linden.models.content;
 
-public class ContentType {
+public enum ContentType {
+    MOVIE,
+    TVSHOW
 }
