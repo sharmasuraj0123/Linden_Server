@@ -129,4 +129,12 @@ public abstract class Content {
     public void setReviews(List<Review> reviews) {
         this.reviews = reviews;
     }
+
+    public String getPoster() {
+        return poster;
+    }
+
+    public void setPoster(String poster) {
+        this.poster = poster;
+    }
 }

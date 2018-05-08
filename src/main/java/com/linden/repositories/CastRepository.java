@@ -13,4 +13,6 @@ public interface CastRepository extends JpaRepository<Cast, Long> {
     List<Cast> findCastsByFirstName(String firstName);
 
     List<Cast> findCastsByLastName(String lastName);
+
+    Cast getCastById(long id);
 }

@@ -37,4 +37,10 @@ public class TvShowService {
         // Return sorted list based on ranker supplied
         return  ranker.order(TvShows, desc);
     }
+
+    public List<TvShow> getTvShowsByCastId(long castId){
+        List<TvShow> shows = tvShowRepository.getTvShowsByCastId(castId);
+        return shows;
+    }
+
 }

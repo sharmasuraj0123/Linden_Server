@@ -10,4 +10,6 @@ import java.util.List;
 public interface TvShowRepository extends JpaRepository<TvShow, Long>{
 
     List<TvShow> findTvShowsByNameContains(String keywords);
+
+    List<TvShow> getTvShowsByCastId(long castId);
 }

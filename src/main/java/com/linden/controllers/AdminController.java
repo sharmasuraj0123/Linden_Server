@@ -28,7 +28,7 @@ public class AdminController {
 
     @RequestMapping(value = "/addTvShow", method = RequestMethod.POST)
     @ResponseBody
-    public StatusResponse addMovie(@RequestBody TvShow tvShow){
+    public StatusResponse addTvShow(@RequestBody TvShow tvShow){
         try{
             adminService.addTvShow(tvShow);
             return new StatusResponse("OK");

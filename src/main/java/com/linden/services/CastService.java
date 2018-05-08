@@ -45,4 +45,10 @@ public class CastService {
         }
         return (new Ranker<>(pairingFunction)).order(result, desc);
     }
+
+    public Cast getCastById(long castId){
+        Cast cast = castRepository.getCastById(castId);
+        return cast;
+    }
+
 }

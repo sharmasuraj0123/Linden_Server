@@ -13,4 +13,6 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
     Movie getMovieById(long id);
 
     List<Movie> getMovieByReleaseDateAfter(Date today);
+
+    List<Movie> getMoviesByCastId(long castId);
 }

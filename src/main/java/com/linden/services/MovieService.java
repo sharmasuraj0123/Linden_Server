@@ -48,4 +48,9 @@ public class MovieService {
         List<Movie> movies = movieRepository.getMovieByReleaseDateAfter(today);
         return movies;
     }
+
+    public List<Movie> getMoviesByCastId(long castId){
+        List<Movie> movies = movieRepository.getMoviesByCastId(castId);
+        return movies;
+    }
 }
