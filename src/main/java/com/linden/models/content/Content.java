@@ -1,5 +1,9 @@
 package com.linden.models.content;
 
+import com.linden.models.content.Cast;
+import com.linden.models.content.Genre;
+import com.linden.models.content.Review;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
@@ -9,21 +13,13 @@ import java.util.Set;
 public abstract class Content {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.AUTO)
     protected long id;
-
     protected String name;
-
     protected String details;
-
     protected Date releaseDate;
-
     protected String videos;
-
     protected double score;
-
-    protected double boxOffice;
-
     @ElementCollection
     @CollectionTable(
         name="content_photos",
@@ -33,16 +29,14 @@ public abstract class Content {
     )
     @Column(name = "photos")
     protected Set<String> photos;
-
     @OneToMany
     protected Set<Cast> cast;
-
     @ElementCollection(targetClass=Genre.class)
     @Enumerated(EnumType.STRING)
     protected Set<Genre> genre;
-
     @OneToMany
     protected List<Review> reviews;
+    protected String poster;
 
     public Content(){
 
@@ -138,5 +132,13 @@ public abstract class Content {
 
     public void setReviews(List<Review> reviews) {
         this.reviews = reviews;
+    }
+
+    public String getPoster() {
+        return poster;
+    }
+
+    public void setPoster(String poster) {
+        this.poster = poster;
     }
 }

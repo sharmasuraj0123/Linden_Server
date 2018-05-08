@@ -1,4 +1,4 @@
-package com.linden.models;
+package com.linden.models.content;
 
 import javax.persistence.*;
 

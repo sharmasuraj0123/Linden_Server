@@ -3,7 +3,6 @@ package com.linden.controllers;
 import com.linden.models.content.Movie;
 import com.linden.services.MovieService;
 import com.linden.util.search.SearchResponse;
-import com.linden.models.Movie;
 import com.linden.repositories.MovieRepository;
 import com.linden.services.MovieService;
 import com.linden.util.search.MovieResult;

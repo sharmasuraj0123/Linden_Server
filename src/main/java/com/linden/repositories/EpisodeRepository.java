@@ -1,6 +1,6 @@
 package com.linden.repositories;
 
-import com.linden.models.Episode;
+import com.linden.models.content.Episode;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

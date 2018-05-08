@@ -29,7 +29,7 @@ public class MovieService {
     }
 
     public List<Movie> searchMovie(String keywords){
-        return searchMovie(keywords, new ContentRanker<>(), true);
+        return searchMovie(keywords, new ContentRanker<Movie>(), true);
     }
 
     public List<Movie> searchMovie(Function<Movie, ? extends  Comparable> rankingFunction) {

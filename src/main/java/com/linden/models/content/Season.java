@@ -1,4 +1,6 @@
-package com.linden.models;
+package com.linden.models.content;
+
+import com.linden.models.content.Episode;
 
 import javax.persistence.*;
 import java.util.Date;
