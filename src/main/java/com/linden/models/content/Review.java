@@ -19,9 +19,10 @@ public class Review {
     @NotNull
     private User postedBy;
 
-    @OneToOne
+    private long contentId;
+
     @NotNull
-    private Content item;
+    private ContentType contentType;
 
     private String details;
 
@@ -32,12 +33,14 @@ public class Review {
 
     public Review(){}
 
-    public Review(Date date, @NotNull User postedBy, @NotNull Content item, String details, int rating) {
+    public Review(Date date, @NotNull User postedBy, @NotNull ContentType contentType, long contentId, String details,
+                  int rating) {
         this.date = date;
         this.postedBy = postedBy;
         this.details = details;
         this.rating = rating;
-        this.item = item;
+        this.contentType = contentType;
+        this.contentId = contentId;
     }
 
 
@@ -65,12 +68,20 @@ public class Review {
         this.postedBy = postedBy;
     }
 
-    public Content getItem() {
-        return item;
+    public long getContentId() {
+        return contentId;
     }
 
-    public void setItem(Content item) {
-        this.item = item;
+    public void setContentId(long contentId) {
+        this.contentId = contentId;
+    }
+
+    public ContentType getContentType() {
+        return contentType;
+    }
+
+    public void setContentType(ContentType contentType) {
+        this.contentType = contentType;
     }
 
     public String getDetails() {

@@ -100,17 +100,17 @@ public class UserService {
                 break;
         }
         reviewRepository.saveAndFlush(review);
-        Content content = review.getItem();
-        switch (content.getContentType()) {
+        Content content;
+        switch (review.getContentType()) {
             case MOVIE:
-                content = movieRepository.findById(content.getId()).orElse(null);
+                content = movieRepository.findById(review.getContentId()).orElse(null);
                 if (content != null) {
                     content.getReviews().add(review);
                     movieRepository.save((Movie) content);
                 }
                 break;
             case TVSHOW:
-                content = tvShowRepository.findById(content.getId()).orElse(null);
+                content = tvShowRepository.findById(review.getContentId()).orElse(null);
                 if (content != null) {
                     content.getReviews().add(review);
                     tvShowRepository.save((TvShow) content);
@@ -139,17 +139,17 @@ public class UserService {
             oldReview.setDetails(review.getDetails());
             oldReview.setDate(Date.from(Instant.now()));
             reviewRepository.saveAndFlush(oldReview);
-            Content content = oldReview.getItem();
-            switch (content.getContentType()) {
+            Content content;
+            switch (review.getContentType()) {
                 case MOVIE:
-                    content = movieRepository.findById(content.getId()).orElse(null);
+                    content = movieRepository.findById(review.getContentId()).orElse(null);
                     if (content != null) {
                         updateReviewList(content);
                         movieRepository.save((Movie) content);
                     }
                     break;
                 case TVSHOW:
-                    content = tvShowRepository.findById(content.getId()).orElse(null);
+                    content = tvShowRepository.findById(review.getContentId()).orElse(null);
                     if (content != null) {
                         updateReviewList(content);
                         tvShowRepository.save((TvShow) content);
@@ -177,10 +177,10 @@ public class UserService {
     public void deleteReview(User user, long reviewId) {
         Review review = reviewRepository.findById(reviewId).orElse(null);
         if(review != null && review.getPostedBy().equals(user)) {
-            Content content = review.getItem();
-            switch (content.getContentType()) {
+            Content content;
+            switch (review.getContentType()) {
                 case MOVIE:
-                    content = movieRepository.findById(content.getId()).orElse(null);
+                    content = movieRepository.findById(review.getContentId()).orElse(null);
                     if (content != null) {
                         updateReviewList(content);
                         content.getReviews().remove(review);
@@ -188,7 +188,7 @@ public class UserService {
                     }
                     break;
                 case TVSHOW:
-                    content = tvShowRepository.findById(content.getId()).orElse(null);
+                    content = tvShowRepository.findById(review.getContentId()).orElse(null);
                     if (content != null) {
                         updateReviewList(content);
                         content.getReviews().remove(review);
