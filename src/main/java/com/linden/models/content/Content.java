@@ -20,6 +20,7 @@ public abstract class Content {
     protected Date releaseDate;
     protected String videos;
     protected double score;
+    protected double boxOffice;
     @ElementCollection
     @CollectionTable(
         name="content_photos",
