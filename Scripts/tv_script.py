@@ -35,8 +35,10 @@ for tv_id in tv_id_list:
     # CAST
     cast = data.get('credits').get('cast')
     tv_obj['cast'] = []
-    for i in range(0, len(cast)):
-        tv_obj['cast'].append(cast[i].get('name'))
+    for actor in cast:
+        name = actor['name']
+        actor_obj = {'firstName': name.split(' ')[0], 'lastName': name.split(' ')[1]}
+        tv_obj['cast'].append(actor_obj)
 
     # print(tv_obj)
     # SEASONS
@@ -57,6 +59,10 @@ for tv_id in tv_id_list:
             del seasons_data.get('episodes')[j]['vote_count']
             del seasons_data.get('episodes')[j]['air_date']
             del seasons_data.get('episodes')[j]['still_path']
+            seasons_data.get('episodes')[j]['episodeNumber'] = seasons_data.get('episodes')[j]['episode_number']
+            del seasons_data.get('episodes')[j]['episode_number']
+            seasons_data.get('episodes')[j]['details'] = seasons_data.get('episodes')[j]['overview']
+            del seasons_data.get('episodes')[j]['overview']
 
         seasons[current_season] = seasons_data.get('episodes')
 
