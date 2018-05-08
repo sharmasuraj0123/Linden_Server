@@ -68,18 +68,20 @@ public class MovieService {
         return movieRepository.findByMovieType(MovieType.COMING_SOON).parallelStream().filter(
             movie -> {
                 Duration duration = Duration.between(movie.getReleaseDate().toInstant(), Instant.now());
+                System.out.println(duration.toDays());
                 return duration.toDays() <= 7;
             }
         ).collect(Collectors.toCollection(HashSet::new));
     }
 
     public Collection<Movie> getOpeningThisWeek(int limit){
-        return movieRepository.findByMovieType(MovieType.COMING_SOON).parallelStream().limit(limit).filter(
+        return movieRepository.findByMovieType(MovieType.COMING_SOON).parallelStream().filter(
                 movie -> {
                     Duration duration = Duration.between(movie.getReleaseDate().toInstant(), Instant.now());
+                    System.out.println(duration.toDays());
                     return duration.toDays() <= 7;
                 }
-        ).collect(Collectors.toCollection(HashSet::new));
+        ).limit(limit).collect(Collectors.toCollection(HashSet::new));
     }
 
     public List<Movie> getTopBoxOffice() {

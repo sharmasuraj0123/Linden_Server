@@ -32,14 +32,14 @@ public class MovieController {
     @Value("${movie.result.limit:10}")
     private int RESULT_LIMIT;
 
-    @RequestMapping(value = "/movies/featured", method = RequestMethod.GET)
+    @RequestMapping(value = "/featured", method = RequestMethod.GET)
     @ResponseBody
     public List<Movie> getFeaturedMoviesRoute() {
         return movieService.getFeaturedMovies();
     }
 
     @RequestMapping(
-            value = "/movies/openingThisWeek",
+            value = "/openingThisWeek",
             params = {"limit"},
             method = RequestMethod.GET
     )
@@ -49,7 +49,16 @@ public class MovieController {
     }
 
     @RequestMapping(
-            value = "/movies/openingThisWeek",
+            value = "/openingThisWeek",
+            method = RequestMethod.GET
+    )
+    @ResponseBody
+    public Collection<Movie> getOpeningThisWeek() {
+        return movieService.getOpeningThisWeek(RESULT_LIMIT);
+    }
+
+    @RequestMapping(
+            value = "/getHighestRatedMovies",
             method = RequestMethod.GET
     )
     @ResponseBody
@@ -58,7 +67,7 @@ public class MovieController {
     }
 
     @RequestMapping(
-            value = "/movies/openingThisWeek",
+            value = "/getHighestRatedMovies",
             params = {"page"},
             method = RequestMethod.GET
     )
@@ -103,10 +112,10 @@ public class MovieController {
             value = "/getUpcomingMovies"
     )
     @ResponseBody
-    public List<MovieResult> getMovie(){
+    public List<MovieResult> getUpcomingMovie(){
         Date todaysDate = java.sql.Date.valueOf(java.time.LocalDate.now());
         List<Movie> movies = movieService.getUpcomingMovies(todaysDate);
-        List<MovieResult> result = new ArrayList<MovieResult>();
+        List<MovieResult> result = new ArrayList<>();
         for (Movie movie: movies){
             result.add(new MovieResult(movie));
         }
