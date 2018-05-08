@@ -2,7 +2,7 @@ from datetime import datetime
 import requests
 from bs4 import BeautifulSoup
 
-linden_url = 'http://127.0.0.1:8080/admin/addMovie'
+linden_url = 'http://127.0.0.1:8081/admin/addMovie'
 omdb_url = 'http://www.omdbapi.com/'
 omdb_key = '12d0adae'
 
@@ -49,7 +49,7 @@ for movie in movie_list:
                 if len(name_tokens) >= 2:
                     cast_object = {'firstName': name_tokens[0], 'lastName': ''.join(name_tokens[1:])}
                 else:
-                    cast_object = {'firstName': name_tokens[0]}
+                    cast_object = {'firstName': name_tokens[0],'lastName': ''}
                 cast.append(cast_object)
 
     if 'Language' in data:
@@ -73,4 +73,5 @@ for movie in movie_list:
     movie_object['cast'] = cast
     print(movie_object)
     print('------------------------------------------------------')
-    # print(requests.post(url=linden_url, json=movie_object))
+    print(requests.post(url=linden_url, json=movie_object))
+    break

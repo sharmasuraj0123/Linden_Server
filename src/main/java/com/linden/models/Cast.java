@@ -22,7 +22,7 @@ public class Cast implements Serializable {
 
     public Cast(){}
 
-    public Cast(@NotNull String firstName, @NotNull String lastName, int rating, String imageURL) {
+    public Cast(@NotNull String firstName,@NotNull String lastName, int rating, String imageURL) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.rating = rating;

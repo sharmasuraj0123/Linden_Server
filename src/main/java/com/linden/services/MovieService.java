@@ -6,6 +6,7 @@ import com.linden.util.search.rank.ContentRanker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.function.Function;
 
@@ -41,5 +42,10 @@ public class MovieService {
     public Movie getMovie(long movieId){
         Movie movie = movieRepository.getMovieById(movieId);
         return movie;
+    }
+
+    public List<Movie> getUpcomingMovies(Date today){
+        List<Movie> movies = movieRepository.getMovieByReleaseDateAfter(today);
+        return movies;
     }
 }
