@@ -33,7 +33,6 @@ public class Review {
 
 
     public Long getId() {
-
         return id;
     }
 

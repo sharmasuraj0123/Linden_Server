@@ -1,14 +1,7 @@
 package com.linden.services;
 
-import com.linden.models.Account;
-import com.linden.models.Admin;
-import com.linden.models.Movie;
-import com.linden.models.TvShow;
-import com.linden.repositories.AdminRepository;
-import com.linden.repositories.CastRepository;
-import com.linden.repositories.MovieRepository;
-import com.linden.repositories.UserRepository;
-import com.linden.repositories.TvShowRepository;
+import com.linden.models.*;
+import com.linden.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,16 +11,16 @@ public class AdminService {
 
     @Autowired
     private TvShowRepository tvShowRepository;
-
     @Autowired
     private AdminRepository adminRepository;
-
     @Autowired
     private MovieRepository movieRepository;
-
     @Autowired
     private CastRepository castRepository;
-
+    @Autowired
+    private EpisodeRepository episodeRepository;
+    @Autowired
+    private SeasonRepository seasonRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -51,6 +44,13 @@ public class AdminService {
 
     public void addTvShow(TvShow tvShow){
         tvShow.getCast().forEach(castRepository::save);
+
+        for(Season season : tvShow.getSeasons()){
+            season.getEpisodes().forEach(episodeRepository::save);
+        }
+
+        tvShow.getSeasons().forEach(seasonRepository::save);
+
         tvShowRepository.save(tvShow);
     }
 }

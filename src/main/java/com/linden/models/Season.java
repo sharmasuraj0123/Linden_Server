@@ -61,4 +61,12 @@ public class Season {
     public void setPoster(String poster) {
         this.poster = poster;
     }
+
+    public List<Episode> getEpisodes() {
+        return episodes;
+    }
+
+    public void setEpisodes(List<Episode> episodes) {
+        this.episodes = episodes;
+    }
 }

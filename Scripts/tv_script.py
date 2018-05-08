@@ -4,7 +4,7 @@ import time
 tmdb_key = '89a57552ff989080c44c82c3078fb543'
 tmdb_url = 'https://api.themoviedb.org/3/tv/'
 
-linden_url = 'http://127.0.0.1:8080/admin/addTV'
+linden_url = 'http://127.0.0.1:8081/admin/addTvShow'
 
 tv_id_list = [1418, 1668, 19885, 63351, 1396, 1405, 1399, 2288, 62816, 60708, 61889, 1100, 1421, 60059]
 
@@ -44,7 +44,7 @@ for tv_id in tv_id_list:
         season = {}
         numberOfEpisodes = len(seasons_data.get('episodes'))
         season['numberOfEpisodes'] = numberOfEpisodes
-        season['seasonNumber'] = 'Season ' + str(i + 1)
+        season['seasonNumber'] = (i + 1)
         season['releaseDate'] = seasons_data.get('air_date')
         season['poster'] = seasons_data.get('poster_path')
         season['episodes'] = []
@@ -70,4 +70,8 @@ for tv_id in tv_id_list:
 
     tv_obj['seasons'] = seasons
     print(tv_obj)
+    
+    print(requests.post(url=linden_url, json=tv_obj))
+    
+    break
     time.sleep(2)
