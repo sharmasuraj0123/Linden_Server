@@ -45,6 +45,8 @@ for tv_id in tv_id_list:
         numberOfEpisodes = len(seasons_data.get('episodes'))
         season['numberOfEpisodes'] = numberOfEpisodes
         season['seasonNumber'] = 'Season ' + str(i + 1)
+        season['releaseDate'] = seasons_data.get('air_date')
+        season['poster'] = seasons_data.get('poster_path')
         season['episodes'] = []
 
         for j in range(0, numberOfEpisodes):
@@ -66,10 +68,6 @@ for tv_id in tv_id_list:
 
         seasons.append(season)
 
-
     tv_obj['seasons'] = seasons
     print(tv_obj)
-    
-    break
-    
     time.sleep(2)
