@@ -10,18 +10,13 @@ tv_id_list = [1418, 1668, 19885, 63351, 1396, 1405, 1399, 2288, 62816, 60708, 61
 
 for tv_id in tv_id_list:
     print(str(tv_id) + '***************************')
-    tmdb_response = requests.get(url=tmdb_url + str(tv_id) + '?api_key=' + tmdb_key + '&append_to_response=credits')
-    data = tmdb_response.json()
+    tmdbResponse = requests.get(url=tmdb_url + str(tv_id) + '?api_key=' + tmdb_key + '&append_to_response=credits')
+    data = tmdbResponse.json()
 
-    no_of_seasons = data.get('number_of_seasons')
-    tv_obj = {}
-    tv_obj['name'] = data.get('name')
-    tv_obj['releaseDate'] = data.get('first_air_date')
-    tv_obj['details'] = data.get('overview')
-    tv_obj['numberOfSeasons'] = data.get('number_of_seasons')
-    tv_obj['poster'] = data.get('poster_path')
+    numberOfSeasons = data.get('number_of_seasons')
+    tv_obj = {'name': data.get('name'), 'releaseDate': data.get('first_air_date'), 'details': data.get('overview'),
+              'numberOfSeasons': numberOfSeasons, 'poster': data.get('poster_path'), 'created_by': []}
     # created by
-    tv_obj['created_by'] = []
     created_by = data.get('created_by')
     for i in range(0, len(created_by)):
         tv_obj['created_by'].append(created_by[i].get('name'))
@@ -42,14 +37,17 @@ for tv_id in tv_id_list:
 
     # print(tv_obj)
     # SEASONS
-    seasons = {}
-    for i in range(0, no_of_seasons):
+    seasons = []
+    for i in range(0, numberOfSeasons):
         seasons_response = requests.get(url=tmdb_url + str(tv_id) + '/season/' + str(i + 1) + '?api_key=' + tmdb_key)
         seasons_data = seasons_response.json()
-        no_of_episodes = len(seasons_data.get('episodes'))
-        current_season = 'Season ' + str(i + 1)
+        season = {}
+        numberOfEpisodes = len(seasons_data.get('episodes'))
+        season['numberOfEpisodes'] = numberOfEpisodes
+        season['seasonNumber'] = 'Season ' + str(i + 1)
+        season['episodes'] = []
 
-        for j in range(0, no_of_episodes):
+        for j in range(0, numberOfEpisodes):
             del seasons_data.get('episodes')[j]['crew']
             del seasons_data.get('episodes')[j]['guest_stars']
             del seasons_data.get('episodes')[j]['id']
@@ -57,14 +55,17 @@ for tv_id in tv_id_list:
             del seasons_data.get('episodes')[j]['season_number']
             del seasons_data.get('episodes')[j]['vote_average']
             del seasons_data.get('episodes')[j]['vote_count']
-            del seasons_data.get('episodes')[j]['air_date']
             del seasons_data.get('episodes')[j]['still_path']
+            seasons_data.get('episodes')[j]['releaseDate'] = seasons_data.get('episodes')[j]['air_date']
+            del seasons_data.get('episodes')[j]['air_date']
             seasons_data.get('episodes')[j]['episodeNumber'] = seasons_data.get('episodes')[j]['episode_number']
             del seasons_data.get('episodes')[j]['episode_number']
             seasons_data.get('episodes')[j]['details'] = seasons_data.get('episodes')[j]['overview']
             del seasons_data.get('episodes')[j]['overview']
+            season['episodes'].append(seasons_data.get('episodes')[j])
 
-        seasons[current_season] = seasons_data.get('episodes')
+        seasons.append(season)
+
 
     tv_obj['seasons'] = seasons
     print(tv_obj)
