@@ -1,8 +1,8 @@
 package com.linden.services;
 
-import com.linden.models.Account;
-import com.linden.models.User;
-import com.linden.models.UserType;
+import com.linden.models.accounts.Account;
+import com.linden.models.accounts.User;
+import com.linden.models.accounts.UserType;
 import com.linden.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;

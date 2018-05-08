@@ -1,7 +1,6 @@
 package com.linden.controllers;
 
-import com.linden.models.Movie;
-import com.linden.models.TvShow;
+import com.linden.models.content.Movie;
 import com.linden.services.AdminService;
 import com.linden.util.StatusResponse;
 import org.springframework.beans.factory.annotation.Autowired;

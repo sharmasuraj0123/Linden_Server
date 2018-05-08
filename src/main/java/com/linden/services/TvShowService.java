@@ -1,6 +1,6 @@
 package com.linden.services;
 
-import com.linden.models.TvShow;
+import com.linden.models.content.TvShow;
 import com.linden.repositories.TvShowRepository;
 import com.linden.util.search.rank.ContentRanker;
 import org.springframework.beans.factory.annotation.Autowired;

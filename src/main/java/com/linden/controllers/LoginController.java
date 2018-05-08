@@ -1,8 +1,8 @@
 package com.linden.controllers;
 
-import com.linden.models.Account;
-import com.linden.models.Admin;
-import com.linden.models.User;
+import com.linden.models.accounts.Account;
+import com.linden.models.accounts.Admin;
+import com.linden.models.accounts.User;
 import com.linden.services.AdminService;
 import com.linden.services.UserService;
 import com.linden.util.ObjectStatusResponse;

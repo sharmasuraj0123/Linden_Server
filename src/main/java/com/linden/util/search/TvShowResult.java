@@ -1,6 +1,6 @@
 package com.linden.util.search;
 
-import com.linden.models.TvShow;
+import com.linden.models.content.TvShow;
 
 import java.io.Serializable;
 

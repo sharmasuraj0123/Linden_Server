@@ -1,8 +1,8 @@
 package com.linden.controllers;
 
-import com.linden.models.Cast;
-import com.linden.models.Movie;
-import com.linden.models.TvShow;
+import com.linden.models.content.Cast;
+import com.linden.models.content.Movie;
+import com.linden.models.content.TvShow;
 import com.linden.services.CastService;
 import com.linden.services.MovieService;
 import com.linden.services.TvShowService;

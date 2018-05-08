@@ -1,8 +1,8 @@
 package com.linden.util.search;
 
-import com.linden.models.Cast;
-import com.linden.models.Genre;
-import com.linden.models.Movie;
+import com.linden.models.content.Cast;
+import com.linden.models.content.Genre;
+import com.linden.models.content.Movie;
 
 import java.io.Serializable;
 import java.util.Date;

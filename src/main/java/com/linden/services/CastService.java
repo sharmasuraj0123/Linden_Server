@@ -1,6 +1,6 @@
 package com.linden.services;
 
-import com.linden.models.Cast;
+import com.linden.models.content.Cast;
 import com.linden.repositories.CastRepository;
 import com.linden.util.search.rank.Ranker;
 import org.springframework.beans.factory.annotation.Autowired;

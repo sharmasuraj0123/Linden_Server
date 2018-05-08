@@ -1,4 +1,6 @@
-package com.linden.models;
+package com.linden.models.content;
+
+import com.linden.models.accounts.User;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -18,6 +20,8 @@ public class Review {
     private String details;
 
     private int rating;
+
+    private int reportCount;
 
     @Enumerated(EnumType.STRING)
     private ReviewType reviewType;

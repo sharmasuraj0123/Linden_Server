@@ -1,4 +1,4 @@
-package com.linden.models;
+package com.linden.models.content;
 
 import javax.persistence.*;
 import java.util.List;
@@ -10,6 +10,13 @@ public class Movie extends Content{
     private double revenue;
 
     private long duration;
+
+    private boolean isFeatured;
+
+    public boolean isTopBoxOffice;
+
+    @Enumerated(EnumType.STRING)
+    public MovieType movieType = MovieType.DEFAULT;
 
     public Movie(){}
 

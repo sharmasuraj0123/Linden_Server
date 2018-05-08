@@ -1,5 +1,12 @@
 package com.linden.services;
 
+import com.linden.models.accounts.Account;
+import com.linden.models.accounts.Admin;
+import com.linden.models.content.Movie;
+import com.linden.repositories.AdminRepository;
+import com.linden.repositories.CastRepository;
+import com.linden.repositories.MovieRepository;
+import com.linden.repositories.UserRepository;
 import com.linden.models.*;
 import com.linden.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;

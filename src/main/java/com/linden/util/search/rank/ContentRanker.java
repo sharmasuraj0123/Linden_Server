@@ -1,6 +1,6 @@
 package com.linden.util.search.rank;
 
-import com.linden.models.Content;
+import com.linden.models.content.Content;
 
 import java.util.function.Function;
 

@@ -1,4 +1,4 @@
-package com.linden.models;
+package com.linden.models.accounts;
 
 import javax.persistence.*;
 
@@ -7,11 +7,11 @@ public class Account {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long accountId;
-    private String firstName;
-    private String lastName;
-    private String email;
-    private String password;
+    protected Long accountId;
+    protected String firstName;
+    protected String lastName;
+    protected String email;
+    protected String password;
 
     public Account(){
 
