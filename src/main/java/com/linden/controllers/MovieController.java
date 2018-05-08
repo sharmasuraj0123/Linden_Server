@@ -40,15 +40,6 @@ public class MovieController {
 
     @RequestMapping(
             value = "/movies/openingThisWeek",
-            method = RequestMethod.GET
-    )
-    @ResponseBody
-    public Collection<Movie> getOpeningThisWeek() {
-        return movieService.getOpeningThisWeek();
-    }
-
-    @RequestMapping(
-            value = "/movies/openingThisWeek",
             params = {"limit"},
             method = RequestMethod.GET
     )
@@ -95,14 +86,6 @@ public class MovieController {
         );
     }
 
-    @RequestMapping(
-            value = "/movies/{id}",
-            method = RequestMethod.GET
-    )
-    @ResponseBody
-    public Movie getMovie(@PathVariable("id") int id) {
-        return null;
-    }
     @RequestMapping(
             value = "/{movieId}"
     )
