@@ -24,8 +24,7 @@ public class LoginController {
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
-    public ObjectStatusResponse<?> login(HttpServletRequest request, @RequestBody Account account) {
-        HttpSession session = request.getSession(true);
+    public ObjectStatusResponse<?> login(HttpSession session, @RequestBody Account account) {
         User userAccount = (User) session.getAttribute("user");
         Admin adminAccount = (Admin) session.getAttribute("admin");
 
