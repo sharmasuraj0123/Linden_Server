@@ -5,13 +5,14 @@ import com.linden.models.content.Genre;
 import com.linden.models.content.Review;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
 @MappedSuperclass
-public abstract class Content {
+public abstract class Content implements Serializable{
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)

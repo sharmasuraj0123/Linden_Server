@@ -2,12 +2,13 @@ package com.linden.models.content;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
 @Entity
-public class TvShow extends Content{
+public class TvShow extends Content implements Serializable{
 
     @OneToMany
     protected List<Season> seasons;

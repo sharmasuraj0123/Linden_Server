@@ -1,6 +1,8 @@
 package com.linden.models.content;
 
-public enum Genre {
+import java.io.Serializable;
+
+public enum Genre implements Serializable{
     SHORT,
     DRAMA,
     COMEDY,

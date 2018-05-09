@@ -3,6 +3,7 @@ package com.linden.services;
 import com.linden.models.accounts.Account;
 import com.linden.models.accounts.User;
 import com.linden.models.accounts.UserType;
+import com.linden.models.accounts.UserWantsToSee;
 import com.linden.models.content.*;
 import com.linden.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,10 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -198,5 +196,31 @@ public class UserService {
             }
             reviewRepository.delete(review);
         }
+    }
+
+    public ArrayList<Content> getUserWantToSee(User user) {
+        user = userRepository.findById(user.getAccountId()).orElse(user);
+        ArrayList<Content> wantToSeeList = new ArrayList<>();
+        user.getWantsToSee().stream().forEach(
+                userWantsToSee -> {
+                    switch (userWantsToSee.getContentType()){
+                        case MOVIE:
+                            wantToSeeList.add(
+                                movieRepository.findById(userWantsToSee.getContentId()).get()
+                            );
+                            break;
+                        case TVSHOW:
+                            wantToSeeList.add(
+                                tvShowRepository.findById(userWantsToSee.getContentId()).get()
+                            );
+                            break;
+                    }
+                }
+        );
+        return wantToSeeList;
+    }
+
+    public void addToWantToSee(Content content) {
+
     }
 }

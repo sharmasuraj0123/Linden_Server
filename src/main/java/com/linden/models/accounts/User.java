@@ -2,6 +2,7 @@ package com.linden.models.accounts;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Set;
 
 @Entity
 public class User extends Account implements Serializable {
@@ -10,6 +11,13 @@ public class User extends Account implements Serializable {
 
     @Enumerated(EnumType.STRING)
     private UserType userType = UserType.GUEST;
+
+    @ElementCollection
+    @CollectionTable(
+            name="want_to_see"
+    )
+    @OneToMany
+    private Set<UserWantsToSee> wantsToSee;
 
     public User(){
         super();
@@ -33,6 +41,14 @@ public class User extends Account implements Serializable {
 
     public void setUserType(UserType userType) {
         this.userType = userType;
+    }
+
+    public Set<UserWantsToSee> getWantsToSee() {
+        return wantsToSee;
+    }
+
+    public void setWantsToSee(Set<UserWantsToSee> wantsToSee) {
+        this.wantsToSee = wantsToSee;
     }
 
     @Override

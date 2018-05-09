@@ -1,6 +1,8 @@
 package com.linden.models.content;
 
-public enum ContentType {
+import java.io.Serializable;
+
+public enum ContentType implements Serializable{
     MOVIE,
     TVSHOW
 }

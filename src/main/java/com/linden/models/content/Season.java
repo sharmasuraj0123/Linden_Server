@@ -3,11 +3,12 @@ package com.linden.models.content;
 import com.linden.models.content.Episode;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
 @Entity
-public class Season {
+public class Season implements Serializable{
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)

@@ -1,6 +1,8 @@
 package com.linden.models.accounts;
 
-public enum UserType {
+import java.io.Serializable;
+
+public enum UserType implements Serializable{
     GUEST,
     AUDIENCE,
     CRITIC,

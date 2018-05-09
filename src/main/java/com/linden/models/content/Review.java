@@ -4,10 +4,11 @@ import com.linden.models.accounts.User;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-public class Review {
+public class Review implements Serializable{
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)

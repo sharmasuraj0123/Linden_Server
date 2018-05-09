@@ -3,10 +3,11 @@ package com.linden.models.content;
 import com.linden.models.accounts.User;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-public class ReviewReport {
+public class ReviewReport implements Serializable{
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;

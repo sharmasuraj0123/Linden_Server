@@ -1,11 +1,12 @@
 package com.linden.models.content;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
 
 @Entity
-public class Movie extends Content{
+public class Movie extends Content implements Serializable{
 
     private double revenue;
 

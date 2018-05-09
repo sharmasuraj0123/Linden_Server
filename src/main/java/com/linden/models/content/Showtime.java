@@ -1,10 +1,11 @@
 package com.linden.models.content;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Time;
 
 @Entity
-public class Showtime {
+public class Showtime implements Serializable{
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
