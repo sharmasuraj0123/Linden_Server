@@ -28,8 +28,8 @@ public class UserController {
         HttpSession session = request.getSession(true);
         User user = (User) session.getAttribute("user");
         if (user != null){
-            userService.postAReview(user, review);
-            return new ObjectStatusResponse<>("status", "OK");
+            Review reviewObj = userService.postAReview(user, review);
+            return new ObjectStatusResponse<>(reviewObj, "OK");
         }
         else return new ObjectStatusResponse<>("status", "Not logged in!");
     }
@@ -42,7 +42,7 @@ public class UserController {
         User user = (User) session.getAttribute("user");
         if (user != null){
             userService.editAReview(user, reviewId, newReview);
-            return new ObjectStatusResponse<>("status", "OK");
+            return new ObjectStatusResponse<>(newReview, "OK");
         }
         else return new ObjectStatusResponse<>("status", "Not logged in!");
     }

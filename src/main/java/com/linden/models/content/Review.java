@@ -7,6 +7,16 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
+/**
+ * {
+ *     "contentId" : 1093092,
+ *     "contentType" : "MOVIE" or "TVSHOW",
+ *     "rating" : 1-5,
+ *     "details" : ""
+ *
+ * }
+ */
+
 @Entity
 public class Review implements Serializable{
 

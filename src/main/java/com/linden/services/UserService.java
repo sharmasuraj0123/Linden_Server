@@ -82,7 +82,7 @@ public class UserService {
         }
     }
 
-    public void postAReview(User user, Review review){
+    public Review postAReview(User user, Review review){
         review.setPostedBy(user);
         review.setDate(Date.from(Instant.now()));
         switch (user.getUserType()) {
@@ -115,6 +115,7 @@ public class UserService {
                 }
                 break;
         }
+        return review;
     }
 
     public void editAReview(User user, long reviewId, Review review) {
@@ -220,7 +221,8 @@ public class UserService {
         return wantToSeeList;
     }
 
-    public void addToWantToSee(Content content) {
+    public void addToWantToSee(User user, Content content) {
+        user = userRepository.findById(user.getAccountId()).orElse(user);
 
     }
 }
