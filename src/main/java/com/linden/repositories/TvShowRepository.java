@@ -12,4 +12,7 @@ public interface TvShowRepository extends JpaRepository<TvShow, Long>{
     List<TvShow> findTvShowsByNameContains(String keywords);
 
     List<TvShow> getTvShowsByCastId(long castId);
+
+    TvShow getTvShowById(long id);
+
 }
