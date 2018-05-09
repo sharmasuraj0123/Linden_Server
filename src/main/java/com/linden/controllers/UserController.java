@@ -25,7 +25,7 @@ public class UserController {
     @RequestMapping(value = {"/postReview", "/postRating"}, method = RequestMethod.POST)
     @ResponseBody
     public ObjectStatusResponse<?> postReview(HttpServletRequest request, @RequestBody Review review) {
-        HttpSession session = request.getSession(true);
+        HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
         if (user != null){
             Review reviewObj = userService.postAReview(user, review);
