@@ -12,4 +12,11 @@ public class TvShowResult implements Serializable {
         this.tvShow = tvShow;
     }
 
+    public TvShow getTvShow() {
+        return tvShow;
+    }
+
+    public void setTvShow(TvShow tvShow) {
+        this.tvShow = tvShow;
+    }
 }

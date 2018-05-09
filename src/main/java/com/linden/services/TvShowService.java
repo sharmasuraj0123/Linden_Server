@@ -1,5 +1,7 @@
 package com.linden.services;
 
+import com.linden.models.content.Episode;
+import com.linden.models.content.Season;
 import com.linden.models.content.TvShow;
 import com.linden.repositories.TvShowRepository;
 import com.linden.util.search.rank.ContentRanker;
@@ -43,4 +45,45 @@ public class TvShowService {
         return shows;
     }
 
+    public TvShow getTvShow(long id){
+        TvShow tvShow = tvShowRepository.getTvShowById(id);
+        return tvShow;
+    }
+
+    public Season getSeasonByNumber(long tvShowId, int seasonNumber){
+        TvShow tvShow = tvShowRepository.getTvShowById(tvShowId);
+        List<Season> seasons = tvShow.getSeasons();
+        Season result = new Season();
+        for(Season season : seasons){
+            if(season.getSeasonNumber() == seasonNumber){
+                result = season;
+                return result;
+            }
+        }
+
+        return result;
+    }
+
+    public Episode getEpisodeByNumber(long tvShowId, int seasonNumber, int episodeNumber){
+
+        TvShow tvShow = tvShowRepository.getTvShowById(tvShowId);
+        List<Season> seasons = tvShow.getSeasons();
+
+        Episode result = new Episode();
+        for(Season season : seasons){
+            if(season.getSeasonNumber() == seasonNumber){
+
+                List<Episode> episodes = season.getEpisodes();
+                for(Episode episode: episodes){
+                    if(episode.getEpisodeNumber() ==  episodeNumber){
+                        result = episode;
+                        return result;
+                    }
+                }
+            }
+        }
+
+        return result;
+
+    }
 }
