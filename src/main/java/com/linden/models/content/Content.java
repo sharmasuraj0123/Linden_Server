@@ -5,6 +5,7 @@ import com.linden.models.content.Genre;
 import com.linden.models.content.Review;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -35,9 +36,13 @@ public abstract class Content {
     @ElementCollection(targetClass=Genre.class)
     @Enumerated(EnumType.STRING)
     protected Set<Genre> genre;
+
     @OneToMany
     protected List<Review> reviews;
     protected String poster;
+
+    @Enumerated(EnumType.STRING)
+    protected ContentType contentType;
 
     public Content(){
 
@@ -141,5 +146,21 @@ public abstract class Content {
 
     public void setPoster(String poster) {
         this.poster = poster;
+    }
+
+    public double getBoxOffice() {
+        return boxOffice;
+    }
+
+    public void setBoxOffice(double boxOffice) {
+        this.boxOffice = boxOffice;
+    }
+
+    public ContentType getContentType() {
+        return contentType;
+    }
+
+    public void setContentType(ContentType contentType) {
+        this.contentType = contentType;
     }
 }

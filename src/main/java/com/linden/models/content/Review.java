@@ -3,36 +3,44 @@ package com.linden.models.content;
 import com.linden.models.accounts.User;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Entity
 public class Review {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
 
     private Date date;
 
     @OneToOne
+    @NotNull
     private User postedBy;
+
+    private long contentId;
+
+    @NotNull
+    private ContentType contentType;
 
     private String details;
 
     private int rating;
-
-    private int reportCount;
 
     @Enumerated(EnumType.STRING)
     private ReviewType reviewType;
 
     public Review(){}
 
-    public Review(Date date, User postedBy, String details, int rating) {
+    public Review(Date date, @NotNull User postedBy, @NotNull ContentType contentType, long contentId, String details,
+                  int rating) {
         this.date = date;
         this.postedBy = postedBy;
         this.details = details;
         this.rating = rating;
+        this.contentType = contentType;
+        this.contentId = contentId;
     }
 
 
@@ -58,6 +66,22 @@ public class Review {
 
     public void setPostedBy(User postedBy) {
         this.postedBy = postedBy;
+    }
+
+    public long getContentId() {
+        return contentId;
+    }
+
+    public void setContentId(long contentId) {
+        this.contentId = contentId;
+    }
+
+    public ContentType getContentType() {
+        return contentType;
+    }
+
+    public void setContentType(ContentType contentType) {
+        this.contentType = contentType;
     }
 
     public String getDetails() {

@@ -18,7 +18,9 @@ public class Movie extends Content{
     @Enumerated(EnumType.STRING)
     public MovieType movieType = MovieType.DEFAULT;
 
-    public Movie(){}
+    public Movie(){
+        this.contentType = ContentType.MOVIE;
+    }
 
     public Movie(double score, Set<Genre> genre, List<Review> reviews, double revenue, long duration) {
         this.score = score;
@@ -26,6 +28,7 @@ public class Movie extends Content{
         this.reviews = reviews;
         this.revenue = revenue;
         this.duration = duration;
+        this.contentType = ContentType.MOVIE;
     }
 
     public Set<Genre> getGenre() {
