@@ -1,8 +1,10 @@
 package com.linden.controllers;
 
+import com.linden.models.content.Episode;
 import com.linden.models.content.Season;
 import com.linden.models.content.TvShow;
 import com.linden.services.TvShowService;
+import com.linden.util.search.EpisodeResult;
 import com.linden.util.search.SeasonResult;
 import com.linden.util.search.TvShowResult;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,9 +28,9 @@ public class TvShowController {
         return result;
     }
 
-    @RequestMapping(value = "/{tvShowId}/season/{seasonId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{tvShowId}/season/{seasonNumber}", method = RequestMethod.GET)
     @ResponseBody
-    public SeasonResult getSeason(@PathVariable(value = "tvShowId") String tvShowId,@PathVariable(value = "seasonId") String seasonNumber){
+    public SeasonResult getSeason(@PathVariable(value = "tvShowId") String tvShowId,@PathVariable(value = "seasonNumber") String seasonNumber){
 
         long id = Long.parseLong(tvShowId);
         int seasonNum = Integer.parseInt(seasonNumber);
@@ -36,6 +38,21 @@ public class TvShowController {
         Season season = tvShowService.getSeasonByNumber(id,seasonNum);
 
         SeasonResult result = new SeasonResult(season);
+
+        return result;
+    }
+
+    @RequestMapping(value = "/{tvShowId}/season/{seasonId}/episode/{episodeNumber}", method = RequestMethod.GET)
+    @ResponseBody
+    public EpisodeResult getEpisode(@PathVariable(value = "tvShowId") String tvShowId,@PathVariable(value = "seasonId") String seasonNumber, @PathVariable(value = "episodeNumber") String episodeNumber){
+
+        long id = Long.parseLong(tvShowId);
+        int seasonNum = Integer.parseInt(seasonNumber);
+        int episodeNum = Integer.parseInt(episodeNumber);
+
+        Episode episode = tvShowService.getEpisodeByNumber(id,seasonNum,episodeNum);
+
+        EpisodeResult result = new EpisodeResult(episode);
 
         return result;
     }
