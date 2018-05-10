@@ -22,6 +22,8 @@ public class ReviewReport implements Serializable{
 
     private String justification;
 
+    private String accountToken;
+
     public ReviewReport(){}
 
     public ReviewReport(Date date, Review review, User reportedBy, String justification){
@@ -69,5 +71,13 @@ public class ReviewReport implements Serializable{
 
     public void setReview(Review review) {
         this.review = review;
+    }
+
+    public String getAccountToken() {
+        return accountToken;
+    }
+
+    public void setAccountToken(String accountToken) {
+        this.accountToken = accountToken;
     }
 }

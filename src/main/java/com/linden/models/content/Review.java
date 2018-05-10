@@ -42,6 +42,8 @@ public class Review implements Serializable{
     @Enumerated(EnumType.STRING)
     private ReviewType reviewType;
 
+    private String accountToken;
+
     public Review(){}
 
     public Review(Date date, @NotNull User postedBy, @NotNull ContentType contentType, long contentId, String details,
@@ -117,5 +119,13 @@ public class Review implements Serializable{
 
     public void setReviewType(ReviewType reviewType) {
         this.reviewType = reviewType;
+    }
+
+    public String getAccountToken() {
+        return accountToken;
+    }
+
+    public void setAccountToken(String accountToken) {
+        this.accountToken = accountToken;
     }
 }
