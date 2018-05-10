@@ -25,7 +25,7 @@ public class AccountTokenService {
     @Autowired
     private AccountTokenRepository accountTokenRepository;
 
-    private static final String ALPHABET = "ABCDEFGJKLMNPRSTUVWXYZ0123456789!@#$%^&";
+    private static final String ALPHABET = "abcdefghijklmnopqrstuvwxyzABCDEFGJKLMNPRSTUVWXYZ0123456789!@#$%^&";
 
     private static final Random random = new SecureRandom();
 
@@ -37,7 +37,6 @@ public class AccountTokenService {
 
     public String generateToken(){
         StringBuilder buff = new StringBuilder();
-        System.out.println(tokenLength);
         for (int i = 0; i < tokenLength; ++i) {
             buff.append(ALPHABET.charAt(random.nextInt(ALPHABET.length())));
         }
