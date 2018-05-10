@@ -12,4 +12,8 @@ public interface UserWantsToSeeRepository extends JpaRepository<UserWantsToSee, 
     List<UserWantsToSee> findByContentId(long contentId);
 
     List<UserWantsToSee> findByContentType(ContentType contentType);
+
+    List<UserWantsToSee> findByUserId(long userId);
+
+    void deleteByUserIdAndContentId(long userId, long contentId);
 }

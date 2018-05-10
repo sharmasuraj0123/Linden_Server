@@ -26,11 +26,10 @@ public class UserController {
     @ResponseBody
     public ObjectStatusResponse<?> postReview(@RequestBody Review review) {
         User user = (User) accountTokenService.getAccount(review.getToken());
-        if (user != null){
-            Review reviewObj = userService.postAReview(user, review);
-            return new ObjectStatusResponse<>(reviewObj, "OK");
+        if (user != null) {
+            return new ObjectStatusResponse<>(userService.postAReview(user, review), "OK");
         }
-        else return new ObjectStatusResponse<>("status", "Not logged in!");
+        else return new ObjectStatusResponse<>(null, "Not logged in!");
     }
 
     @RequestMapping(value = {"/editReview/{reviewId}", "/editRating/{reviewId}"}, method = RequestMethod.POST)
@@ -38,8 +37,7 @@ public class UserController {
     public ObjectStatusResponse<?> postReview(@PathVariable("reviewId") long reviewId, @RequestBody Review newReview) {
         User user = (User) accountTokenService.getAccount(newReview.getToken());
         if (user != null){
-            userService.editAReview(user, reviewId, newReview);
-            return new ObjectStatusResponse<>(newReview, "OK");
+            return new ObjectStatusResponse<>(userService.editAReview(user, reviewId, newReview), "OK");
         }
         else return new ObjectStatusResponse<>("status", "Not logged in!");
     }
@@ -50,9 +48,9 @@ public class UserController {
         User user = (User) accountTokenService.getAccount(report.getAccountToken());
         if (user != null){
             userService.reportAReview(report.getReview(), user, report);
-            return new ObjectStatusResponse<>("status", "OK");
+            return new ObjectStatusResponse<>(null, "OK");
         }
-        else return new ObjectStatusResponse<>("status", "Not logged in!");
+        else return new ObjectStatusResponse<>(null, "Not logged in!");
     }
 
     @RequestMapping(value = {"/deleteReview/{reviewId}", "/deleteRating/{reviewId}"}, method = RequestMethod.POST)
@@ -61,9 +59,9 @@ public class UserController {
         User user = (User) accountTokenService.getAccount(token.getToken());
         if (user != null){
             userService.deleteReview(user, reviewId);
-            return new ObjectStatusResponse<>("status", "OK");
+            return new ObjectStatusResponse<>(null, "OK");
         }
-        else return new ObjectStatusResponse<>("status", "Not logged in!");
+        else return new ObjectStatusResponse<>(null, "Not logged in!");
     }
 
     @RequestMapping(value = {"/getWantToSee"}, method = RequestMethod.POST)
@@ -73,7 +71,7 @@ public class UserController {
         if (user != null){
             return new ObjectStatusResponse<>(userService.getUserWantToSee(user), "OK");
         }
-        else return new ObjectStatusResponse<>("status", "Not logged in!");
+        else return new ObjectStatusResponse<>(null, "Not logged in!");
     }
 
     @RequestMapping(value = {"/addToWantToSee"}, method = RequestMethod.POST)
@@ -82,9 +80,21 @@ public class UserController {
         User user = (User) accountTokenService.getAccount(contentContainer.getToken());
         if (user != null){
             Content content = contentContainer.getObj();
-            // TODO: finish function
-            return new ObjectStatusResponse<>("status", "OK");
+            userService.addToWantToSee(user, content);
+            return new ObjectStatusResponse<>(null, "OK");
         }
-        else return new ObjectStatusResponse<>("status", "Not logged in!");
+        else return new ObjectStatusResponse<>(null, "Not logged in!");
+    }
+
+    @RequestMapping(value = {"/removeFromWantToSee"}, method = RequestMethod.POST)
+    @ResponseBody
+    public ObjectStatusResponse<?> removeFromWantToSee(@RequestBody TokenObjectContainer<Content> contentContainer) {
+        User user = (User) accountTokenService.getAccount(contentContainer.getToken());
+        if (user != null){
+            Content content = contentContainer.getObj();
+            userService.removeFromWantToSee(user, content);
+            return new ObjectStatusResponse<>(null, "OK");
+        }
+        else return new ObjectStatusResponse<>(null, "Not logged in!");
     }
 }
