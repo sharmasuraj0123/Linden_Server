@@ -8,7 +8,7 @@ public class Account implements Serializable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    protected Long accountId;
+    protected long accountId;
     protected String firstName;
     protected String lastName;
     protected String email;
@@ -25,11 +25,11 @@ public class Account implements Serializable{
         this.password = password;
     }
 
-    public Long getAccountId() {
+    public long getAccountId() {
         return accountId;
     }
 
-    public void setAccountId(Long accountId) {
+    public void setAccountId(long accountId) {
         this.accountId = accountId;
     }
 

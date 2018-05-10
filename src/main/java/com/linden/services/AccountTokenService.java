@@ -30,17 +30,19 @@ public class AccountTokenService {
     private static final Random random = new SecureRandom();
 
     @Value("${security.token.length:64}")
-    private static int tokenLength;
+    private int tokenLength;
 
     public AccountTokenService() {
     }
 
-    public static String generateToken(){
-        char[] buff = new char[tokenLength];
-        for (int i = 0; i < buff.length; ++i) {
-            buff[i] = ALPHABET.charAt(random.nextInt(ALPHABET.length()));
+    public String generateToken(){
+        StringBuilder buff = new StringBuilder();
+        System.out.println(tokenLength);
+        for (int i = 0; i < tokenLength; ++i) {
+            buff.append(ALPHABET.charAt(random.nextInt(ALPHABET.length())));
         }
-        return new String(buff);
+        System.out.println("Generated token = "+buff.toString());
+        return buff.toString();
     }
 
     public Account getAccount(String token) {
@@ -75,6 +77,7 @@ public class AccountTokenService {
         accountToken.setToken(token);
         accountToken.setAdmin(isAdmin);
         accountTokenRepository.save(accountToken);
+        System.out.println("TOKEN IN SAVE ACCOUNT = "+token);
         return token;
     }
 

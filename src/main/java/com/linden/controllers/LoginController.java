@@ -74,7 +74,10 @@ public class LoginController {
             User userInDb = userService.getUserByEmail(user.getEmail());
             if(userInDb.isVerifiedAccount()) {
                 session.setAttribute("user", userInDb);
-                userInDb.setToken(accountTokenService.saveAccount(user.getAccountId()));
+                System.out.println(userInDb);
+                System.out.println(userInDb.getAccountId());
+                userInDb.setToken(accountTokenService.saveAccount(userInDb.getAccountId()));
+                System.out.println("Token = "+userInDb.getToken());
                 return new ObjectStatusResponse<>(userInDb, "OK");
             }
             else {
