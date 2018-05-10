@@ -1,6 +1,5 @@
 package com.linden.controllers;
 
-import com.linden.models.accounts.AccountToken;
 import com.linden.models.accounts.User;
 import com.linden.models.content.Content;
 import com.linden.models.content.Review;
@@ -12,12 +11,6 @@ import com.linden.util.Token;
 import com.linden.util.TokenObjectContainer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Set;
 
 @RestController
 @RequestMapping(value = "/user")
@@ -32,7 +25,7 @@ public class UserController {
     @RequestMapping(value = {"/postReview", "/postRating"}, method = RequestMethod.POST)
     @ResponseBody
     public ObjectStatusResponse<?> postReview(@RequestBody Review review) {
-        User user = (User) accountTokenService.getAccount(review.getAccountToken());
+        User user = (User) accountTokenService.getAccount(review.getToken());
         if (user != null){
             Review reviewObj = userService.postAReview(user, review);
             return new ObjectStatusResponse<>(reviewObj, "OK");
@@ -43,7 +36,7 @@ public class UserController {
     @RequestMapping(value = {"/editReview/{reviewId}", "/editRating/{reviewId}"}, method = RequestMethod.POST)
     @ResponseBody
     public ObjectStatusResponse<?> postReview(@PathVariable("reviewId") long reviewId, @RequestBody Review newReview) {
-        User user = (User) accountTokenService.getAccount(newReview.getAccountToken());
+        User user = (User) accountTokenService.getAccount(newReview.getToken());
         if (user != null){
             userService.editAReview(user, reviewId, newReview);
             return new ObjectStatusResponse<>(newReview, "OK");
@@ -86,7 +79,7 @@ public class UserController {
     @RequestMapping(value = {"/addToWantToSee"}, method = RequestMethod.POST)
     @ResponseBody
     public ObjectStatusResponse<?> addToWantToSee(@RequestBody TokenObjectContainer<Content> contentContainer) {
-        User user = (User) (User) accountTokenService.getAccount(contentContainer.getToken());
+        User user = (User) accountTokenService.getAccount(contentContainer.getToken());
         if (user != null){
             Content content = contentContainer.getObj();
             // TODO: finish function
