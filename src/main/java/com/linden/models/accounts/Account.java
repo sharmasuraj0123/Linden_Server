@@ -1,9 +1,10 @@
 package com.linden.models.accounts;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @MappedSuperclass
-public class Account {
+public class Account implements Serializable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -12,6 +13,8 @@ public class Account {
     protected String lastName;
     protected String email;
     protected String password;
+    protected String token;
+
 
     public Account(){
 
@@ -60,5 +63,13 @@ public class Account {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }

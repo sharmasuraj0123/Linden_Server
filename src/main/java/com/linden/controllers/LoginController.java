@@ -3,14 +3,17 @@ package com.linden.controllers;
 import com.linden.models.accounts.Account;
 import com.linden.models.accounts.Admin;
 import com.linden.models.accounts.User;
+import com.linden.services.AccountTokenService;
 import com.linden.services.AdminService;
 import com.linden.services.UserService;
 import com.linden.util.ObjectStatusResponse;
 import com.linden.util.StatusResponse;
+import com.linden.util.Token;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 @RestController
@@ -22,9 +25,13 @@ public class LoginController {
     @Autowired
     private AdminService adminService;
 
+    @Autowired
+    private AccountTokenService accountTokenService;
+
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
-    public ObjectStatusResponse<?> login(HttpSession session, @RequestBody Account account) {
+    public ObjectStatusResponse<?> login(HttpServletRequest request, HttpServletResponse response, @RequestBody Account account) {
+        HttpSession session = request.getSession(true);
         User userAccount = (User) session.getAttribute("user");
         Admin adminAccount = (Admin) session.getAttribute("admin");
 
@@ -67,6 +74,7 @@ public class LoginController {
             User userInDb = userService.getUserByEmail(user.getEmail());
             if(userInDb.isVerifiedAccount()) {
                 session.setAttribute("user", userInDb);
+                userInDb.setToken(accountTokenService.saveAccount(user.getAccountId()));
                 return new ObjectStatusResponse<>(userInDb, "OK");
             }
             else {
@@ -82,6 +90,7 @@ public class LoginController {
         if(adminService.checkCredentials(admin)){
             Admin adminInDb = adminService.getAdminByEmail(admin.getEmail());
             session.setAttribute("admin", adminInDb);
+            adminInDb.setToken(accountTokenService.saveAccount(admin.getAccountId(), true));
             return new ObjectStatusResponse<>(adminInDb, "OK");
         }
         else {
@@ -90,11 +99,12 @@ public class LoginController {
 
     }
 
-    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    @RequestMapping(value = "/logout", method = RequestMethod.POST)
     @ResponseBody
-    public StatusResponse logout(HttpServletRequest request) {
+    public StatusResponse logout(HttpServletRequest request, @RequestBody Token token) {
         HttpSession session = request.getSession();
         session.invalidate();
+        accountTokenService.invalidateToken(token.getToken());
         return new StatusResponse("OK", "Logged out.");
     }
 

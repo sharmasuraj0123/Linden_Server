@@ -19,6 +19,10 @@ public class Movie extends Content implements Serializable{
     @Enumerated(EnumType.STRING)
     public MovieType movieType = MovieType.DEFAULT;
 
+    {
+        this.contentType = ContentType.MOVIE;
+    }
+
     public Movie(){
         this.contentType = ContentType.MOVIE;
     }
