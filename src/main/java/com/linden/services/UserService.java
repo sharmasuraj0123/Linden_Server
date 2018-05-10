@@ -42,6 +42,9 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private UserWantsToSeeRepository userWantsToSeeRepository;
+
     public enum RegistrationStatus{
         OK, EMAIL_TAKEN
     }
@@ -118,7 +121,7 @@ public class UserService {
         return review;
     }
 
-    public void editAReview(User user, long reviewId, Review review) {
+    public Review editAReview(User user, long reviewId, Review review) {
         Optional<Review> result = reviewRepository.findById(reviewId);
         user = userRepository.findById(user.getAccountId()).orElse(user);
         if (result.isPresent() && result.get().getPostedBy().equals(user)) {
@@ -155,7 +158,9 @@ public class UserService {
                     }
                     break;
             }
+            return oldReview;
         }
+        return review;
     }
 
     private void updateReviewList(Content content) {
@@ -223,6 +228,23 @@ public class UserService {
 
     public void addToWantToSee(User user, Content content) {
         user = userRepository.findById(user.getAccountId()).orElse(user);
+        UserWantsToSee wantsToSee = new UserWantsToSee();
+        wantsToSee.setContentId(content.getId());
+        wantsToSee.setContentType(content.getContentType());
+        userWantsToSeeRepository.saveAndFlush(wantsToSee);
+        updateWantToSeeList(user);
+    }
 
+    public void removeFromWantToSee(User user, Content content) {
+        user = userRepository.findById(user.getAccountId()).orElse(user);
+        userWantsToSeeRepository.deleteByUserIdAndContentId(user.getAccountId(), content.getId());
+        updateWantToSeeList(user);
+    }
+
+    private void updateWantToSeeList(User user) {
+        List<UserWantsToSee> savedList = userWantsToSeeRepository.findByUserId(user.getAccountId());
+        user.setWantsToSee(new HashSet<>());
+        savedList.forEach(user.getWantsToSee()::add);
+        userRepository.saveAndFlush(user);
     }
 }

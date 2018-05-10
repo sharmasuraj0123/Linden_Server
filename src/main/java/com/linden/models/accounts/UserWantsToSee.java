@@ -11,6 +11,7 @@ public class UserWantsToSee implements Serializable{
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
+    private long userId;
 
     private long contentId;
 
@@ -21,7 +22,8 @@ public class UserWantsToSee implements Serializable{
 
     }
 
-    public UserWantsToSee(long contentId, ContentType contentType) {
+    public UserWantsToSee(long userId, long contentId, ContentType contentType) {
+        this.userId = userId;
         this.contentId = contentId;
         this.contentType = contentType;
     }
@@ -32,6 +34,14 @@ public class UserWantsToSee implements Serializable{
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(long userId) {
+        this.userId = userId;
     }
 
     public long getContentId() {
