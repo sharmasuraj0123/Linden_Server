@@ -164,7 +164,7 @@ public class UserController {
             // They should be updated though.
             return new ObjectStatusResponse<>(user, "OK");
         }
-        return new ObjectStatusResponse<>(null, "Not logged in!");
+        return new ObjectStatusResponse<>(null, "User not found!");
     }
 
     @RequestMapping(value = {"/editCredentials"}, method = RequestMethod.POST)
@@ -204,5 +204,16 @@ public class UserController {
                     "Linden Team");
             emailSender.send(message);
         }
+    }
+
+    @RequestMapping(value = {"/deleteAccount"}, method = RequestMethod.POST)
+    @ResponseBody
+    public StatusResponse deleteAccount(@RequestBody Token token) {
+        User user = (User) accountTokenService.getAccount(token.getToken());
+        if(user != null) {
+            userService.deleteAccount(user);
+            return new StatusResponse("OK");
+        }
+        return new StatusResponse("Error", "Invalid user token.");
     }
 }

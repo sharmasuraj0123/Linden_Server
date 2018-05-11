@@ -307,5 +307,7 @@ public class UserService {
         userRepository.saveAndFlush(user);
     }
 
-
+    public void deleteAccount(User user) {
+        userRepository.delete(user);
+    }
 }
