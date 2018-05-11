@@ -8,6 +8,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.session.jdbc.config.annotation.web.http.EnableJdbcHttpSession;
@@ -18,6 +20,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.Properties;
 
 @EnableAutoConfiguration
 @Configuration
@@ -37,6 +40,28 @@ public class ApplicationConfig {
 
     @Value("${security.random.algorithm}")
     private String randomAlgorithm;
+
+    @Value("${mail.host}")
+    private String mailHost;
+
+    @Value("${mail.port}")
+    private String mailPort;
+
+    @Value("${mail.transport.protocol}")
+    private String mailTransportProtocol;
+
+    @Value("${mail.smtp.auth}")
+    private String mailSMTPAuth;
+
+    @Value("${mail.smtp.starttls.enable}")
+    private String mailSMTPStartTLSEnable;
+
+    @Value("${mail.username}")
+    private String mailUsername;
+
+    @Value("${mail.password}")
+    private String mailPassword;
+
 
     private SecureRandom getNativeSecureRandom(){
         String os = System.getProperty("os.name").toLowerCase();
@@ -80,5 +105,22 @@ public class ApplicationConfig {
                 registry.addMapping("/**").allowedOrigins("*");
             }
         };
+    }
+
+    @Bean
+    public JavaMailSender getJavaMailSender() {
+        JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+        mailSender.setHost(mailHost);
+        mailSender.setPort(Integer.parseInt(mailPort));
+
+        mailSender.setUsername(mailUsername);
+        mailSender.setPassword(mailPassword);
+
+        Properties props = mailSender.getJavaMailProperties();
+        props.put("mail.transport.protocol", mailTransportProtocol);
+        props.put("mail.smtp.auth", mailSMTPAuth);
+        props.put("mail.smtp.starttls.enable", mailSMTPStartTLSEnable);
+
+        return mailSender;
     }
 }

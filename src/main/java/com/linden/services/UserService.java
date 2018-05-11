@@ -1,9 +1,6 @@
 package com.linden.services;
 
-import com.linden.models.accounts.Account;
-import com.linden.models.accounts.User;
-import com.linden.models.accounts.UserType;
-import com.linden.models.accounts.UserWantsToSee;
+import com.linden.models.accounts.*;
 import com.linden.models.content.*;
 import com.linden.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,12 +42,19 @@ public class UserService {
     @Autowired
     private UserWantsToSeeRepository userWantsToSeeRepository;
 
+    @Autowired
+    private UserNotInterestedRepository userNotInterestedRepository;
+
     public enum RegistrationStatus{
         OK, EMAIL_TAKEN
     }
 
     @Autowired
     private UserRepository userRepository;
+
+    public User getUserById(long id) {
+        return userRepository.findById(id).orElse(null);
+    }
 
     public User getUserByEmail(String email){
         return userRepository.findByEmail(email);
@@ -123,7 +127,7 @@ public class UserService {
 
     public Review editAReview(User user, long reviewId, Review review) {
         Optional<Review> result = reviewRepository.findById(reviewId);
-        user = userRepository.findById(user.getAccountId()).orElse(user);
+        user = userRepository.findById(user.getId()).orElse(user);
         if (result.isPresent() && result.get().getPostedBy().equals(user)) {
             Review oldReview = result.get();
             switch (user.getUserType()) {
@@ -172,7 +176,7 @@ public class UserService {
 
     public void reportAReview(Review review, User user, ReviewReport report) {
         review = reviewRepository.findById(review.getId()).orElse(review);
-        user = userRepository.findById(user.getAccountId()).orElse(user);
+        user = userRepository.findById(user.getId()).orElse(user);
         report.setReview(review);
         report.setReportedBy(user);
         reviewReportRepository.save(report);
@@ -205,29 +209,29 @@ public class UserService {
     }
 
     public ArrayList<Content> getUserWantToSee(User user) {
-        user = userRepository.findById(user.getAccountId()).orElse(user);
+        user = userRepository.findById(user.getId()).orElse(user);
         ArrayList<Content> wantToSeeList = new ArrayList<>();
         user.getWantsToSee().stream().forEach(
-                userWantsToSee -> {
-                    switch (userWantsToSee.getContentType()){
-                        case MOVIE:
-                            wantToSeeList.add(
-                                movieRepository.findById(userWantsToSee.getContentId()).get()
-                            );
-                            break;
-                        case TVSHOW:
-                            wantToSeeList.add(
-                                tvShowRepository.findById(userWantsToSee.getContentId()).get()
-                            );
-                            break;
-                    }
+            userWantsToSee -> {
+                switch (userWantsToSee.getContentType()){
+                    case MOVIE:
+                        wantToSeeList.add(
+                            movieRepository.findById(userWantsToSee.getContentId()).get()
+                        );
+                        break;
+                    case TVSHOW:
+                        wantToSeeList.add(
+                            tvShowRepository.findById(userWantsToSee.getContentId()).get()
+                        );
+                        break;
                 }
+            }
         );
         return wantToSeeList;
     }
 
     public void addToWantToSee(User user, Content content) {
-        user = userRepository.findById(user.getAccountId()).orElse(user);
+        user = userRepository.findById(user.getId()).orElse(user);
         UserWantsToSee wantsToSee = new UserWantsToSee();
         wantsToSee.setContentId(content.getId());
         wantsToSee.setContentType(content.getContentType());
@@ -236,15 +240,59 @@ public class UserService {
     }
 
     public void removeFromWantToSee(User user, Content content) {
-        user = userRepository.findById(user.getAccountId()).orElse(user);
-        userWantsToSeeRepository.deleteByUserIdAndContentId(user.getAccountId(), content.getId());
+        user = userRepository.findById(user.getId()).orElse(user);
+        userWantsToSeeRepository.deleteByUserIdAndContentId(user.getId(), content.getId());
         updateWantToSeeList(user);
     }
 
     private void updateWantToSeeList(User user) {
-        List<UserWantsToSee> savedList = userWantsToSeeRepository.findByUserId(user.getAccountId());
+        List<UserWantsToSee> savedList = userWantsToSeeRepository.findByUserId(user.getId());
         user.setWantsToSee(new HashSet<>());
         savedList.forEach(user.getWantsToSee()::add);
+        userRepository.saveAndFlush(user);
+    }
+
+    public ArrayList<Content> getNotInterested(User user) {
+        user = userRepository.findById(user.getId()).orElse(user);
+        ArrayList<Content> notInterestedList = new ArrayList<>();
+        user.getNotInterested().stream().forEach(
+            userNotInterested -> {
+                switch (userNotInterested.getContentType()){
+                    case MOVIE:
+                        notInterestedList.add(
+                                movieRepository.findById(userNotInterested.getContentId()).get()
+                        );
+                        break;
+                    case TVSHOW:
+                        notInterestedList.add(
+                                tvShowRepository.findById(userNotInterested.getContentId()).get()
+                        );
+                        break;
+                }
+            }
+        );
+        return notInterestedList;
+    }
+
+    public void addToNotInterested(User user, Content content) {
+        user = userRepository.findById(user.getId()).orElse(user);
+        UserNotInterested notInterested = new UserNotInterested();
+        notInterested.setContentId(content.getId());
+        notInterested.setContentType(content.getContentType());
+        userNotInterestedRepository.saveAndFlush(notInterested);
+        updateNotInterested(user);
+    }
+
+    public void removeFromNotInterested(User user, Content content) {
+        user = userRepository.findById(user.getId()).orElse(user);
+        userNotInterestedRepository.deleteByUserIdAndContentId(user.getId(), content.getId());
+        updateNotInterested(user);
+    }
+
+    private void updateNotInterested(User user) {
+        List<UserNotInterested> savedList = userNotInterestedRepository.findByUserId(user.getId());
+        user.setNotInterested(new HashSet<>());
+        savedList.forEach(user.getNotInterested()::add);
         userRepository.saveAndFlush(user);
     }
 }
