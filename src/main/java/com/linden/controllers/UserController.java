@@ -6,11 +6,12 @@ import com.linden.models.content.Review;
 import com.linden.models.content.ReviewReport;
 import com.linden.services.AccountTokenService;
 import com.linden.services.UserService;
-import com.linden.util.ObjectStatusResponse;
-import com.linden.util.Token;
-import com.linden.util.TokenObjectContainer;
+import com.linden.services.VerificationService;
+import com.linden.util.*;
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -23,6 +24,12 @@ public class UserController {
     @Autowired
     private AccountTokenService accountTokenService;
 
+    @Autowired
+    private VerificationService verificationService;
+
+    @Autowired
+    public JavaMailSender emailSender;
+
     @RequestMapping(value = {"/postReview", "/postRating"}, method = RequestMethod.POST)
     @ResponseBody
     public ObjectStatusResponse<?> postReview(@RequestBody Review review) {
@@ -30,7 +37,7 @@ public class UserController {
         if (user != null) {
             return new ObjectStatusResponse<>(userService.postAReview(user, review), "OK");
         }
-        else return new ObjectStatusResponse<>(null, "Not logged in!");
+        return new ObjectStatusResponse<>(null, "Not logged in!");
     }
 
     @RequestMapping(value = {"/editReview/{reviewId}", "/editRating/{reviewId}"}, method = RequestMethod.POST)
@@ -40,7 +47,7 @@ public class UserController {
         if (user != null){
             return new ObjectStatusResponse<>(userService.editAReview(user, reviewId, newReview), "OK");
         }
-        else return new ObjectStatusResponse<>("status", "Not logged in!");
+        return new ObjectStatusResponse<>("status", "Not logged in!");
     }
 
     @RequestMapping(value = "/reportReview/{reviewId}", method = RequestMethod.POST)
@@ -51,7 +58,7 @@ public class UserController {
             userService.reportAReview(report.getReview(), user, report);
             return new ObjectStatusResponse<>(null, "OK");
         }
-        else return new ObjectStatusResponse<>(null, "Not logged in!");
+        return new ObjectStatusResponse<>(null, "Not logged in!");
     }
 
     @RequestMapping(value = {"/deleteReview/{reviewId}", "/deleteRating/{reviewId}"}, method = RequestMethod.POST)
@@ -62,7 +69,7 @@ public class UserController {
             userService.deleteReview(user, reviewId);
             return new ObjectStatusResponse<>(null, "OK");
         }
-        else return new ObjectStatusResponse<>(null, "Not logged in!");
+        return new ObjectStatusResponse<>(null, "Not logged in!");
     }
 
     @RequestMapping(value = {"/getWantToSee"}, method = RequestMethod.POST)
@@ -72,7 +79,7 @@ public class UserController {
         if (user != null){
             return new ObjectStatusResponse<>(userService.getUserWantToSee(user), "OK");
         }
-        else return new ObjectStatusResponse<>(null, "Not logged in!");
+        return new ObjectStatusResponse<>(null, "Not logged in!");
     }
 
     @RequestMapping(value = {"/addToWantToSee"}, method = RequestMethod.POST)
@@ -84,7 +91,7 @@ public class UserController {
             userService.addToWantToSee(user, content);
             return new ObjectStatusResponse<>(null, "OK");
         }
-        else return new ObjectStatusResponse<>(null, "Not logged in!");
+        return new ObjectStatusResponse<>(null, "Not logged in!");
     }
 
     @RequestMapping(value = {"/removeFromWantToSee"}, method = RequestMethod.POST)
@@ -96,7 +103,7 @@ public class UserController {
             userService.removeFromWantToSee(user, content);
             return new ObjectStatusResponse<>(null, "OK");
         }
-        else return new ObjectStatusResponse<>(null, "Not logged in!");
+        return new ObjectStatusResponse<>(null, "Not logged in!");
     }
 
     @RequestMapping(value = {"/getNotInterested"}, method = RequestMethod.POST)
@@ -106,7 +113,7 @@ public class UserController {
         if (user != null){
             return new ObjectStatusResponse<>(userService.getNotInterested(user), "OK");
         }
-        else return new ObjectStatusResponse<>(null, "Not logged in!");
+        return new ObjectStatusResponse<>(null, "Not logged in!");
     }
 
     @RequestMapping(value = {"/addToNotInterested"}, method = RequestMethod.POST)
@@ -118,7 +125,7 @@ public class UserController {
             userService.addToNotInterested(user, content);
             return new ObjectStatusResponse<>(null, "OK");
         }
-        else return new ObjectStatusResponse<>(null, "Not logged in!");
+        return new ObjectStatusResponse<>(null, "Not logged in!");
     }
 
     @RequestMapping(value = {"/removeFromNotInterested"}, method = RequestMethod.POST)
@@ -130,7 +137,7 @@ public class UserController {
             userService.removeFromNotInterested(user, content);
             return new ObjectStatusResponse<>(null, "OK");
         }
-        else return new ObjectStatusResponse<>(null, "Not logged in!");
+        return new ObjectStatusResponse<>(null, "Not logged in!");
     }
 
 
@@ -144,7 +151,7 @@ public class UserController {
             // They should be updated though.
             return new ObjectStatusResponse<>(user, "OK");
         }
-        else return new ObjectStatusResponse<>(null, "Not logged in!");
+        return new ObjectStatusResponse<>(null, "Not logged in!");
     }
 
     @RequestMapping(value = {"/{userId}"}, method = RequestMethod.GET)
@@ -157,6 +164,45 @@ public class UserController {
             // They should be updated though.
             return new ObjectStatusResponse<>(user, "OK");
         }
-        else return new ObjectStatusResponse<>(null, "Not logged in!");
+        return new ObjectStatusResponse<>(null, "Not logged in!");
+    }
+
+    @RequestMapping(value = {"/editCredentials"}, method = RequestMethod.POST)
+    @ResponseBody
+    public StatusResponse editCredentials(@RequestBody UserCredentials userCredentials) {
+        User user = (User) accountTokenService.getAccount(userCredentials.getToken());
+        if(user != null) {
+            userService.changeUserCredentials(user, userCredentials);
+            return new StatusResponse("OK");
+        }
+        return new StatusResponse("Error", "Invalid user token.");
+    }
+
+    @RequestMapping(value = {"/forgotPassword"}, method = RequestMethod.POST)
+    @ResponseBody
+    public StatusResponse forgotPassword(@RequestBody Token token) {
+        User user = (User) accountTokenService.getAccount(token.getToken());
+        if(user != null) {
+            String temporaryPassword = verificationService.generateToken();
+            UserCredentials userCredentials = new UserCredentials();
+            userCredentials.setPassword(temporaryPassword);
+            userService.changeUserCredentials(user, userCredentials);
+            sendResetPasswordEmail(user, temporaryPassword);
+        }
+        return new StatusResponse("Error", "Invalid user token.");
+    }
+
+    private void sendResetPasswordEmail(User user, String password) {
+        if(user != null) {
+            SimpleMailMessage message = new SimpleMailMessage();
+            message.setTo(user.getEmail());
+            message.setSubject("Linden Password Reset");
+            message.setText("Hello "+user.getFirstName()+"!\n\n" +
+                    "\tHere is your new password. This new password can be used to login and change your password " +
+                    "through the user menu.\n\tPassword: "+password+"\n\n" +
+                    "Regards,\n" +
+                    "Linden Team");
+            emailSender.send(message);
+        }
     }
 }

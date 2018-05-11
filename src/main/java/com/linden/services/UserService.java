@@ -3,6 +3,7 @@ package com.linden.services;
 import com.linden.models.accounts.*;
 import com.linden.models.content.*;
 import com.linden.repositories.*;
+import com.linden.util.UserCredentials;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -295,4 +296,16 @@ public class UserService {
         savedList.forEach(user.getNotInterested()::add);
         userRepository.saveAndFlush(user);
     }
+
+    public void changeUserCredentials(User user, UserCredentials userCredentials) {
+        if (userCredentials.getEmail() != null) {
+            user.setEmail(userCredentials.getEmail());
+        }
+        if(userCredentials.getPassword() != null) {
+            user.setPassword(passwordEncoder.encode(userCredentials.getPassword()));
+        }
+        userRepository.saveAndFlush(user);
+    }
+
+
 }
