@@ -142,7 +142,7 @@ public class LoginController {
             message.setSubject("Linden Verification Email");
             message.setText("Welcome to Linden!\n\n" +
                             "\tWe hope you enjoy your experience here at Linden. To verify your account please follow this link:\n" +
-                            "http://localhost:3000/verify?userId="+user.getId()+"&token="+verification.getToken()+"\n\n" +
+                            "http://localhost:3000/verify/"+user.getId()+"/"+verification.getToken()+"\n\n" +
                             "Regards,\n" +
                             "Linden Team");
             emailSender.send(message);
