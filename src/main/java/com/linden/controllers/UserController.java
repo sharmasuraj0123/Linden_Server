@@ -12,6 +12,9 @@ import com.linden.util.TokenObjectContainer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RestController
 @RequestMapping(value = "/user")
 public class UserController {
@@ -87,4 +90,27 @@ public class UserController {
         }
         else return new ObjectStatusResponse<>("status", "Not logged in!");
     }
+
+    @RequestMapping(value="/getAllCritics", method = RequestMethod.GET)
+    @ResponseBody
+    public ObjectStatusResponse<?> getAllCritics(){
+        ArrayList<User> critics = (ArrayList<User>) userService.getAllCritics();
+
+        if (critics.size() != 0){
+            return new ObjectStatusResponse<>(critics, "OK");
+        }
+        else return new ObjectStatusResponse<>("status", "No registered critics yet");
+    }
+
+    @RequestMapping(value="/getTopCritics", method = RequestMethod.GET)
+    @ResponseBody
+    public ObjectStatusResponse<?> getTopCritics(){
+        ArrayList<User> critics = (ArrayList<User>) userService.getAllTopCritics();
+
+        if (critics.size() != 0){
+            return new ObjectStatusResponse<>(critics, "OK");
+        }
+        else return new ObjectStatusResponse<>("status", "No registered critics yet");
+    }
+
 }

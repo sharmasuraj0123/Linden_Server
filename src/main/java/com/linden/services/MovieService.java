@@ -1,15 +1,18 @@
 package com.linden.services;
 
+import com.linden.models.content.Cast;
 import com.linden.models.content.Movie;
 import com.linden.models.content.MovieType;
+import com.linden.repositories.CastRepository;
 import com.linden.repositories.MovieRepository;
 import com.linden.util.search.rank.ContentRanker;
 import com.linden.util.search.rank.Ranker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import static java.time.temporal.TemporalAdjusters.firstDayOfYear;
 import java.time.Duration;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.Date;
 import java.util.List;
@@ -21,6 +24,9 @@ public class MovieService {
 
     @Autowired
     private MovieRepository movieRepository;
+
+    @Autowired
+    private CastRepository castRepository;
 
     public Movie findById(long id) {
         Optional<Movie> movie = movieRepository.findById(id);
@@ -83,10 +89,6 @@ public class MovieService {
         ).limit(limit).collect(Collectors.toCollection(HashSet::new));
     }
 
-    public List<Movie> getTopBoxOffice() {
-        return movieRepository.findByOrderByBoxOfficeDesc();
-    }
-
     public List<Movie> getHighestRated() {
         return movieRepository.findByOrderByScoreDesc();
     }
@@ -102,7 +104,30 @@ public class MovieService {
     }
 
     public List<Movie> getMoviesByCastId(long castId){
-        List<Movie> movies = movieRepository.getMoviesByCastId(castId);
+        List<Movie> movies = new ArrayList<>();
+        Cast cast = castRepository.getCastById(castId);
+        List<Cast> duplicates = castRepository.getCastsByFirstNameAndLastName(cast.getFirstName(),cast.getLastName());
+
+        for(Cast tempCast: duplicates){
+            List<Movie> tempMovies = movieRepository.getMoviesByCastId(tempCast.getId());
+            movies.addAll(tempMovies);
+        }
+
+        return movies;
+    }
+
+    public List<Movie> getTopBoxOffice(){
+
+        LocalDate now = LocalDate.now();
+        LocalDate firstDay = now.with(firstDayOfYear());
+        Date date = java.sql.Date.valueOf(firstDay);
+
+        List<Movie> movies = movieRepository.findByReleaseDateAfterOrderByBoxOfficeDesc(date);
+        return movies;
+    }
+
+    public List<Movie> getAcademyAwardWinner(){
+        List<Movie> movies = movieRepository.findMoviesByIsAcademyWinnerTrue();
         return movies;
     }
 }

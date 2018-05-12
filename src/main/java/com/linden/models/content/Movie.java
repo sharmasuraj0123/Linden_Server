@@ -14,7 +14,7 @@ public class Movie extends Content implements Serializable{
 
     private boolean isFeatured;
 
-    public boolean isTopBoxOffice;
+    public boolean isAcademyWinner;
 
     @Enumerated(EnumType.STRING)
     public MovieType movieType = MovieType.DEFAULT;
@@ -34,6 +34,30 @@ public class Movie extends Content implements Serializable{
         this.revenue = revenue;
         this.duration = duration;
         this.contentType = ContentType.MOVIE;
+    }
+
+    public boolean isFeatured() {
+        return isFeatured;
+    }
+
+    public void setFeatured(boolean featured) {
+        isFeatured = featured;
+    }
+
+    public boolean isAcademyWinner() {
+        return isAcademyWinner;
+    }
+
+    public void setAcademyWinner(boolean academyWinner) {
+        isAcademyWinner = academyWinner;
+    }
+
+    public MovieType getMovieType() {
+        return movieType;
+    }
+
+    public void setMovieType(MovieType movieType) {
+        this.movieType = movieType;
     }
 
     public Set<Genre> getGenre() {

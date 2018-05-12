@@ -3,6 +3,7 @@ package com.linden.models.content;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Time;
+import java.util.List;
 
 @Entity
 public class Showtime implements Serializable{

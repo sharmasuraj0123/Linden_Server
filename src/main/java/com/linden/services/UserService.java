@@ -225,4 +225,14 @@ public class UserService {
         user = userRepository.findById(user.getAccountId()).orElse(user);
 
     }
+
+    public List<User> getAllCritics(){
+        return userRepository.findUserByUserTypeOrUserType("CRITIC","TOPCRITIC");
+    }
+
+    public List<User> getAllTopCritics(){
+        return userRepository.findUserByUserType("TOPCRITIC");
+    }
+
+
 }

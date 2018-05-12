@@ -124,4 +124,85 @@ public class MovieController {
 
     }
 
+    @RequestMapping(
+            value = "/getTopBoxOffice",
+            method = RequestMethod.GET
+    )
+    @ResponseBody
+    public SearchResponse getTopBoxOffice(){
+        return getTopBoxOffice(1);
+    }
+
+    @RequestMapping(
+            value = "/getTopBoxOffice",
+            params = {"page"},
+            method = RequestMethod.GET
+    )
+    @ResponseBody
+    public SearchResponse getTopBoxOffice(int page) {
+        List<Movie> movies = movieService.getTopBoxOffice();
+        movies = (movies == null) ? Collections.EMPTY_LIST : movies;
+
+        if (page > 0) {
+            if ((page - 1) * RESULT_LIMIT <= movies.size()) {
+                movies = movies.subList(
+                        (page - 1) * RESULT_LIMIT,
+                        (page * RESULT_LIMIT > movies.size()) ?
+                                movies.size() : page * RESULT_LIMIT
+                );
+            }
+        }
+
+        return new SearchResponse(
+                movies,
+                Collections.EMPTY_LIST,
+                Collections.EMPTY_LIST,
+                movies.size(),
+                0,
+                0,
+                movies.size()
+        );
+    }
+
+    @RequestMapping(
+            value = "/getAcademyAwardWinners",
+            method = RequestMethod.GET
+    )
+    @ResponseBody
+    public SearchResponse getAcademyAwardWinners(){
+        return getAcademyAwardWinners(1);
+    }
+
+    @RequestMapping(
+            value = "/getAcademyAwardWinners",
+            params = {"page"},
+            method = RequestMethod.GET
+    )
+    @ResponseBody
+    public SearchResponse getAcademyAwardWinners(int page) {
+        List<Movie> movies = movieService.getAcademyAwardWinner();
+        movies = (movies == null) ? Collections.EMPTY_LIST : movies;
+
+        if (page > 0) {
+            if ((page - 1) * RESULT_LIMIT <= movies.size()) {
+                movies = movies.subList(
+                        (page - 1) * RESULT_LIMIT,
+                        (page * RESULT_LIMIT > movies.size()) ?
+                                movies.size() : page * RESULT_LIMIT
+                );
+            }
+        }
+
+        return new SearchResponse(
+                movies,
+                Collections.EMPTY_LIST,
+                Collections.EMPTY_LIST,
+                movies.size(),
+                0,
+                0,
+                movies.size()
+        );
+    }
+
+
 }

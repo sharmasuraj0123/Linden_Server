@@ -1,13 +1,16 @@
 package com.linden.services;
 
+import com.linden.models.content.Cast;
 import com.linden.models.content.Episode;
 import com.linden.models.content.Season;
 import com.linden.models.content.TvShow;
+import com.linden.repositories.CastRepository;
 import com.linden.repositories.TvShowRepository;
 import com.linden.util.search.rank.ContentRanker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
@@ -16,6 +19,9 @@ public class TvShowService {
 
     @Autowired
     private TvShowRepository tvShowRepository;
+
+    @Autowired
+    private CastRepository castRepository;
 
     public List<TvShow> searchTvShow(String keywords){
         return searchTvShow(keywords, new ContentRanker<>(), true);
@@ -41,7 +47,15 @@ public class TvShowService {
     }
 
     public List<TvShow> getTvShowsByCastId(long castId){
-        List<TvShow> shows = tvShowRepository.getTvShowsByCastId(castId);
+        List<TvShow> shows = new ArrayList<>();
+        Cast cast = castRepository.getCastById(castId);
+        List<Cast> duplicates = castRepository.getCastsByFirstNameAndLastName(cast.getFirstName(),cast.getLastName());
+
+        for(Cast tempCast: duplicates){
+            List<TvShow> tempMovies = tvShowRepository.getTvShowsByCastId(tempCast.getId());
+            shows.addAll(tempMovies);
+        }
+
         return shows;
     }
 
@@ -85,5 +99,13 @@ public class TvShowService {
 
         return result;
 
+    }
+
+    public List<TvShow> getHighestRatedTvShows(){
+        return tvShowRepository.getTvShowsByOrderByScore();
+    }
+
+    public List<TvShow> getFreshTvShows(){
+        return  tvShowRepository.findFreshTvShows();
     }
 }
