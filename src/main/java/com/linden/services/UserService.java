@@ -47,10 +47,7 @@ public class UserService {
     private UserNotInterestedRepository userNotInterestedRepository;
 
     @Autowired
-    private MovieService movieService;
-
-    @Autowired
-    private TvShowService tvShowService;
+    private PromotionApplicationRepository promotionApplicationRepository;
 
     public enum RegistrationStatus{
         OK, EMAIL_TAKEN
@@ -329,4 +326,11 @@ public class UserService {
     }
 
 
+
+    public void applyForPromotion(long userId, UserType promotionType) {
+        PromotionApplication promotionApplication = new PromotionApplication();
+        promotionApplication.setUserId(userId);
+        promotionApplication.setPromotionType(promotionType);
+        promotionApplicationRepository.save(promotionApplication);
+    }
 }

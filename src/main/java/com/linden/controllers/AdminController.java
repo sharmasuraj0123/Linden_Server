@@ -39,30 +39,6 @@ public class AdminController {
         }
     }
 
-//    @RequestMapping(value = "/addMovie", method = RequestMethod.POST)
-//    @ResponseBody
-//    public StatusResponse addMovie(@RequestBody TokenObjectContainer<Content> contentContainer){
-//
-//        Admin admin = (Admin) accountTokenService.getAccount(contentContainer.getToken());
-//
-//        if(admin !=  null){
-//            try{
-//
-//                Content content = contentContainer.getObj();
-//                Movie movie = (Movie)content;
-//
-//                adminService.addMovie(movie);
-//                return new StatusResponse("OK");
-//            } catch (Exception e){
-//                e.printStackTrace();
-//                return new StatusResponse("ERROR", e.getMessage());
-//            }
-//        }else{
-//
-//        }
-//
-//    }
-
     @RequestMapping(value = "/addTvShow", method = RequestMethod.POST)
     @ResponseBody
     public StatusResponse addTvShow(@RequestBody TokenObjectContainer<TvShow> request){
