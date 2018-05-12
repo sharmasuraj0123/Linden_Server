@@ -1,8 +1,9 @@
 from datetime import datetime
 import requests
+import sys
 from bs4 import BeautifulSoup
 
-linden_url = 'http://127.0.0.1:8081/admin/addMovie'
+linden_url = 'http://127.0.0.1:8080/admin/addMovie'
 omdb_url = 'http://www.omdbapi.com/'
 omdb_key = '12d0adae'
 
@@ -73,5 +74,4 @@ for movie in movie_list:
     movie_object['cast'] = cast
     print(movie_object)
     print('------------------------------------------------------')
-    print(requests.post(url=linden_url, json=movie_object))
-    break
+    print(requests.post(url=linden_url, json=dict(token=sys.argv[1], obj=movie_object)))

@@ -8,6 +8,10 @@ public class TokenObjectContainer<T extends Serializable> {
 
     private T obj;
 
+    public TokenObjectContainer() {
+
+    }
+
     public TokenObjectContainer(String token, T obj) {
         this.token = token;
         this.obj = obj;

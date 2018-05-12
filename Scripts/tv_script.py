@@ -1,10 +1,11 @@
 import requests
+import sys
 import time
 
 tmdb_key = '89a57552ff989080c44c82c3078fb543'
 tmdb_url = 'https://api.themoviedb.org/3/tv/'
 
-linden_url = 'http://127.0.0.1:8081/admin/addTvShow'
+linden_url = 'http://127.0.0.1:8080/admin/addTvShow'
 
 tv_id_list = [1418, 1668, 19885, 63351, 1396, 1405, 1399, 2288, 62816, 60708, 61889, 1100, 1421, 60059]
 
@@ -71,7 +72,6 @@ for tv_id in tv_id_list:
     tv_obj['seasons'] = seasons
     print(tv_obj)
     
-    print(requests.post(url=linden_url, json=tv_obj))
-    
-    break
+    print(requests.post(url=linden_url, json=dict(token=sys.argv[1], obj=tv_obj)))
+
     time.sleep(2)

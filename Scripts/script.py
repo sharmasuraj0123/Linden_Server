@@ -1,4 +1,5 @@
 import requests
+import sys
 from datetime import datetime
 
 # http://www.omdbapi.com/?i=tt0137523&apikey=12d0adae
@@ -76,10 +77,10 @@ while counter < 100:
     if 'Rated' in data:
         print('Rating: ' + data['Rated'])
     if 'imdbRating' in data:
-        movieObject['score'] = float(data['imdbRating'])/2
+        movieObject['score'] = float(data['imdbRating']) / 2
     print('----------------------------------------------------------')
     movieObject['cast'] = cast
     print(movieObject)
-    print(requests.post(url=linden_url, json=movieObject))
+    print(requests.post(url=linden_url, json=dict(token=sys.argv[1], obj=movieObject)))
     movie_id += 1
     counter += 1
