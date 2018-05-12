@@ -7,6 +7,7 @@ import com.linden.models.accounts.Verification;
 import com.linden.repositories.AdminRepository;
 import com.linden.repositories.UserRepository;
 import com.linden.repositories.VerificationRepository;
+import com.linden.util.VerificationToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -47,6 +48,16 @@ public class VerificationService {
         verification.setToken(generateToken());
         verificationRepository.save(verification);
         return verification;
+    }
+
+    public String getUserVerificationToken(long userId) {
+        List<Verification> tokenList = verificationRepository.findByAccountId(userId);
+        if(tokenList.size() == 1) {
+            return tokenList.get(0).getToken();
+        }
+        else {
+            return null;
+        }
     }
 
     public boolean verfiyAccount(long accountId, String token) {

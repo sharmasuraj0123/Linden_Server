@@ -60,4 +60,8 @@ public class AdminService {
 
         tvShowRepository.save(tvShow);
     }
+
+    public void editMovie(long movieId, Movie newMovie) {
+
+    }
 }
