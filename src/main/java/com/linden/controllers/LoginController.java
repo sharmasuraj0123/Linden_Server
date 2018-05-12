@@ -134,6 +134,32 @@ public class LoginController {
         return new StatusResponse("ERROR", "An unknown error has occurred...");
     }
 
+    @RequestMapping(value = "/resendVerificationEmail", params = {"email"}, method = RequestMethod.GET)
+    @ResponseBody
+    public StatusResponse resendVerificationEmail(String email){
+        User user = userService.getUserByEmail(email);
+        if(user != null) {
+            String token = verificationService.getUserVerificationToken(user.getId());
+            sendVerificationEmail(user, token);
+            return new StatusResponse("OK");
+        }
+        else {
+            return new StatusResponse("ERROR", "Account not found!");
+        }
+    }
+
+    private void sendVerificationEmail(User user, String token) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(user.getEmail());
+        message.setSubject("Linden Verification Email");
+        message.setText("Welcome to Linden!\n\n" +
+                "\tWe hope you enjoy your experience here at Linden. To verify your account please follow this link:\n" +
+                "http://localhost:3000/verify/"+user.getId()+"/"+token+"\n\n" +
+                "Regards,\n" +
+                "Linden Team");
+        emailSender.send(message);
+    }
+
     private void sendVerificationEmail(User user) {
         if(user != null) {
             Verification verification = verificationService.generateVerification(user);
@@ -159,4 +185,6 @@ public class LoginController {
             return new StatusResponse("Error", "Unable to verify account!");
         }
     }
+
+
 }
