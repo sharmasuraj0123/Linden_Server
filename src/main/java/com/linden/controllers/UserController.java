@@ -1,6 +1,7 @@
 package com.linden.controllers;
 
 import com.linden.models.accounts.User;
+import com.linden.models.accounts.UserType;
 import com.linden.models.content.Content;
 import com.linden.models.content.Review;
 import com.linden.models.content.ReviewReport;
@@ -242,4 +243,22 @@ public class UserController {
         else return new ObjectStatusResponse<>("status", "No registered critics yet");
     }
 
+
+    @RequestMapping(value = {"/applyForPromotion"}, method = RequestMethod.POST)
+    @ResponseBody
+    public StatusResponse applyForPromotion(@RequestBody Token token) {
+        User user = (User) accountTokenService.getAccount(token.getToken());
+        if(user != null) {
+            switch (user.getUserType()){
+                case AUDIENCE:
+                    userService.applyForPromotion(user.getId(), UserType.CRITIC);
+                    break;
+                case CRITIC:
+                    userService.applyForPromotion(user.getId(), UserType.TOPCRITIC);
+                    break;
+            }
+            return new StatusResponse("OK");
+        }
+        return new StatusResponse("Error", "Invalid user token.");
+    }
 }

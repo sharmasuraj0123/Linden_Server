@@ -177,7 +177,7 @@ public class LoginController {
 
     @RequestMapping(value = "/verify", method = RequestMethod.POST)
     @ResponseBody
-    public StatusResponse verify(@RequestBody VerificationToken token) {
+    public StatusResponse Qverify(@RequestBody VerificationToken token) {
         if(verificationService.verfiyAccount(token.getUserId(), token.getToken())){
             return new StatusResponse("OK");
         }

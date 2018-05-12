@@ -46,6 +46,9 @@ public class UserService {
     @Autowired
     private UserNotInterestedRepository userNotInterestedRepository;
 
+    @Autowired
+    private PromotionApplicationRepository promotionApplicationRepository;
+
     public enum RegistrationStatus{
         OK, EMAIL_TAKEN
     }
@@ -320,4 +323,11 @@ public class UserService {
     }
 
 
+
+    public void applyForPromotion(long userId, UserType promotionType) {
+        PromotionApplication promotionApplication = new PromotionApplication();
+        promotionApplication.setUserId(userId);
+        promotionApplication.setPromotionType(promotionType);
+        promotionApplicationRepository.save(promotionApplication);
+    }
 }
