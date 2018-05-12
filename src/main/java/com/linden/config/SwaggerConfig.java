@@ -1,4 +1,4 @@
-package com.linden.controllers;
+package com.linden.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

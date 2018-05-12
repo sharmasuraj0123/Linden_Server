@@ -25,7 +25,7 @@ public class AccountTokenService {
     @Autowired
     private AccountTokenRepository accountTokenRepository;
 
-    private static final String ALPHABET = "abcdefghijklmnopqrstuvwxyzABCDEFGJKLMNPRSTUVWXYZ0123456789!@#$%^&";
+    private static final String ALPHABET = "abcdefghijklmnopqrstuvwxyzABCDEFGJKLMNPRSTUVWXYZ0123456789!@#$^&";
 
     private static final Random random = new SecureRandom();
 

@@ -11,9 +11,9 @@ import java.util.stream.Collectors;
 
 public class SearchResponse implements Serializable {
     private SearchResultCount resultCount;
-    private List<MovieResult> movies;
-    private List<TvShowResult> tvShows;
-    private List<ActorResult> actors;
+    private List<Movie> movies;
+    private List<TvShow> tvShows;
+    private List<Cast> actors;
 
     public SearchResponse(){
         resultCount = new SearchResultCount();
@@ -30,21 +30,24 @@ public class SearchResponse implements Serializable {
                           int castCount,
                           int totalResultCount) {
         this();
-        if(movies != null) {
-            this.movies = movies.stream()
-                    .map(MovieResult::new)
-                    .collect(Collectors.toCollection(ArrayList::new));
-        }
-        if(tvShows != null) {
-            this.tvShows = tvShows.stream()
-                    .map(TvShowResult::new)
-                    .collect(Collectors.toCollection(ArrayList::new));
-        }
-        if(actors != null) {
-            this.actors = actors.stream()
-                    .map(ActorResult::new)
-                    .collect(Collectors.toCollection(ArrayList::new));
-        }
+        this.movies = movies;
+        this.tvShows = tvShows;
+        this.actors = actors;
+//        if(movies != null) {
+//            this.movies = movies.stream()
+//                    .map(MovieResult::new)
+//                    .collect(Collectors.toCollection(ArrayList::new));
+//        }
+//        if(tvShows != null) {
+//            this.tvShows = tvShows.stream()
+//                    .map(TvShowResult::new)
+//                    .collect(Collectors.toCollection(ArrayList::new));
+//        }
+//        if(actors != null) {
+//            this.actors = actors.stream()
+//                    .map(ActorResult::new)
+//                    .collect(Collectors.toCollection(ArrayList::new));
+//        }
         this.resultCount = new SearchResultCount(
                 movieCount, tvCount, castCount, totalResultCount
         );
@@ -58,27 +61,51 @@ public class SearchResponse implements Serializable {
         this.resultCount = resultCount;
     }
 
-    public List<MovieResult> getMovies() {
+    public List<Movie> getMovies() {
         return movies;
     }
 
-    public void setMovies(List<MovieResult> movies) {
+    public void setMovies(List<Movie> movies) {
         this.movies = movies;
     }
 
-    public List<TvShowResult> getTvShows() {
+    public List<TvShow> getTvShows() {
         return tvShows;
     }
 
-    public void setTvShows(List<TvShowResult> tvShows) {
+    public void setTvShows(List<TvShow> tvShows) {
         this.tvShows = tvShows;
     }
 
-    public List<ActorResult> getActors() {
+    public List<Cast> getActors() {
         return actors;
     }
 
-    public void setActors(List<ActorResult> actors) {
+    public void setActors(List<Cast> actors) {
         this.actors = actors;
     }
+
+//    public List<MovieResult> getMovies() {
+//        return movies;
+//    }
+//
+//    public void setMovies(List<MovieResult> movies) {
+//        this.movies = movies;
+//    }
+//
+//    public List<TvShowResult> getTvShows() {
+//        return tvShows;
+//    }
+//
+//    public void setTvShows(List<TvShowResult> tvShows) {
+//        this.tvShows = tvShows;
+//    }
+//
+//    public List<ActorResult> getActors() {
+//        return actors;
+//    }
+//
+//    public void setActors(List<ActorResult> actors) {
+//        this.actors = actors;
+//    }
 }

@@ -99,9 +99,8 @@ public class MovieController {
             value = "/{movieId}"
     )
     @ResponseBody
-    public MovieResult getMovie(@PathVariable(value = "movieId") String movieId){
-        long id = Long.parseLong(movieId);
-        Movie movie = movieService.getMovie(id);
+    public MovieResult getMovie(@PathVariable(value = "movieId") long movieId){
+        Movie movie = movieService.getMovie(movieId);
         MovieResult result = new MovieResult(movie);
 
         return result;
@@ -109,17 +108,18 @@ public class MovieController {
     }
 
     @RequestMapping(
-            value = "/getUpcomingMovies"
+            value = "/getComingSoon"
     )
     @ResponseBody
-    public List<MovieResult> getUpcomingMovie(){
+    public List<MovieResult> getComingSoon(){
         Date todaysDate = java.sql.Date.valueOf(java.time.LocalDate.now());
         List<Movie> movies = movieService.getUpcomingMovies(todaysDate);
         List<MovieResult> result = new ArrayList<>();
+        System.out.println("Printing coming soon ...");
         for (Movie movie: movies){
             result.add(new MovieResult(movie));
+            System.out.println(movie.getName());
         }
-
         return result;
 
     }

@@ -19,6 +19,13 @@ public class User extends Account implements Serializable {
     @OneToMany
     private Set<UserWantsToSee> wantsToSee;
 
+    @ElementCollection
+    @CollectionTable(
+            name="not_interested"
+    )
+    @OneToMany
+    private Set<UserNotInterested> notInterested;
+
     public User(){
         super();
     }
@@ -49,6 +56,14 @@ public class User extends Account implements Serializable {
 
     public void setWantsToSee(Set<UserWantsToSee> wantsToSee) {
         this.wantsToSee = wantsToSee;
+    }
+
+    public Set<UserNotInterested> getNotInterested() {
+        return notInterested;
+    }
+
+    public void setNotInterested(Set<UserNotInterested> notInterested) {
+        this.notInterested = notInterested;
     }
 
     @Override

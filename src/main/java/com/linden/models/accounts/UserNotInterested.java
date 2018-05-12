@@ -3,10 +3,9 @@ package com.linden.models.accounts;
 import com.linden.models.content.ContentType;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
 @Entity
-public class UserWantsToSee implements Serializable{
+public class UserNotInterested {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
@@ -18,11 +17,11 @@ public class UserWantsToSee implements Serializable{
     @Enumerated(EnumType.STRING)
     private ContentType contentType;
 
-    public UserWantsToSee() {
+    public UserNotInterested() {
 
     }
 
-    public UserWantsToSee(long userId, long contentId, ContentType contentType) {
+    public UserNotInterested(long userId, long contentId, ContentType contentType) {
         this.userId = userId;
         this.contentId = contentId;
         this.contentType = contentType;

@@ -37,11 +37,11 @@ public class CastService {
         if(tokens.length > 1){
             String  firstName = tokens[0],
                     lastName = keywords.substring(keywords.indexOf(' '));
-            result.addAll(castRepository.findCastsByFirstNameAndLastName(firstName, lastName));
+            result.addAll(castRepository.findCastsByFirstNameContainsAndLastNameContains(firstName, lastName));
         }
         else if (tokens.length == 1){
-            result.addAll(castRepository.findCastsByFirstName(tokens[0]));
-            result.addAll(castRepository.findCastsByLastName(tokens[0]));
+            result.addAll(castRepository.findCastsByFirstNameContains(tokens[0]));
+            result.addAll(castRepository.findCastsByLastNameContains(tokens[0]));
         }
         return (new Ranker<>(pairingFunction)).order(result, desc);
     }

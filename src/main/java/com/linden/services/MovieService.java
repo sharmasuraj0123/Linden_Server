@@ -95,6 +95,7 @@ public class MovieService {
 
     public Movie getMovie(long movieId){
         Optional<Movie> movie = movieRepository.findById(movieId);
+        System.out.println(movie);
         return movie.orElse(null);
     }
 
