@@ -1,9 +1,6 @@
 package com.linden.services;
 
-import com.linden.models.content.Cast;
-import com.linden.models.content.Episode;
-import com.linden.models.content.Season;
-import com.linden.models.content.TvShow;
+import com.linden.models.content.*;
 import com.linden.repositories.CastRepository;
 import com.linden.repositories.TvShowRepository;
 import com.linden.util.search.rank.ContentRanker;
@@ -108,4 +105,43 @@ public class TvShowService {
     public List<TvShow> getFreshTvShows(){
         return  tvShowRepository.findFreshTvShows();
     }
+
+    public void updateLindenmeterForTvShow(Review rev, TvShow show){
+        int rating = rev.getRating();
+        List<Review> reviews = show.getReviews();
+
+        int criticReviewCount = 0;
+        for(Review review: reviews){
+            if(review.getReviewType().equals("CRITIC") || review.getReviewType().equals("TOPCRITIC")){
+                criticReviewCount++;
+            }
+        }
+
+        if(rev.getReviewType().equals("AUDIENCE")){
+
+            double newRating = 0;
+            int audienceReviewCount= reviews.size()-criticReviewCount;
+            if(rating > 3){
+                newRating = (100+(show.getScore()*criticReviewCount))/(audienceReviewCount+1);
+            }else{
+                newRating = ((show.getScore()*criticReviewCount))/(audienceReviewCount+1);
+            }
+
+            show.setScore(newRating);
+
+        }else{
+            double newRating = 0;
+            if(rating > 3){
+                newRating = (100+(show.getLindenMeter()*criticReviewCount))/(criticReviewCount+1);
+            }else{
+                newRating = ((show.getLindenMeter()*criticReviewCount))/(criticReviewCount+1);
+            }
+
+            show.setLindenMeter(newRating);
+        }
+
+
+    }
+
+
 }

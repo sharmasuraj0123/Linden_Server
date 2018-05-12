@@ -21,7 +21,11 @@ public abstract class Content implements Serializable{
     protected String details;
     protected Date releaseDate;
     protected String videos;
+
     protected double score;
+
+    protected double lindenMeter;
+
     protected double boxOffice;
     @ElementCollection
     @CollectionTable(
@@ -58,8 +62,6 @@ public abstract class Content implements Serializable{
         this.cast = cast;
         this.genre = genre;
     }
-
-
 
     public long getId() {
         return id;
@@ -163,5 +165,13 @@ public abstract class Content implements Serializable{
 
     public void setContentType(ContentType contentType) {
         this.contentType = contentType;
+    }
+
+    public double getLindenMeter() {
+        return lindenMeter;
+    }
+
+    public void setLindenMeter(double lindenMeter) {
+        this.lindenMeter = lindenMeter;
     }
 }

@@ -3,6 +3,7 @@ package com.linden.repositories;
 import com.linden.models.content.Movie;
 import com.linden.models.content.MovieType;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.time.Year;
@@ -30,4 +31,7 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
     List<Movie> findByReleaseDateAfterOrderByBoxOfficeDesc(Date firstOfYear);
 
     List<Movie> findMoviesByIsAcademyWinnerTrue();
+
+    @Query(value = "update movie m set m.linden_meter=?1 where m.id = ?2", nativeQuery = true)
+    void setMovieLindenMeter(double rating, long id);
 }
