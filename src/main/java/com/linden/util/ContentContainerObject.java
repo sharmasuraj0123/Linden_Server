@@ -1,9 +1,6 @@
 package com.linden.util;
 
-import com.linden.models.content.Cast;
-import com.linden.models.content.ContentType;
-import com.linden.models.content.Genre;
-import com.linden.models.content.Review;
+import com.linden.models.content.*;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -37,6 +34,22 @@ public class ContentContainerObject implements Serializable {
 
 
     private ContentType contentType;
+
+    // Movie Fields
+
+    private double revenue;
+
+    private long duration;
+
+    private boolean isFeatured;
+
+    private boolean isAcademyWinner;
+
+    // TV Fields
+
+    private List<Season> seasons;
+
+    private int numberOfSeasons;
 
     public ContentContainerObject() {}
 
@@ -150,5 +163,53 @@ public class ContentContainerObject implements Serializable {
 
     public void setContentType(ContentType contentType) {
         this.contentType = contentType;
+    }
+
+    public double getRevenue() {
+        return revenue;
+    }
+
+    public void setRevenue(double revenue) {
+        this.revenue = revenue;
+    }
+
+    public long getDuration() {
+        return duration;
+    }
+
+    public void setDuration(long duration) {
+        this.duration = duration;
+    }
+
+    public boolean isFeatured() {
+        return isFeatured;
+    }
+
+    public void setFeatured(boolean featured) {
+        isFeatured = featured;
+    }
+
+    public boolean isAcademyWinner() {
+        return isAcademyWinner;
+    }
+
+    public void setAcademyWinner(boolean academyWinner) {
+        isAcademyWinner = academyWinner;
+    }
+
+    public List<Season> getSeasons() {
+        return seasons;
+    }
+
+    public void setSeasons(List<Season> seasons) {
+        this.seasons = seasons;
+    }
+
+    public int getNumberOfSeasons() {
+        return numberOfSeasons;
+    }
+
+    public void setNumberOfSeasons(int numberOfSeasons) {
+        this.numberOfSeasons = numberOfSeasons;
     }
 }

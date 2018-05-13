@@ -58,9 +58,16 @@ public class ContentContainer {
                 default:
                 case MOVIE:
                     content = new Movie();
+                    ((Movie)content).isAcademyWinner = obj.isAcademyWinner();
+                    ((Movie)content).setRevenue(obj.getRevenue());
+                    ((Movie)content).setDuration(obj.getDuration());
+                    ((Movie)content).setFeatured(obj.isFeatured());
+                    ((Movie)content).setAcademyWinner(obj.isAcademyWinner());
                     break;
                 case TVSHOW:
                     content = new TvShow();
+                    ((TvShow)content).setNumberOfSeasons(obj.getNumberOfSeasons());
+                    ((TvShow)content).setSeasons(obj.getSeasons());
                     break;
             }
             content.setId(this.obj.getId());
