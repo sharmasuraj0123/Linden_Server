@@ -38,7 +38,6 @@ public class TvShowController {
 
         Long id = Long.parseLong(tvShowId);
         TvShow show = tvShowService.getTvShow(id);
-        TvShowResult result = new TvShowResult(show);
         HashMap<String, Serializable> response = new HashMap<>();
         if(request.getHeader("token") != null) {
             User user = (User) accountTokenService.getAccount(request.getHeader("token"));
@@ -49,7 +48,7 @@ public class TvShowController {
                     notInterested -> (notInterested.getContentId() == id) && (notInterested.getContentType() == ContentType.TVSHOW))
             );
         }
-        response.put("tvShow", result);
+        response.put("tvShow", show);
         return response;
     }
 
