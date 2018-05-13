@@ -45,8 +45,6 @@ public class AdminService {
     }
 
     public void addMovie(Movie movie){
-        System.out.println(movie.getName());
-        movie.getCast().forEach(System.out::println);
         movie.getCast().forEach(castRepository::save);
         movieRepository.save(movie);
     }

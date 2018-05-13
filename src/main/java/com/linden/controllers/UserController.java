@@ -1,8 +1,11 @@
 package com.linden.controllers;
 
+import com.linden.models.accounts.Account;
+import com.linden.models.accounts.Admin;
 import com.linden.models.accounts.User;
 import com.linden.models.accounts.UserType;
 import com.linden.models.content.Content;
+import com.linden.models.content.ContentType;
 import com.linden.models.content.Review;
 import com.linden.models.content.ReviewReport;
 import com.linden.services.AccountTokenService;
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/user")
@@ -58,7 +62,7 @@ public class UserController {
     @RequestMapping(value = "/reportReview/{reviewId}", method = RequestMethod.POST)
     @ResponseBody
     public ObjectStatusResponse<?> reportReview(@PathVariable("reviewId") long reviewId, @RequestBody ReviewReport report) {
-        User user = (User) accountTokenService.getAccount(report.getAccountToken());
+        User user = (User) accountTokenService.getAccount(report.getToken());
         if (user != null){
             userService.reportAReview(report.getReview(), user, report);
             return new ObjectStatusResponse<>(null, "OK");
@@ -69,8 +73,9 @@ public class UserController {
     @RequestMapping(value = {"/deleteReview/{reviewId}", "/deleteRating/{reviewId}"}, method = RequestMethod.POST)
     @ResponseBody
     public ObjectStatusResponse<?> deleteReview(@PathVariable("reviewId") long reviewId, @RequestBody Token token) {
-        User user = (User) accountTokenService.getAccount(token.getToken());
-        if (user != null){
+        Account account = accountTokenService.getAccount(token.getToken());
+        if(account instanceof User) {
+            User user = (User) account;
             userService.deleteReview(user, reviewId);
             return new ObjectStatusResponse<>(null, "OK");
         }
@@ -247,15 +252,15 @@ public class UserController {
 
     @RequestMapping(value = {"/applyForPromotion"}, method = RequestMethod.POST)
     @ResponseBody
-    public StatusResponse applyForPromotion(@RequestBody Token token) {
-        User user = (User) accountTokenService.getAccount(token.getToken());
+    public StatusResponse applyForPromotion(@RequestBody PromotionApplicationForm form) {
+        User user = (User) accountTokenService.getAccount(form.getToken());
         if(user != null) {
             switch (user.getUserType()){
                 case AUDIENCE:
-                    userService.applyForPromotion(user.getId(), UserType.CRITIC);
+                    userService.applyForPromotion(user.getId(), form.getReason(), UserType.CRITIC);
                     break;
                 case CRITIC:
-                    userService.applyForPromotion(user.getId(), UserType.TOPCRITIC);
+                    userService.applyForPromotion(user.getId(), form.getReason(), UserType.TOPCRITIC);
                     break;
             }
             return new StatusResponse("OK");
@@ -268,7 +273,9 @@ public class UserController {
     public HashMap<String, ?> getMovieReviewHistory(HttpServletRequest request) {
         User user = (User) accountTokenService.getAccount(request.getHeader("token"));
         if (user != null) {
-            List<?> reviewList = userService.getReviewHistory(user);
+            List<?> reviewList = userService.getReviewHistory(user).stream().filter(
+                reviewHistory -> reviewHistory.getContentType() == ContentType.MOVIE
+            ).collect(Collectors.toCollection(ArrayList::new));
             HashMap<String, List<?>> response = new HashMap<>();
             response.put("reviewHistory", reviewList);
             return response;
@@ -279,4 +286,57 @@ public class UserController {
             return response;
         }
     }
+
+    @RequestMapping(value = {"/reviewHistory/tvshows"}, method = RequestMethod.GET)
+    @ResponseBody
+    public HashMap<String, ?> getTvShowReviewHistory(HttpServletRequest request) {
+        User user = (User) accountTokenService.getAccount(request.getHeader("token"));
+        if (user != null) {
+            List<?> reviewList = userService.getReviewHistory(user).stream().filter(
+                reviewHistory -> reviewHistory.getContentType() == ContentType.TVSHOW
+            ).collect(Collectors.toCollection(ArrayList::new));
+            HashMap<String, List<?>> response = new HashMap<>();
+            response.put("reviewHistory", reviewList);
+            return response;
+        }
+        else{
+            HashMap<String, String> response = new HashMap<>();
+            response.put("status", "ERROR");
+            return response;
+        }
+    }
+
+    @RequestMapping(value = {"/getReview/movie/{movieId}"}, method = RequestMethod.GET)
+    @ResponseBody
+    public HashMap<String, ?> getMovieReview(@PathVariable("movieId") long movieId, HttpServletRequest request) {
+        User user = (User) accountTokenService.getAccount(request.getHeader("token"));
+        if (user != null) {
+            HashMap<String, Review> response = new HashMap<>();
+            response.put("review", userService.getUserReview(user, movieId, ContentType.MOVIE));
+            return response;
+        }
+        else {
+            HashMap<String, String> response = new HashMap<>();
+            response.put("status", "ERROR");
+            return response;
+        }
+    }
+
+    @RequestMapping(value = {"/getReview/tvShow/{tvShowId}"}, method = RequestMethod.GET)
+    @ResponseBody
+    public HashMap<String, ?> getTvShowReview(@PathVariable("tvShowId") long tvShowId, HttpServletRequest request) {
+        User user = (User) accountTokenService.getAccount(request.getHeader("token"));
+        if (user != null) {
+            HashMap<String, Review> response = new HashMap<>();
+            response.put("review", userService.getUserReview(user, tvShowId, ContentType.TVSHOW));
+            return response;
+        }
+        else {
+            HashMap<String, String> response = new HashMap<>();
+            response.put("status", "ERROR");
+            return response;
+        }
+    }
+
+
 }

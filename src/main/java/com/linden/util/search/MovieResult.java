@@ -16,6 +16,7 @@ public class MovieResult implements Serializable {
     private Set<Genre> genre;
     private Set<Cast> cast;
     private double score;
+    private double lindenMeter;
 
     public MovieResult(){
 

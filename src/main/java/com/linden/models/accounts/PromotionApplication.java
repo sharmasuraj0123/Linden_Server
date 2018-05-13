@@ -16,6 +16,8 @@ public class PromotionApplication implements Serializable {
 
     private UserType promotionType;
 
+    private String reason;
+
     public PromotionApplication() {
     }
 
@@ -33,5 +35,13 @@ public class PromotionApplication implements Serializable {
 
     public void setPromotionType(UserType promotionType) {
         this.promotionType = promotionType;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
     }
 }

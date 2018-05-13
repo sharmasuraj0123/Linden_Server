@@ -197,6 +197,7 @@ public class UserService {
         user = userRepository.findById(user.getId()).orElse(user);
         report.setReview(review);
         report.setReportedBy(user);
+        report.setDate(Date.from(Instant.now()));
         reviewReportRepository.save(report);
     }
 
@@ -357,10 +358,11 @@ public class UserService {
 
 
     @Transactional
-    public void applyForPromotion(long userId, UserType promotionType) {
+    public void applyForPromotion(long userId, String reason, UserType promotionType) {
         PromotionApplication promotionApplication = new PromotionApplication();
         promotionApplication.setUserId(userId);
         promotionApplication.setPromotionType(promotionType);
+        promotionApplication.setReason(reason);
         promotionApplicationRepository.save(promotionApplication);
     }
 
@@ -374,9 +376,11 @@ public class UserService {
                     switch (review.getContentType()) {
                         case MOVIE:
                             content = movieRepository.findById(review.getContentId()).get();
+                            reviewHistory.setContentType(ContentType.MOVIE);
                             break;
                         case TVSHOW:
                             content = tvShowRepository.findById(review.getContentId()).get();
+                            reviewHistory.setContentType(ContentType.TVSHOW);
                             break;
                     }
                     reviewHistory.setContentName(content.getName());
@@ -386,5 +390,15 @@ public class UserService {
                 }
         );
         return reviewHistories;
+    }
+
+    public Review getUserReview(User user, long movieId, ContentType contentType) {
+        List<Review> reviews = reviewRepository.findByPostedByAndContentIdAndContentType(user, movieId, contentType);
+        if(reviews.size() == 1) {
+            return reviews.get(0);
+        }
+        else{
+            return null;
+        }
     }
 }

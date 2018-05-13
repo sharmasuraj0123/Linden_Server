@@ -46,8 +46,6 @@ public class AccountTokenService {
 
     public Account getAccount(String token) {
         List<AccountToken> accountTokens = accountTokenRepository.findByToken(token);
-        System.out.println(token);
-        System.out.println(accountTokens.size());
         if(accountTokens.size() == 1) {
             AccountToken accountToken = accountTokens.get(0);
             if(accountToken.isAdmin()) {

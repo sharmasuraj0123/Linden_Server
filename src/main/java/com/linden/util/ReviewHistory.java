@@ -1,5 +1,7 @@
 package com.linden.util;
 
+import com.linden.models.content.ContentType;
+
 public class ReviewHistory {
 
     private String contentName;
@@ -7,6 +9,8 @@ public class ReviewHistory {
     private String details;
 
     private int rating;
+
+    private ContentType contentType;
 
     public ReviewHistory() {
     }
@@ -33,5 +37,13 @@ public class ReviewHistory {
 
     public void setRating(int rating) {
         this.rating = rating;
+    }
+
+    public ContentType getContentType() {
+        return contentType;
+    }
+
+    public void setContentType(ContentType contentType) {
+        this.contentType = contentType;
     }
 }

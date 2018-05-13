@@ -22,7 +22,7 @@ public class ReviewReport implements Serializable{
 
     private String justification;
 
-    private String accountToken;
+    private String token;
 
     public ReviewReport(){}
 
@@ -73,11 +73,11 @@ public class ReviewReport implements Serializable{
         this.review = review;
     }
 
-    public String getAccountToken() {
-        return accountToken;
+    public String getToken() {
+        return token;
     }
 
-    public void setAccountToken(String accountToken) {
-        this.accountToken = accountToken;
+    public void setToken(String token) {
+        this.token = token;
     }
 }
