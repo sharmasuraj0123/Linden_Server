@@ -259,8 +259,10 @@ public class UserService {
 
     public void removeFromWantToSee(User user, Content content) {
         user = userRepository.findById(user.getId()).orElse(user);
-        userWantsToSeeRepository.deleteByUserIdAndContentId(user.getId(), content.getId());
-        updateWantToSeeList(user);
+        if(!userWantsToSeeRepository.findByUserIdAndContentId(user.getId(), content.getId()).isEmpty()) {
+            userWantsToSeeRepository.deleteByUserIdAndContentId(user.getId(), content.getId());
+            updateWantToSeeList(user);
+        }
     }
 
     private void updateWantToSeeList(User user) {
@@ -307,8 +309,10 @@ public class UserService {
 
     public void removeFromNotInterested(User user, Content content) {
         user = userRepository.findById(user.getId()).orElse(user);
-        userNotInterestedRepository.deleteByUserIdAndContentId(user.getId(), content.getId());
-        updateNotInterested(user);
+        if(!userNotInterestedRepository.findByUserIdAndContentId(user.getId(), content.getId()).isEmpty()) {
+            userNotInterestedRepository.deleteByUserIdAndContentId(user.getId(), content.getId());
+            updateNotInterested(user);
+        }
     }
 
     private void updateNotInterested(User user) {
