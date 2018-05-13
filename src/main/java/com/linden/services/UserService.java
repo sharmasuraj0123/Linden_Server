@@ -358,7 +358,7 @@ public class UserService {
 
 
     @Transactional
-    public void applyForPromotion(long userId, UserType promotionType) {
+    public void applyForPromotion(long userId, String reason, UserType promotionType) {
         PromotionApplication promotionApplication = new PromotionApplication();
         promotionApplication.setUserId(userId);
         promotionApplication.setPromotionType(promotionType);

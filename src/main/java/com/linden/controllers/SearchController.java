@@ -52,6 +52,7 @@ public class SearchController {
             List<TvShow> tvShows = tvShowService.searchTvShow(keywords);
             List<Cast> cast = castService.searchCast(keywords);
 
+
             movies = (movies == null) ? Collections.EMPTY_LIST : movies;
             tvShows = (tvShows == null) ? Collections.EMPTY_LIST : tvShows;
             cast = (cast == null) ? Collections.EMPTY_LIST : cast;

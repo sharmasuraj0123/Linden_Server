@@ -33,21 +33,6 @@ public class SearchResponse implements Serializable {
         this.movies = movies;
         this.tvShows = tvShows;
         this.actors = actors;
-//        if(movies != null) {
-//            this.movies = movies.stream()
-//                    .map(MovieResult::new)
-//                    .collect(Collectors.toCollection(ArrayList::new));
-//        }
-//        if(tvShows != null) {
-//            this.tvShows = tvShows.stream()
-//                    .map(TvShowResult::new)
-//                    .collect(Collectors.toCollection(ArrayList::new));
-//        }
-//        if(actors != null) {
-//            this.actors = actors.stream()
-//                    .map(ActorResult::new)
-//                    .collect(Collectors.toCollection(ArrayList::new));
-//        }
         this.resultCount = new SearchResultCount(
                 movieCount, tvCount, castCount, totalResultCount
         );
@@ -84,28 +69,4 @@ public class SearchResponse implements Serializable {
     public void setActors(List<Cast> actors) {
         this.actors = actors;
     }
-
-//    public List<MovieResult> getMovies() {
-//        return movies;
-//    }
-//
-//    public void setMovies(List<MovieResult> movies) {
-//        this.movies = movies;
-//    }
-//
-//    public List<TvShowResult> getTvShows() {
-//        return tvShows;
-//    }
-//
-//    public void setTvShows(List<TvShowResult> tvShows) {
-//        this.tvShows = tvShows;
-//    }
-//
-//    public List<ActorResult> getActors() {
-//        return actors;
-//    }
-//
-//    public void setActors(List<ActorResult> actors) {
-//        this.actors = actors;
-//    }
 }

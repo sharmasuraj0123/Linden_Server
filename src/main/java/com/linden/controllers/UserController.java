@@ -252,15 +252,15 @@ public class UserController {
 
     @RequestMapping(value = {"/applyForPromotion"}, method = RequestMethod.POST)
     @ResponseBody
-    public StatusResponse applyForPromotion(@RequestBody Token token) {
-        User user = (User) accountTokenService.getAccount(token.getToken());
+    public StatusResponse applyForPromotion(@RequestBody PromotionApplicationForm form) {
+        User user = (User) accountTokenService.getAccount(form.getToken());
         if(user != null) {
             switch (user.getUserType()){
                 case AUDIENCE:
-                    userService.applyForPromotion(user.getId(), UserType.CRITIC);
+                    userService.applyForPromotion(user.getId(), form.getReason(), UserType.CRITIC);
                     break;
                 case CRITIC:
-                    userService.applyForPromotion(user.getId(), UserType.TOPCRITIC);
+                    userService.applyForPromotion(user.getId(), form.getReason(), UserType.TOPCRITIC);
                     break;
             }
             return new StatusResponse("OK");
@@ -337,4 +337,6 @@ public class UserController {
             return response;
         }
     }
+
+
 }
