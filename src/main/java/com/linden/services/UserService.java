@@ -374,9 +374,11 @@ public class UserService {
                     switch (review.getContentType()) {
                         case MOVIE:
                             content = movieRepository.findById(review.getContentId()).get();
+                            reviewHistory.setContentType(ContentType.MOVIE);
                             break;
                         case TVSHOW:
                             content = tvShowRepository.findById(review.getContentId()).get();
+                            reviewHistory.setContentType(ContentType.TVSHOW);
                             break;
                     }
                     reviewHistory.setContentName(content.getName());
@@ -386,5 +388,15 @@ public class UserService {
                 }
         );
         return reviewHistories;
+    }
+
+    public Review getUserReview(User user, long movieId, ContentType contentType) {
+        List<Review> reviews = reviewRepository.findByPostedByAndContentIdAndContentType(user, movieId, contentType);
+        if(reviews.size() == 1) {
+            return reviews.get(0);
+        }
+        else{
+            return null;
+        }
     }
 }
