@@ -7,16 +7,6 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
-/**
- * {
- *     "contentId" : 1093092,
- *     "contentType" : "MOVIE" or "TVSHOW",
- *     "rating" : 1-5,
- *     "details" : ""
- *
- * }
- */
-
 @Entity
 public class Review implements Serializable{
 
@@ -27,7 +17,6 @@ public class Review implements Serializable{
     private Date date;
 
     @OneToOne
-    @NotNull
     private User postedBy;
 
     private long contentId;
@@ -46,7 +35,7 @@ public class Review implements Serializable{
 
     public Review(){}
 
-    public Review(Date date, @NotNull User postedBy, @NotNull ContentType contentType, long contentId, String details,
+    public Review(Date date, User postedBy, @NotNull ContentType contentType, long contentId, String details,
                   int rating) {
         this.date = date;
         this.postedBy = postedBy;
