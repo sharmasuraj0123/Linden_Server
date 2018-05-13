@@ -197,6 +197,7 @@ public class UserService {
         user = userRepository.findById(user.getId()).orElse(user);
         report.setReview(review);
         report.setReportedBy(user);
+        report.setDate(Date.from(Instant.now()));
         reviewReportRepository.save(report);
     }
 
