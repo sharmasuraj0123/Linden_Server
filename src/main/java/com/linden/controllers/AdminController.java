@@ -62,8 +62,9 @@ public class AdminController {
     @RequestMapping(value = "/viewReports", method = RequestMethod.GET)
     @ResponseBody
     public HashMap<String, ?> viewReports(HttpServletRequest request) {
-        Admin admin = (Admin) accountTokenService.getAccount(request.getToken());
+        Admin admin = (Admin) accountTokenService.getAccount(request.getHeader("token"));
         if(admin != null) {
+            HashMap<String, ?> response = new HashMap<>();
             return null;
         }
         else {
