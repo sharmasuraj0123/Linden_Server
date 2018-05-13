@@ -70,7 +70,7 @@ for movie in movie_list:
     if 'imdbRating' in data:
         if type(data['imdbRating']) is float:
             movie_object['score'] = float(data['imdbRating']) / 2
-
+    movieObject['contentType'] = 'MOVIE'
     movie_object['cast'] = cast
     print(movie_object)
     print('------------------------------------------------------')

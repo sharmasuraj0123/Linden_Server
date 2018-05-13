@@ -68,10 +68,10 @@ for tv_id in tv_id_list:
             season['episodes'].append(seasons_data.get('episodes')[j])
 
         seasons.append(season)
-
+    tv_obj['contentType'] = 'TVSHOW'
     tv_obj['seasons'] = seasons
     print(tv_obj)
-    
+
     print(requests.post(url=linden_url, json=dict(token=sys.argv[1], obj=tv_obj)))
 
     time.sleep(2)
