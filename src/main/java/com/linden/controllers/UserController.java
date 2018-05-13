@@ -92,6 +92,16 @@ public class UserController {
         return new ObjectStatusResponse<>(null, "Not logged in!");
     }
 
+    @RequestMapping(value = {"/{userId}/getWantToSee"}, method = RequestMethod.POST)
+    @ResponseBody
+    public ObjectStatusResponse<?> getUserWantToSee(@PathVariable("userId") long userId){
+        User user = userService.getUserById(userId);
+        if (user != null){
+            return new ObjectStatusResponse<>(userService.getUserWantToSee(user), "OK");
+        }
+        return new ObjectStatusResponse<>(null, "Not logged in!");
+    }
+
     @RequestMapping(value = {"/addToWantToSee"}, method = RequestMethod.POST)
     @ResponseBody
     public ObjectStatusResponse<?> addToWantToSee(@RequestBody ContentContainer contentContainer) {
@@ -116,10 +126,22 @@ public class UserController {
         return new ObjectStatusResponse<>(null, "Not logged in!");
     }
 
+
+
     @RequestMapping(value = {"/getNotInterested"}, method = RequestMethod.POST)
     @ResponseBody
     public ObjectStatusResponse<?> getNotInterested(@RequestBody Token token){
         User user = (User) accountTokenService.getAccount(token.getToken());
+        if (user != null){
+            return new ObjectStatusResponse<>(userService.getNotInterested(user), "OK");
+        }
+        return new ObjectStatusResponse<>(null, "Not logged in!");
+    }
+
+    @RequestMapping(value = {"/{userId}/getNotInterested"}, method = RequestMethod.POST)
+    @ResponseBody
+    public ObjectStatusResponse<?> getUserNotInterested(@PathVariable("userId") long userId){
+        User user = userService.getUserById(userId);
         if (user != null){
             return new ObjectStatusResponse<>(userService.getNotInterested(user), "OK");
         }

@@ -56,6 +56,8 @@ public class AdminController {
         }
     }
 
+
+
     @RequestMapping(value = "/movie/{movieId}/edit", method = RequestMethod.POST)
     @ResponseBody
     public StatusResponse editMovie(@PathVariable("movieId") long movieId, @RequestParam ContentContainer movie) {
