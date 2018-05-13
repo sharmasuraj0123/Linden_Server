@@ -16,6 +16,8 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/user")
@@ -260,5 +262,22 @@ public class UserController {
             return new StatusResponse("OK");
         }
         return new StatusResponse("Error", "Invalid user token.");
+    }
+
+    @RequestMapping(value = {"/reviewHistory/movies"}, method = RequestMethod.GET)
+    @ResponseBody
+    public HashMap<String, ?> getMovieReviewHistory(HttpServletRequest request) {
+        User user = (User) accountTokenService.getAccount(request.getHeader("token"));
+        if (user != null) {
+            List<?> reviewList = userService.getReviewHistory(user);
+            HashMap<String, List<?>> response = new HashMap<>();
+            response.put("reviewHistory", reviewList);
+            return response;
+        }
+        else{
+            HashMap<String, String> response = new HashMap<>();
+            response.put("status", "ERROR");
+            return response;
+        }
     }
 }

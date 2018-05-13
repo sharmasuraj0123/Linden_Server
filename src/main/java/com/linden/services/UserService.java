@@ -3,6 +3,7 @@ package com.linden.services;
 import com.linden.models.accounts.*;
 import com.linden.models.content.*;
 import com.linden.repositories.*;
+import com.linden.util.ReviewHistory;
 import com.linden.util.UserCredentials;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -361,5 +362,29 @@ public class UserService {
         promotionApplication.setUserId(userId);
         promotionApplication.setPromotionType(promotionType);
         promotionApplicationRepository.save(promotionApplication);
+    }
+
+    public List<ReviewHistory> getReviewHistory(User user) {
+        List<Review> userReviews = reviewRepository.findByPostedBy(userRepository.findById(user.getId()).orElse(user));
+        List<ReviewHistory> reviewHistories = new ArrayList<>();
+        userReviews.forEach(
+                review -> {
+                    ReviewHistory reviewHistory = new ReviewHistory();
+                    Content content = null;
+                    switch (review.getContentType()) {
+                        case MOVIE:
+                            content = movieRepository.findById(review.getContentId()).get();
+                            break;
+                        case TVSHOW:
+                            content = tvShowRepository.findById(review.getContentId()).get();
+                            break;
+                    }
+                    reviewHistory.setContentName(content.getName());
+                    reviewHistory.setDetails(review.getDetails());
+                    reviewHistory.setRating(review.getRating());
+                    reviewHistories.add(reviewHistory);
+                }
+        );
+        return reviewHistories;
     }
 }

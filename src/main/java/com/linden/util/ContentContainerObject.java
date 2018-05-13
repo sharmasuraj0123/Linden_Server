@@ -5,7 +5,6 @@ import com.linden.models.content.ContentType;
 import com.linden.models.content.Genre;
 import com.linden.models.content.Review;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
