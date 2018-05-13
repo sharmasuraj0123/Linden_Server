@@ -328,6 +328,44 @@ public class UserController {
         }
     }
 
+    @RequestMapping(value = {"/{userId}/reviewHistory/movies"}, method = RequestMethod.GET)
+    @ResponseBody
+    public HashMap<String, ?> getUserMovieReviewHistory(@PathVariable("userId") long userId) {
+        User user = userService.getUserById(userId);
+        if (user != null) {
+            List<?> reviewList = userService.getReviewHistory(user).stream().filter(
+                    reviewHistory -> reviewHistory.getContentType() == ContentType.MOVIE
+            ).collect(Collectors.toCollection(ArrayList::new));
+            HashMap<String, List<?>> response = new HashMap<>();
+            response.put("reviewHistory", reviewList);
+            return response;
+        }
+        else{
+            HashMap<String, String> response = new HashMap<>();
+            response.put("status", "ERROR");
+            return response;
+        }
+    }
+
+    @RequestMapping(value = {"/{userId}/reviewHistory/tvshows"}, method = RequestMethod.GET)
+    @ResponseBody
+    public HashMap<String, ?> getUserTvShowReviewHistory(@PathVariable("userId") long userId) {
+        User user = userService.getUserById(userId);
+        if (user != null) {
+            List<?> reviewList = userService.getReviewHistory(user).stream().filter(
+                    reviewHistory -> reviewHistory.getContentType() == ContentType.TVSHOW
+            ).collect(Collectors.toCollection(ArrayList::new));
+            HashMap<String, List<?>> response = new HashMap<>();
+            response.put("reviewHistory", reviewList);
+            return response;
+        }
+        else{
+            HashMap<String, String> response = new HashMap<>();
+            response.put("status", "ERROR");
+            return response;
+        }
+    }
+
     @RequestMapping(value = {"/getReview/movie/{movieId}"}, method = RequestMethod.GET)
     @ResponseBody
     public HashMap<String, ?> getMovieReview(@PathVariable("movieId") long movieId, HttpServletRequest request) {

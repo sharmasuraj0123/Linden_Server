@@ -65,6 +65,7 @@ public class AdminController {
         Admin admin = (Admin) accountTokenService.getAccount(request.getHeader("token"));
         if(admin != null) {
             HashMap<String, ?> response = new HashMap<>();
+
             return null;
         }
         else {
