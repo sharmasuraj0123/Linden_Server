@@ -99,7 +99,7 @@ public class MovieController {
         Movie movie = movieService.getMovie(movieId);
         MovieResult result = new MovieResult(movie);
         HashMap<String, Serializable> response = new HashMap<>();
-        if(request.getHeader("token") != null) {
+        if(request.getHeader("token") != null && !request.getHeader("token").equalsIgnoreCase("null")) {
             User user = (User) accountTokenService.getAccount(request.getHeader("token"));
             response.put("isWantToSee", user.getWantsToSee().stream().anyMatch(
                 wantsToSee -> (wantsToSee.getContentId() == movieId) && (wantsToSee.getContentType() == ContentType.MOVIE))
