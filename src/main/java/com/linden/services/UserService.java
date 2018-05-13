@@ -272,7 +272,7 @@ public class UserService {
     }
 
     @Transactional
-    private void updateWantToSeeList(User user) {
+    public void updateWantToSeeList(User user) {
         List<UserWantsToSee> savedList = userWantsToSeeRepository.findByUserId(user.getId());
         user.setWantsToSee(new HashSet<>());
         savedList.forEach(user.getWantsToSee()::add);
@@ -325,7 +325,7 @@ public class UserService {
     }
 
     @Transactional
-    private void updateNotInterested(User user) {
+    public void updateNotInterested(User user) {
         List<UserNotInterested> savedList = userNotInterestedRepository.findByUserId(user.getId());
         user.setNotInterested(new HashSet<>());
         savedList.forEach(user.getNotInterested()::add);
