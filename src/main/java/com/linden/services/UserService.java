@@ -99,6 +99,7 @@ public class UserService {
         }
     }
 
+    @Transactional
     public Review postAReview(User user, Review review){
         review.setPostedBy(user);
         review.setDate(Date.from(Instant.now()));
@@ -138,6 +139,7 @@ public class UserService {
         return review;
     }
 
+    @Transactional
     public Review editAReview(User user, long reviewId, Review review) {
         Optional<Review> result = reviewRepository.findById(reviewId);
         user = userRepository.findById(user.getId()).orElse(user);
@@ -188,6 +190,7 @@ public class UserService {
         content.setReviews(updatedReviewList);
     }
 
+    @Transactional
     public void reportAReview(Review review, User user, ReviewReport report) {
         review = reviewRepository.findById(review.getId()).orElse(review);
         user = userRepository.findById(user.getId()).orElse(user);
@@ -196,6 +199,7 @@ public class UserService {
         reviewReportRepository.save(report);
     }
 
+    @Transactional
     public void deleteReview(User user, long reviewId) {
         Review review = reviewRepository.findById(reviewId).orElse(null);
         if(review != null && review.getPostedBy().equals(user)) {
@@ -244,6 +248,7 @@ public class UserService {
         return wantToSeeList;
     }
 
+    @Transactional
     public void addToWantToSee(User user, Content content) {
         if(userWantsToSeeRepository.findByUserIdAndContentId(user.getId(), content.getId()).isEmpty()) {
             user = userRepository.findById(user.getId()).orElse(user);
@@ -257,6 +262,7 @@ public class UserService {
         }
     }
 
+    @Transactional
     public void removeFromWantToSee(User user, Content content) {
         user = userRepository.findById(user.getId()).orElse(user);
         if(!userWantsToSeeRepository.findByUserIdAndContentId(user.getId(), content.getId()).isEmpty()) {
@@ -265,6 +271,7 @@ public class UserService {
         }
     }
 
+    @Transactional
     private void updateWantToSeeList(User user) {
         List<UserWantsToSee> savedList = userWantsToSeeRepository.findByUserId(user.getId());
         user.setWantsToSee(new HashSet<>());
@@ -294,6 +301,7 @@ public class UserService {
         return notInterestedList;
     }
 
+    @Transactional
     public void addToNotInterested(User user, Content content) {
         if(userNotInterestedRepository.findByUserIdAndContentId(user.getId(), content.getId()).isEmpty()) {
             user = userRepository.findById(user.getId()).orElse(user);
@@ -307,6 +315,7 @@ public class UserService {
         }
     }
 
+    @Transactional
     public void removeFromNotInterested(User user, Content content) {
         user = userRepository.findById(user.getId()).orElse(user);
         if(!userNotInterestedRepository.findByUserIdAndContentId(user.getId(), content.getId()).isEmpty()) {
@@ -315,6 +324,7 @@ public class UserService {
         }
     }
 
+    @Transactional
     private void updateNotInterested(User user) {
         List<UserNotInterested> savedList = userNotInterestedRepository.findByUserId(user.getId());
         user.setNotInterested(new HashSet<>());
@@ -345,7 +355,7 @@ public class UserService {
     }
 
 
-
+    @Transactional
     public void applyForPromotion(long userId, UserType promotionType) {
         PromotionApplication promotionApplication = new PromotionApplication();
         promotionApplication.setUserId(userId);
