@@ -362,6 +362,7 @@ public class UserService {
         PromotionApplication promotionApplication = new PromotionApplication();
         promotionApplication.setUserId(userId);
         promotionApplication.setPromotionType(promotionType);
+        promotionApplication.setReason(reason);
         promotionApplicationRepository.save(promotionApplication);
     }
 

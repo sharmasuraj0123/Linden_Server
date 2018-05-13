@@ -1,9 +1,6 @@
 package com.linden.services;
 
-import com.linden.models.content.Cast;
-import com.linden.models.content.Movie;
-import com.linden.models.content.MovieType;
-import com.linden.models.content.Review;
+import com.linden.models.content.*;
 import com.linden.repositories.CastRepository;
 import com.linden.repositories.MovieRepository;
 import com.linden.util.search.rank.ContentRanker;
@@ -140,12 +137,12 @@ public class MovieService {
 
         int criticReviewCount = 0;
         for(Review review: reviews){
-            if(review.getReviewType().equals("CRITIC") || review.getReviewType().equals("TOPCRITIC")){
+            if(review.getReviewType().equals(ReviewType.CRITIC) || review.getReviewType().equals(ReviewType.TOP_CRITIC)){
                  criticReviewCount++;
             }
         }
 
-        if(rev.getReviewType().equals("AUDIENCE")){
+        if(rev.getReviewType().equals(ReviewType.AUDIENCE)){
             double newRating = 0;
             int audienceReviewCount= reviews.size()-criticReviewCount;
             if(rating > 3){
