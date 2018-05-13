@@ -16,7 +16,6 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 @RequestMapping(value = "/user")
@@ -88,10 +87,10 @@ public class UserController {
 
     @RequestMapping(value = {"/addToWantToSee"}, method = RequestMethod.POST)
     @ResponseBody
-    public ObjectStatusResponse<?> addToWantToSee(@RequestBody TokenObjectContainer<Content> contentContainer) {
+    public ObjectStatusResponse<?> addToWantToSee(@RequestBody ContentContainer contentContainer) {
         User user = (User) accountTokenService.getAccount(contentContainer.getToken());
         if (user != null){
-            Content content = contentContainer.getObj();
+            Content content = contentContainer.getContent();
             userService.addToWantToSee(user, content);
             return new ObjectStatusResponse<>(null, "OK");
         }
@@ -100,10 +99,10 @@ public class UserController {
 
     @RequestMapping(value = {"/removeFromWantToSee"}, method = RequestMethod.POST)
     @ResponseBody
-    public ObjectStatusResponse<?> removeFromWantToSee(@RequestBody TokenObjectContainer<Content> contentContainer) {
+    public ObjectStatusResponse<?> removeFromWantToSee(@RequestBody ContentContainer contentContainer) {
         User user = (User) accountTokenService.getAccount(contentContainer.getToken());
         if (user != null){
-            Content content = contentContainer.getObj();
+            Content content = contentContainer.getContent();
             userService.removeFromWantToSee(user, content);
             return new ObjectStatusResponse<>(null, "OK");
         }
@@ -122,10 +121,10 @@ public class UserController {
 
     @RequestMapping(value = {"/addToNotInterested"}, method = RequestMethod.POST)
     @ResponseBody
-    public ObjectStatusResponse<?> addToNotInterested(@RequestBody TokenObjectContainer<Content> contentContainer) {
+    public ObjectStatusResponse<?> addToNotInterested(@RequestBody ContentContainer contentContainer) {
         User user = (User) accountTokenService.getAccount(contentContainer.getToken());
         if (user != null){
-            Content content = contentContainer.getObj();
+            Content content = contentContainer.getContent();
             userService.addToNotInterested(user, content);
             return new ObjectStatusResponse<>(null, "OK");
         }
@@ -134,10 +133,10 @@ public class UserController {
 
     @RequestMapping(value = {"/removeFromNotInterested"}, method = RequestMethod.POST)
     @ResponseBody
-    public ObjectStatusResponse<?> removeFromNotInterested(@RequestBody TokenObjectContainer<Content> contentContainer) {
+    public ObjectStatusResponse<?> removeFromNotInterested(@RequestBody ContentContainer contentContainer) {
         User user = (User) accountTokenService.getAccount(contentContainer.getToken());
         if (user != null){
-            Content content = contentContainer.getObj();
+            Content content = contentContainer.getContent();
             userService.removeFromNotInterested(user, content);
             return new ObjectStatusResponse<>(null, "OK");
         }
