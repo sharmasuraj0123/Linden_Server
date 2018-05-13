@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.Serializable;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -32,18 +34,23 @@ public class TvShowController {
 
     @RequestMapping(value = "/{tvShowId}", method = RequestMethod.GET)
     @ResponseBody
-    public TvShowResult getTvShow(@PathVariable(value = "tvShowId") String tvShowId, HttpServletRequest request, HttpServletResponse response){
+    public HashMap<String, ?> getTvShow(@PathVariable(value = "tvShowId") String tvShowId, HttpServletRequest request){
 
         Long id = Long.parseLong(tvShowId);
         TvShow show = tvShowService.getTvShow(id);
         TvShowResult result = new TvShowResult(show);
+        HashMap<String, Serializable> response = new HashMap<>();
         if(request.getHeader("token") != null) {
             User user = (User) accountTokenService.getAccount(request.getHeader("token"));
-            response.setHeader("isWatchList", Boolean.valueOf(user.getWantsToSee().stream().anyMatch(
-                    userWantsToSee -> (userWantsToSee.getContentId() == id) && (userWantsToSee.getContentType() == ContentType.TVSHOW))
-            ).toString());
+            response.put("isWantToSee", user.getWantsToSee().stream().anyMatch(
+                    wantsToSee -> (wantsToSee.getContentId() == id) && (wantsToSee.getContentType() == ContentType.TVSHOW))
+            );
+            response.put("isNotInterested", user.getNotInterested().stream().anyMatch(
+                    notInterested -> (notInterested.getContentId() == id) && (notInterested.getContentType() == ContentType.TVSHOW))
+            );
         }
-        return result;
+        response.put("tvShow", result);
+        return response;
     }
 
     @RequestMapping(value = "/{tvShowId}/season/{seasonNumber}", method = RequestMethod.GET)

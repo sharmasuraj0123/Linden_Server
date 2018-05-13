@@ -101,8 +101,11 @@ public class MovieController {
         HashMap<String, Serializable> response = new HashMap<>();
         if(request.getHeader("token") != null) {
             User user = (User) accountTokenService.getAccount(request.getHeader("token"));
-            response.put("isWatchList", user.getWantsToSee().stream().anyMatch(
-                userWantsToSee -> (userWantsToSee.getContentId() == movieId) && (userWantsToSee.getContentType() == ContentType.MOVIE))
+            response.put("isWantToSee", user.getWantsToSee().stream().anyMatch(
+                wantsToSee -> (wantsToSee.getContentId() == movieId) && (wantsToSee.getContentType() == ContentType.MOVIE))
+            );
+            response.put("isNotInterested", user.getNotInterested().stream().anyMatch(
+                notInterested -> (notInterested.getContentId() == movieId) && (notInterested.getContentType() == ContentType.MOVIE))
             );
         }
         response.put("movie", result);
