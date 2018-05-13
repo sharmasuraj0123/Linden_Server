@@ -3,9 +3,10 @@ package com.linden.models.accounts;
 import com.linden.models.content.ContentType;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
-public class UserNotInterested {
+public class UserNotInterested implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
