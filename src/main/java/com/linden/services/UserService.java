@@ -248,10 +248,12 @@ public class UserService {
         if(userWantsToSeeRepository.findByUserIdAndContentId(user.getId(), content.getId()).isEmpty()) {
             user = userRepository.findById(user.getId()).orElse(user);
             UserWantsToSee wantsToSee = new UserWantsToSee();
+            wantsToSee.setUserId(user.getId());
             wantsToSee.setContentId(content.getId());
             wantsToSee.setContentType(content.getContentType());
             userWantsToSeeRepository.saveAndFlush(wantsToSee);
             updateWantToSeeList(user);
+            removeFromNotInterested(user, content);
         }
     }
 
@@ -294,10 +296,12 @@ public class UserService {
         if(userNotInterestedRepository.findByUserIdAndContentId(user.getId(), content.getId()).isEmpty()) {
             user = userRepository.findById(user.getId()).orElse(user);
             UserNotInterested notInterested = new UserNotInterested();
+            notInterested.setUserId(user.getId());
             notInterested.setContentId(content.getId());
             notInterested.setContentType(content.getContentType());
             userNotInterestedRepository.saveAndFlush(notInterested);
             updateNotInterested(user);
+            removeFromWantToSee(user, content);
         }
     }
 
