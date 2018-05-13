@@ -3,6 +3,7 @@ package com.linden.services;
 import com.linden.models.content.Cast;
 import com.linden.models.content.Movie;
 import com.linden.models.content.MovieType;
+import com.linden.models.content.Review;
 import com.linden.repositories.CastRepository;
 import com.linden.repositories.MovieRepository;
 import com.linden.util.search.rank.ContentRanker;
@@ -130,5 +131,43 @@ public class MovieService {
     public List<Movie> getAcademyAwardWinner(){
         List<Movie> movies = movieRepository.findMoviesByIsAcademyWinnerTrue();
         return movies;
+    }
+
+    public void updateLindenmeterForMovie(Review rev, Movie movie){
+
+        int rating = rev.getRating();
+        List<Review> reviews = movie.getReviews();
+
+        int criticReviewCount = 0;
+        for(Review review: reviews){
+            if(review.getReviewType().equals("CRITIC") || review.getReviewType().equals("TOPCRITIC")){
+                 criticReviewCount++;
+            }
+        }
+
+        if(rev.getReviewType().equals("AUDIENCE")){
+            double newRating = 0;
+            int audienceReviewCount= reviews.size()-criticReviewCount;
+            if(rating > 3){
+                newRating = (100+(movie.getScore()*criticReviewCount))/(audienceReviewCount+1);
+            }else{
+                newRating = ((movie.getScore()*criticReviewCount))/(audienceReviewCount+1);
+            }
+
+            movie.setScore(newRating);
+
+        }else{
+            double newRating = 0;
+
+            if(rating > 3){
+                newRating = (100+(movie.getLindenMeter()*criticReviewCount))/(criticReviewCount+1);
+            }else{
+                newRating = ((movie.getLindenMeter()*criticReviewCount))/(criticReviewCount+1);
+            }
+
+            movie.setLindenMeter(newRating);
+        }
+
+
     }
 }

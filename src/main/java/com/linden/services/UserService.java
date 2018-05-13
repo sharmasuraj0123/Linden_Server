@@ -115,6 +115,8 @@ public class UserService {
                 content = movieRepository.findById(review.getContentId()).orElse(null);
                 if (content != null) {
                     content.getReviews().add(review);
+                    // update linden meter of the movie
+                    movieService.updateLindenmeterForMovie(review,(Movie) content);
                     movieRepository.save((Movie) content);
                 }
                 break;
@@ -122,6 +124,7 @@ public class UserService {
                 content = tvShowRepository.findById(review.getContentId()).orElse(null);
                 if (content != null) {
                     content.getReviews().add(review);
+                    tvShowService.updateLindenmeterForTvShow(review,(TvShow) content);
                     tvShowRepository.save((TvShow) content);
                 }
                 break;

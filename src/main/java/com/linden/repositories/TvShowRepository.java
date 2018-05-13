@@ -20,4 +20,6 @@ public interface TvShowRepository extends JpaRepository<TvShow, Long>{
 
     @Query(value="Select * from Tv_Show as tv  where score > 75 and (select count(*) from Review as r where r.Content_Id = tv.id) > 10", nativeQuery = true)
     List<TvShow> findFreshTvShows();
+
+
 }
