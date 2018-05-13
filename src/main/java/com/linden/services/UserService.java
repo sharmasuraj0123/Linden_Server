@@ -49,6 +49,12 @@ public class UserService {
     @Autowired
     private PromotionApplicationRepository promotionApplicationRepository;
 
+    @Autowired
+    private MovieService movieService;
+
+    @Autowired
+    private TvShowService tvShowService;
+
     public enum RegistrationStatus{
         OK, EMAIL_TAKEN
     }
@@ -149,6 +155,7 @@ public class UserService {
                     oldReview.setReviewType(ReviewType.TOP_CRITIC);
                     break;
             }
+            oldReview.setRating(review.getRating());
             oldReview.setDetails(review.getDetails());
             oldReview.setDate(Date.from(Instant.now()));
             reviewRepository.saveAndFlush(oldReview);
