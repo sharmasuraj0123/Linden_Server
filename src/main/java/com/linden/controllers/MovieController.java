@@ -97,7 +97,7 @@ public class MovieController {
     @ResponseBody
     public HashMap<String, Serializable> getMovie(@PathVariable(value = "movieId") long movieId, HttpServletRequest request){
         Movie movie = movieService.getMovie(movieId);
-        MovieResult result = new MovieResult(movie);
+//        MovieResult result = new MovieResult(movie);
         HashMap<String, Serializable> response = new HashMap<>();
         if(request.getHeader("token") != null && !request.getHeader("token").equalsIgnoreCase("null")) {
             User user = (User) accountTokenService.getAccount(request.getHeader("token"));
@@ -108,7 +108,7 @@ public class MovieController {
                 notInterested -> (notInterested.getContentId() == movieId) && (notInterested.getContentType() == ContentType.MOVIE))
             );
         }
-        response.put("movie", result);
+        response.put("movie", movie);
         return response;
     }
 

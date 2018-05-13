@@ -40,7 +40,6 @@ public class UserController {
     public ObjectStatusResponse<?> postReview(@RequestBody Review review) {
         User user = (User) accountTokenService.getAccount(review.getToken());
         if (user != null) {
-
             return new ObjectStatusResponse<>(userService.postAReview(user, review), "OK");
         }
         return new ObjectStatusResponse<>(null, "Not logged in!");
