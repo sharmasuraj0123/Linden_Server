@@ -6,6 +6,9 @@ from datetime import datetime
 omdb_url = 'http://www.omdbapi.com'
 omdb_key = '12d0adae'
 
+# https://api.themoviedb.org/3/movie/343611/casts?api_key=89a57552ff989080c44c82c3078fb543
+# https://api.themoviedb.org/3/movie/343611?api_key=89a57552ff989080c44c82c3078fb543&append_to_response=images,videos,credits
+
 # https://api.themoviedb.org/3/movie/550?api_key=89a57552ff989080c44c82c3078fb543
 tmdb_key = '89a57552ff989080c44c82c3078fb543'
 tmdb_url = 'https://api.themoviedb.org/3/movie/'
