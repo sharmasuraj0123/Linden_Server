@@ -1,5 +1,7 @@
 package com.linden.controllers;
 
+import com.linden.models.accounts.Account;
+import com.linden.models.accounts.Admin;
 import com.linden.models.accounts.User;
 import com.linden.models.accounts.UserType;
 import com.linden.models.content.Content;
@@ -71,8 +73,9 @@ public class UserController {
     @RequestMapping(value = {"/deleteReview/{reviewId}", "/deleteRating/{reviewId}"}, method = RequestMethod.POST)
     @ResponseBody
     public ObjectStatusResponse<?> deleteReview(@PathVariable("reviewId") long reviewId, @RequestBody Token token) {
-        User user = (User) accountTokenService.getAccount(token.getToken());
-        if (user != null){
+        Account account = accountTokenService.getAccount(token.getToken());
+        if(account instanceof User) {
+            User user = (User) account;
             userService.deleteReview(user, reviewId);
             return new ObjectStatusResponse<>(null, "OK");
         }
