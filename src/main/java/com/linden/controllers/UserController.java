@@ -92,7 +92,7 @@ public class UserController {
         return new ObjectStatusResponse<>(null, "Not logged in!");
     }
 
-    @RequestMapping(value = {"/{userId}/getWantToSee"}, method = RequestMethod.POST)
+    @RequestMapping(value = {"/{userId}/getWantToSee"}, method = RequestMethod.GET)
     @ResponseBody
     public ObjectStatusResponse<?> getUserWantToSee(@PathVariable("userId") long userId){
         User user = userService.getUserById(userId);
@@ -138,7 +138,7 @@ public class UserController {
         return new ObjectStatusResponse<>(null, "Not logged in!");
     }
 
-    @RequestMapping(value = {"/{userId}/getNotInterested"}, method = RequestMethod.POST)
+    @RequestMapping(value = {"/{userId}/getNotInterested"}, method = RequestMethod.GET)
     @ResponseBody
     public ObjectStatusResponse<?> getUserNotInterested(@PathVariable("userId") long userId){
         User user = userService.getUserById(userId);
