@@ -1,6 +1,9 @@
 package com.linden.controllers;
 
+import com.linden.models.accounts.User;
+import com.linden.models.content.ContentType;
 import com.linden.models.content.Movie;
+import com.linden.services.AccountTokenService;
 import com.linden.services.MovieService;
 import com.linden.util.search.SearchResponse;
 import com.linden.repositories.MovieRepository;
@@ -14,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -28,6 +33,9 @@ public class MovieController {
 
     @Autowired
     private MovieService movieService;
+
+    @Autowired
+    private AccountTokenService accountTokenService;
 
     @Value("${movie.result.limit:10}")
     private int RESULT_LIMIT;
@@ -99,10 +107,15 @@ public class MovieController {
             value = "/{movieId}"
     )
     @ResponseBody
-    public MovieResult getMovie(@PathVariable(value = "movieId") long movieId){
+    public MovieResult getMovie(@PathVariable(value = "movieId") long movieId, HttpServletRequest request, HttpServletResponse response){
         Movie movie = movieService.getMovie(movieId);
         MovieResult result = new MovieResult(movie);
-
+        if(request.getHeader("token") != null) {
+            User user = (User) accountTokenService.getAccount(request.getHeader("token"));
+            response.setHeader("isWatchList", Boolean.valueOf(user.getWantsToSee().stream().anyMatch(
+                    userWantsToSee -> (userWantsToSee.getContentId() == movieId) && (userWantsToSee.getContentType() == ContentType.MOVIE))
+            ).toString());
+        }
         return result;
 
     }

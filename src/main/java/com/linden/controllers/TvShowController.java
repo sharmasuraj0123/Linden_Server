@@ -1,9 +1,8 @@
 package com.linden.controllers;
 
-import com.linden.models.content.Episode;
-import com.linden.models.content.Movie;
-import com.linden.models.content.Season;
-import com.linden.models.content.TvShow;
+import com.linden.models.accounts.User;
+import com.linden.models.content.*;
+import com.linden.services.AccountTokenService;
 import com.linden.services.TvShowService;
 import com.linden.util.search.EpisodeResult;
 import com.linden.util.search.SearchResponse;
@@ -13,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Collections;
 import java.util.List;
 
@@ -23,17 +24,25 @@ public class TvShowController {
     @Autowired
     private TvShowService tvShowService;
 
+    @Autowired
+    private AccountTokenService accountTokenService;
+
     @Value("${tvShow.result.limit:10}")
     private int RESULT_LIMIT;
 
     @RequestMapping(value = "/{tvShowId}", method = RequestMethod.GET)
     @ResponseBody
-    public TvShowResult getTvShow(@PathVariable(value = "tvShowId") String tvShowId){
+    public TvShowResult getTvShow(@PathVariable(value = "tvShowId") String tvShowId, HttpServletRequest request, HttpServletResponse response){
 
         Long id = Long.parseLong(tvShowId);
         TvShow show = tvShowService.getTvShow(id);
         TvShowResult result = new TvShowResult(show);
-
+        if(request.getHeader("token") != null) {
+            User user = (User) accountTokenService.getAccount(request.getHeader("token"));
+            response.setHeader("isWatchList", Boolean.valueOf(user.getWantsToSee().stream().anyMatch(
+                    userWantsToSee -> (userWantsToSee.getContentId() == id) && (userWantsToSee.getContentType() == ContentType.TVSHOW))
+            ).toString());
+        }
         return result;
     }
 
