@@ -245,12 +245,14 @@ public class UserService {
     }
 
     public void addToWantToSee(User user, Content content) {
-        user = userRepository.findById(user.getId()).orElse(user);
-        UserWantsToSee wantsToSee = new UserWantsToSee();
-        wantsToSee.setContentId(content.getId());
-        wantsToSee.setContentType(content.getContentType());
-        userWantsToSeeRepository.saveAndFlush(wantsToSee);
-        updateWantToSeeList(user);
+        if(userWantsToSeeRepository.findByUserIdAndContentId(user.getId(), content.getId()).isEmpty()) {
+            user = userRepository.findById(user.getId()).orElse(user);
+            UserWantsToSee wantsToSee = new UserWantsToSee();
+            wantsToSee.setContentId(content.getId());
+            wantsToSee.setContentType(content.getContentType());
+            userWantsToSeeRepository.saveAndFlush(wantsToSee);
+            updateWantToSeeList(user);
+        }
     }
 
     public void removeFromWantToSee(User user, Content content) {
@@ -289,12 +291,14 @@ public class UserService {
     }
 
     public void addToNotInterested(User user, Content content) {
-        user = userRepository.findById(user.getId()).orElse(user);
-        UserNotInterested notInterested = new UserNotInterested();
-        notInterested.setContentId(content.getId());
-        notInterested.setContentType(content.getContentType());
-        userNotInterestedRepository.saveAndFlush(notInterested);
-        updateNotInterested(user);
+        if(userNotInterestedRepository.findByUserIdAndContentId(user.getId(), content.getId()).isEmpty()) {
+            user = userRepository.findById(user.getId()).orElse(user);
+            UserNotInterested notInterested = new UserNotInterested();
+            notInterested.setContentId(content.getId());
+            notInterested.setContentType(content.getContentType());
+            userNotInterestedRepository.saveAndFlush(notInterested);
+            updateNotInterested(user);
+        }
     }
 
     public void removeFromNotInterested(User user, Content content) {

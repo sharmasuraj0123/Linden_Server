@@ -15,5 +15,7 @@ public interface UserNotInterestedRepository extends JpaRepository<UserNotIntere
 
     List<UserNotInterested> findByUserId(long userId);
 
+    List<UserNotInterested> findByUserIdAndContentId(long userId, long contentId);
+
     void deleteByUserIdAndContentId(long userId, long contentId);
 }
