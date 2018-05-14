@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/admin")
@@ -64,8 +65,8 @@ public class AdminController {
     public HashMap<String, ?> viewReports(HttpServletRequest request) {
         Admin admin = (Admin) accountTokenService.getAccount(request.getHeader("token"));
         if(admin != null) {
-            HashMap<String, ?> response = new HashMap<>();
-
+            HashMap<String, List<?>> response = new HashMap<>();
+            response.put("reports", adminService.getReports());
             return null;
         }
         else {
