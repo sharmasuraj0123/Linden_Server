@@ -10,6 +10,8 @@ public class ReviewHistory {
 
     private int rating;
 
+    private long contentId;
+
     private ContentType contentType;
 
     public ReviewHistory() {
@@ -37,6 +39,14 @@ public class ReviewHistory {
 
     public void setRating(int rating) {
         this.rating = rating;
+    }
+
+    public long getContentId() {
+        return contentId;
+    }
+
+    public void setContentId(long contentId) {
+        this.contentId = contentId;
     }
 
     public ContentType getContentType() {
