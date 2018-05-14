@@ -76,6 +76,47 @@ public class AdminController {
         }
     }
 
+
+
+    @RequestMapping(value = "/viewPromotionApplications", method = RequestMethod.GET)
+    @ResponseBody
+    public HashMap<String, ?> viewPromotionApplications(HttpServletRequest request) {
+        Admin admin = (Admin) accountTokenService.getAccount(request.getHeader("token"));
+        if(admin != null) {
+            HashMap<String, List<?>> response = new HashMap<>();
+            response.put("applications", adminService.getPromotionApplications());
+            return response;
+        }
+        else {
+            HashMap<String, String> response = new HashMap<>();
+            response.put("status", "OK");
+            return response;
+        }
+    }
+
+    @RequestMapping(value = "/deleteReview/{reviewId}", method = RequestMethod.GET)
+    @ResponseBody
+    public StatusResponse deleteReview(@PathVariable("reviewId") long reviewId, HttpServletRequest request) {
+        Admin admin = (Admin) accountTokenService.getAccount(request.getHeader("token"));
+        if(admin != null) {
+            adminService.deleteReview(reviewId);
+            return new StatusResponse("OK");
+        }
+        return new StatusResponse("ERROR", "Invalid token!");
+    }
+
+    @RequestMapping(value = "/deleteUser/{userId}", method = RequestMethod.GET)
+    @ResponseBody
+    public StatusResponse deleteAccount(@PathVariable("userId") long userId, HttpServletRequest request) {
+        Admin admin = (Admin) accountTokenService.getAccount(request.getHeader("token"));
+        if(admin != null) {
+            adminService.deleteUser(userId);
+            return new StatusResponse("OK");
+        }
+        return new StatusResponse("ERROR", "Invalid token!");
+    }
+
+
     @RequestMapping(value = "/movie/{movieId}/edit", method = RequestMethod.POST)
     @ResponseBody
     public StatusResponse editMovie(@PathVariable("movieId") long movieId, @RequestParam ContentContainer movie) {
