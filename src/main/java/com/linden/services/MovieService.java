@@ -130,7 +130,7 @@ public class MovieService {
         return movies;
     }
 
-    public void updateLindenmeterForMovie(Review rev, Movie movie){
+    public void git updateLindenmeterForMovie(Review rev, Movie movie){
 
         int rating = rev.getRating();
         List<Review> reviews = movie.getReviews();
