@@ -1,12 +1,7 @@
 package com.linden.models.content;
 
-import com.linden.models.content.Cast;
-import com.linden.models.content.Genre;
-import com.linden.models.content.Review;
-
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -20,7 +15,16 @@ public abstract class Content implements Serializable{
     protected String name;
     protected String details;
     protected Date releaseDate;
-    protected String videos;
+
+    @ElementCollection
+    @CollectionTable(
+            name="content_videos",
+            joinColumns = @JoinColumn(
+                    name = "content_id", referencedColumnName = "id"
+            )
+    )
+    @Column(name = "videos")
+    protected List<String> videos;
 
     protected double score;
 
@@ -36,6 +40,7 @@ public abstract class Content implements Serializable{
     )
     @Column(name = "photos")
     protected Set<String> photos;
+
     @OneToMany
     protected Set<Cast> cast;
     @ElementCollection(targetClass=Genre.class)
@@ -111,11 +116,11 @@ public abstract class Content implements Serializable{
         this.cast = cast;
     }
 
-    public String getVideos() {
+    public List<String> getVideos() {
         return videos;
     }
 
-    public void setVideos(String videos) {
+    public void setVideos(List<String> videos) {
         this.videos = videos;
     }
 

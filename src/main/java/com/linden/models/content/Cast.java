@@ -18,15 +18,19 @@ public class Cast implements Serializable {
     private String lastName;
 
     private int rating;
+
+    private String Gender;
+
     private String imageURL;
 
     public Cast(){}
 
-    public Cast(@NotNull String firstName,@NotNull String lastName, int rating, String imageURL) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.rating = rating;
-        this.imageURL = imageURL;
+    public String getGender() {
+        return Gender;
+    }
+
+    public void setGender(String gender) {
+        Gender = gender;
     }
 
     public Long getId() {
@@ -78,5 +82,13 @@ public class Cast implements Serializable {
         else {
             return false;
         }
+    }
+
+    public Cast(@NotNull String firstName, @NotNull String lastName, int rating, String gender, String imageURL) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.rating = rating;
+        Gender = gender;
+        this.imageURL = imageURL;
     }
 }

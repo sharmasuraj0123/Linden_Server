@@ -13,7 +13,7 @@ public class ContentContainerObject implements Serializable {
     private String name;
     private String details;
     private Date releaseDate;
-    private String videos;
+    private List<String> videos;
 
     private double score;
 
@@ -85,11 +85,11 @@ public class ContentContainerObject implements Serializable {
         this.releaseDate = releaseDate;
     }
 
-    public String getVideos() {
+    public List<String> getVideos() {
         return videos;
     }
 
-    public void setVideos(String videos) {
+    public void setVideos(List<String> videos) {
         this.videos = videos;
     }
 
