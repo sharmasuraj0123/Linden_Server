@@ -386,6 +386,7 @@ public class UserService {
                     reviewHistory.setContentName(content.getName());
                     reviewHistory.setDetails(review.getDetails());
                     reviewHistory.setRating(review.getRating());
+                    reviewHistory.setContentId(review.getContentId());
                     reviewHistories.add(reviewHistory);
                 }
         );

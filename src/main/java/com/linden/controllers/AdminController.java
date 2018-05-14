@@ -10,6 +10,10 @@ import com.linden.util.ContentContainer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.List;
+
 @RestController
 @RequestMapping(value = "/admin")
 public class AdminController {
@@ -53,6 +57,22 @@ public class AdminController {
         }
         else{
             return new StatusResponse("ERROR", "Login as admin failed!");
+        }
+    }
+
+    @RequestMapping(value = "/viewReports", method = RequestMethod.GET)
+    @ResponseBody
+    public HashMap<String, ?> viewReports(HttpServletRequest request) {
+        Admin admin = (Admin) accountTokenService.getAccount(request.getHeader("token"));
+        if(admin != null) {
+            HashMap<String, List<?>> response = new HashMap<>();
+            response.put("reports", adminService.getReports());
+            return response;
+        }
+        else {
+            HashMap<String, String> response = new HashMap<>();
+            response.put("status", "OK");
+            return response;
         }
     }
 
