@@ -3,6 +3,7 @@ package com.linden.services;
 import com.linden.models.accounts.Account;
 import com.linden.models.accounts.Admin;
 import com.linden.models.accounts.PromotionApplication;
+import com.linden.models.accounts.User;
 import com.linden.models.content.Movie;
 import com.linden.models.content.ReviewReport;
 import com.linden.models.content.Season;
@@ -98,6 +99,16 @@ public class AdminService {
     public void deleteUser(long accountId) {
         if(userRepository.findById(accountId).isPresent()) {
             userRepository.deleteById(accountId);
+        }
+    }
+
+    @Transactional
+    public void approvePromotion(PromotionApplication promotionApplication) {
+        promotionApplication = promotionApplicationRepository.findByUserId(promotionApplication.getUserId()).get(0);
+        User user = userRepository.findById(promotionApplication.getUserId()).orElse(null);
+        if (user != null) {
+            user.setUserType(promotionApplication.getPromotionType());
+            userRepository.save(user);
         }
     }
 }

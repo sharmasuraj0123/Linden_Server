@@ -1,6 +1,7 @@
 package com.linden.controllers;
 
 import com.linden.models.accounts.Admin;
+import com.linden.models.accounts.PromotionApplication;
 import com.linden.models.content.Movie;
 import com.linden.models.content.TvShow;
 import com.linden.services.AccountTokenService;
@@ -94,6 +95,19 @@ public class AdminController {
         }
     }
 
+    @RequestMapping(value = "/approvePromotion/", method = RequestMethod.POST)
+    @ResponseBody
+    public StatusResponse approvePromotion(@RequestBody PromotionApplication promotionApplication, HttpServletRequest request) {
+        Admin admin = (Admin) accountTokenService.getAccount(request.getHeader("token"));
+        if(admin != null) {
+            adminService.approvePromotion(promotionApplication);
+            return new StatusResponse("OK");
+        }
+        else {
+            return new StatusResponse("ERROR", "Error validating token!");
+        }
+    }
+
     @RequestMapping(value = "/deleteReview/{reviewId}", method = RequestMethod.GET)
     @ResponseBody
     public StatusResponse deleteReview(@PathVariable("reviewId") long reviewId, HttpServletRequest request) {
@@ -123,6 +137,8 @@ public class AdminController {
         Admin admin = (Admin) accountTokenService.getAccount(contentContainer.getToken());
         if(admin != null) {
             adminService.editMovie(movieId, (Movie)contentContainer.getContent());
+            // Description
+
             return new StatusResponse("OK");
         }
         return new StatusResponse("ERROR", "Invalid token!");
