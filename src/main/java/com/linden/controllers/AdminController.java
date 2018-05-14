@@ -67,7 +67,7 @@ public class AdminController {
         if(admin != null) {
             HashMap<String, List<?>> response = new HashMap<>();
             response.put("reports", adminService.getReports());
-            return null;
+            return response;
         }
         else {
             HashMap<String, String> response = new HashMap<>();
