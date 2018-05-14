@@ -30,27 +30,76 @@ public class MovieController {
 
     @RequestMapping(value = "/featured", method = RequestMethod.GET)
     @ResponseBody
-    public List<Movie> getFeaturedMoviesRoute() {
-        return movieService.getFeaturedMovies();
+    public SearchResponse getFeaturedMoviesRoute() {
+        return getFeaturedMoviesRoute(1);
+    }
+
+    @RequestMapping(
+            value = "/featured",
+            params = {"page"},
+            method = RequestMethod.GET
+    )
+    @ResponseBody
+    public SearchResponse getFeaturedMoviesRoute(int page) {
+        List<Movie> movies =  movieService.getFeaturedMovies();
+
+        if (page > 0) {
+            if ((page - 1) * RESULT_LIMIT <= movies.size()) {
+                movies = movies.subList(
+                        (page - 1) * RESULT_LIMIT,
+                        (page * RESULT_LIMIT > movies.size()) ?
+                                movies.size() : page * RESULT_LIMIT
+                );
+            }
+        }
+        return new SearchResponse(
+                movies,
+                Collections.EMPTY_LIST,
+                Collections.EMPTY_LIST,
+                movies.size(),
+                0,
+                0,
+                movies.size()
+        );
     }
 
     @RequestMapping(
             value = "/openingThisWeek",
-            params = {"limit"},
             method = RequestMethod.GET
     )
     @ResponseBody
-    public Collection<Movie> getOpeningThisWeek(int limit) {
-        return movieService.getOpeningThisWeek(limit);
+    public SearchResponse getOpeningThisWeek() {
+        return getOpeningThisWeek(1);
     }
+
 
     @RequestMapping(
             value = "/openingThisWeek",
+            params = {"page"},
             method = RequestMethod.GET
     )
     @ResponseBody
-    public Collection<Movie> getOpeningThisWeek() {
-        return movieService.getOpeningThisWeek(RESULT_LIMIT);
+    public SearchResponse getOpeningThisWeek(int page) {
+        List<Movie> movies = (List)movieService.getOpeningThisWeek(RESULT_LIMIT);
+
+        if (page > 0) {
+            if ((page - 1) * RESULT_LIMIT <= movies.size()) {
+                movies = movies.subList(
+                        (page - 1) * RESULT_LIMIT,
+                        (page * RESULT_LIMIT > movies.size()) ?
+                                movies.size() : page * RESULT_LIMIT
+                );
+            }
+        }
+        return new SearchResponse(
+                movies,
+                Collections.EMPTY_LIST,
+                Collections.EMPTY_LIST,
+                movies.size(),
+                0,
+                0,
+                movies.size()
+        );
     }
 
     @RequestMapping(
@@ -115,16 +164,39 @@ public class MovieController {
             value = "/getComingSoon"
     )
     @ResponseBody
-    public List<MovieResult> getComingSoon(){
+    public SearchResponse getComingSoon(){
+        return getComingSoon(1);
+    }
+
+    @RequestMapping(
+            value = "/getComingSoon",
+            params = {"page"},
+            method = RequestMethod.GET
+    )
+    @ResponseBody
+    public SearchResponse getComingSoon(int page){
         Date todaysDate = java.sql.Date.valueOf(java.time.LocalDate.now());
         List<Movie> movies = movieService.getUpcomingMovies(todaysDate);
-        List<MovieResult> result = new ArrayList<>();
-        System.out.println("Printing coming soon ...");
-        for (Movie movie: movies){
-            result.add(new MovieResult(movie));
-            System.out.println(movie.getName());
+
+        if (page > 0) {
+            if ((page - 1) * RESULT_LIMIT <= movies.size()) {
+                movies = movies.subList(
+                        (page - 1) * RESULT_LIMIT,
+                        (page * RESULT_LIMIT > movies.size()) ?
+                                movies.size() : page * RESULT_LIMIT
+                );
+            }
         }
-        return result;
+
+        return new SearchResponse(
+                movies,
+                Collections.EMPTY_LIST,
+                Collections.EMPTY_LIST,
+                movies.size(),
+                0,
+                0,
+                movies.size()
+        );
 
     }
 
