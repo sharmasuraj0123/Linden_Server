@@ -9,6 +9,7 @@ import com.linden.models.content.ContentType;
 import com.linden.models.content.Review;
 import com.linden.models.content.ReviewReport;
 import com.linden.services.AccountTokenService;
+import com.linden.services.AdminService;
 import com.linden.services.UserService;
 import com.linden.services.VerificationService;
 import com.linden.util.*;
@@ -29,6 +30,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private AdminService adminService;
 
     @Autowired
     private AccountTokenService accountTokenService;
@@ -72,14 +76,18 @@ public class UserController {
 
     @RequestMapping(value = {"/deleteReview/{reviewId}", "/deleteRating/{reviewId}"}, method = RequestMethod.POST)
     @ResponseBody
-    public ObjectStatusResponse<?> deleteReview(@PathVariable("reviewId") long reviewId, @RequestBody Token token) {
+    public StatusResponse deleteReview(@PathVariable("reviewId") long reviewId, @RequestBody Token token) {
         Account account = accountTokenService.getAccount(token.getToken());
         if(account instanceof User) {
             User user = (User) account;
             userService.deleteReview(user, reviewId);
-            return new ObjectStatusResponse<>(null, "OK");
+            return new StatusResponse("OK");
         }
-        return new ObjectStatusResponse<>(null, "Not logged in!");
+        else if(account instanceof Admin) {
+            adminService.deleteReview(reviewId);
+            return new StatusResponse("OK");
+        }
+        return new StatusResponse("ERROR", "Not logged in!");
     }
 
     @RequestMapping(value = {"/getWantToSee"}, method = RequestMethod.POST)
@@ -241,8 +249,9 @@ public class UserController {
     @RequestMapping(value = {"/deleteAccount"}, method = RequestMethod.POST)
     @ResponseBody
     public StatusResponse deleteAccount(@RequestBody Token token) {
-        User user = (User) accountTokenService.getAccount(token.getToken());
-        if(user != null) {
+        Account account = accountTokenService.getAccount(token.getToken());
+        if(account instanceof User) {
+            User user = (User) account;
             userService.deleteAccount(user);
             return new StatusResponse("OK");
         }
@@ -253,7 +262,6 @@ public class UserController {
     @ResponseBody
     public ObjectStatusResponse<?> getAllCritics(){
         ArrayList<User> critics = (ArrayList<User>) userService.getAllCritics();
-
         if (critics.size() != 0){
             return new ObjectStatusResponse<>(critics, "OK");
         }
@@ -264,7 +272,6 @@ public class UserController {
     @ResponseBody
     public ObjectStatusResponse<?> getTopCritics(){
         ArrayList<User> critics = (ArrayList<User>) userService.getAllTopCritics();
-
         if (critics.size() != 0){
             return new ObjectStatusResponse<>(critics, "OK");
         }
