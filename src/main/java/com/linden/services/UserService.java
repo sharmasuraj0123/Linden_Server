@@ -379,17 +379,18 @@ public class UserService {
                         case MOVIE:
                             content = movieRepository.findById(review.getContentId()).get();
                             reviewHistory.setContentType(ContentType.MOVIE);
+                            reviewHistory.setContentImage(content.getPoster());
                             break;
                         case TVSHOW:
                             content = tvShowRepository.findById(review.getContentId()).get();
                             reviewHistory.setContentType(ContentType.TVSHOW);
+                            reviewHistory.setContentImage(content.getPoster());
                             break;
                     }
                     reviewHistory.setContentName(content.getName());
                     reviewHistory.setDetails(review.getDetails());
                     reviewHistory.setRating(review.getRating());
                     reviewHistory.setContentId(review.getContentId());
-                    reviewHistory.setContentImage(review.getContentImage());
                     reviewHistories.add(reviewHistory);
                 }
         );
