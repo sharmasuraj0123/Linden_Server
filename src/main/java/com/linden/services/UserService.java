@@ -116,12 +116,12 @@ public class UserService {
                 review.setReviewType(ReviewType.TOP_CRITIC);
                 break;
         }
-        reviewRepository.saveAndFlush(review);
         Content content;
         switch (review.getContentType()) {
             case MOVIE:
                 content = movieRepository.findById(review.getContentId()).orElse(null);
                 if (content != null) {
+                    review.setContentImage(content.getPoster());
                     content.getReviews().add(review);
                     // update linden meter of the movie
                     movieService.updateLindenmeterForMovie(review,(Movie) content);
@@ -131,12 +131,14 @@ public class UserService {
             case TVSHOW:
                 content = tvShowRepository.findById(review.getContentId()).orElse(null);
                 if (content != null) {
+                    review.setContentImage(content.getPoster());
                     content.getReviews().add(review);
                     tvShowService.updateLindenmeterForTvShow(review,(TvShow) content);
                     tvShowRepository.save((TvShow) content);
                 }
                 break;
         }
+        reviewRepository.saveAndFlush(review);
         return review;
     }
 
@@ -387,6 +389,7 @@ public class UserService {
                     reviewHistory.setDetails(review.getDetails());
                     reviewHistory.setRating(review.getRating());
                     reviewHistory.setContentId(review.getContentId());
+                    reviewHistory.setContentImage(review.getContentImage());
                     reviewHistories.add(reviewHistory);
                 }
         );
