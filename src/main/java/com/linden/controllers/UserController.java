@@ -220,13 +220,13 @@ public class UserController {
 
     @RequestMapping(value = {"/forgotPassword"}, method = RequestMethod.POST)
     @ResponseBody
-    public StatusResponse forgotPassword(@RequestBody Token token) {
-        User user = (User) accountTokenService.getAccount(token.getToken());
+    public StatusResponse forgotPassword(@RequestBody UserCredentials userCredentials ) {
+        User user = userService.getUserByEmail(userCredentials.getEmail());
         if(user != null) {
             String temporaryPassword = verificationService.generateToken();
-            UserCredentials userCredentials = new UserCredentials();
-            userCredentials.setPassword(temporaryPassword);
-            userService.changeUserCredentials(user, userCredentials);
+            UserCredentials newCredentials = new UserCredentials();
+            newCredentials.setPassword(temporaryPassword);
+            userService.changeUserCredentials(user, newCredentials);
             sendResetPasswordEmail(user, temporaryPassword);
         }
         return new StatusResponse("Error", "Invalid user token.");
