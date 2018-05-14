@@ -15,7 +15,7 @@ public class Account implements Serializable{
     protected String password;
     protected String token;
 
-    @Column(columnDefinition="TEXT")
+    @Column(columnDefinition="MEDIUMTEXT")
     protected String profileImage;
 
     public Account(){

@@ -196,7 +196,7 @@ public class UserController {
 
     @RequestMapping(value = {"/profile/uploadImage"}, method = RequestMethod.POST)
     @ResponseBody
-    public StatusResponse uploadProfilePicture(HashMap<String, String> data) {
+    public StatusResponse uploadProfilePicture(@RequestBody HashMap<String, String> data) {
         User user = (User) accountTokenService.getAccount(data.get("token"));
         if (user != null) {
             userService.uploadImage(user, data.get("image"));
