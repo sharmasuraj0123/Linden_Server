@@ -194,6 +194,17 @@ public class UserController {
         return new ObjectStatusResponse<>(null, "Not logged in!");
     }
 
+    @RequestMapping(value = {"/profile/uploadImage"}, method = RequestMethod.POST)
+    @ResponseBody
+    public StatusResponse uploadProfilePicture(HashMap<String, String> data) {
+        User user = (User) accountTokenService.getAccount(data.get("token"));
+        if (user != null) {
+            userService.uploadImage(user, data.get("image"));
+            return new StatusResponse("OK");
+        }
+        return new StatusResponse("ERROR", "Not logged in!");
+    }
+
     @RequestMapping(value = {"/{userId}"}, method = RequestMethod.GET)
     @ResponseBody
     public ObjectStatusResponse<?> getUserProfile(@PathVariable("userId") long userId) {

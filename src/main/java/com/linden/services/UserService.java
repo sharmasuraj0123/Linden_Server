@@ -402,4 +402,9 @@ public class UserService {
             return null;
         }
     }
+
+    public void uploadImage(User user, String data) {
+        user.setProfileImage(data);
+        userRepository.saveAndFlush(user);
+    }
 }
