@@ -51,13 +51,16 @@ for i in movies:
         print('boxOffice: ' + str(data['revenue']))
         
     if 'poster_path' in data:
-        movieObject["poster"] = data["poster_path"]
+        movieObject["poster"] = image_path + data["poster_path"]
         print('poster: ' + data['poster_path'])
         
-    if 'Genre' in data:
-        movieObject['genre'] = data['Genre'].upper().replace('-', '_').replace(' ', '').split(',')
-        print('Genre: ' + data['Genre'])
-        
+    if 'genres' in data:
+        genres = list()
+        for genre in data['genres']:
+            temp_genre = genre['name'].upper().replace('-', '_').replace(' ', '')
+            genres.append(temp_genre)
+        movieObject["genre"] = genres
+
     if 'runtime' in data:
         movieObject["duration"] = data["runtime"]
         print('duration: ' + str(data['runtime']))
@@ -66,7 +69,8 @@ for i in movies:
         images = list()
         if 'backdrops' in data['images']:
             for image in data['images']['backdrops']:
-                images.append(image['file_path'])
+                path = image_path + image['file_path']
+                images.append(path)
             movieObject['photos']=images
         
     if 'videos' in data:
@@ -82,7 +86,7 @@ for i in movies:
     
     casts = list()
     if 'cast' in cast_data:
-        for actor in cast_data['cast']:
+        for actor in cast_data['cast'][:5]:
             castObject = {}
             if 'name' in actor: 
                 nameTokens = actor['name'].strip().split(' ')
@@ -93,8 +97,10 @@ for i in movies:
                     
                 else:
                     castObject['firstName'] = nameTokens[0]
-                    
-            castObject['imageURL'] = actor['profile_path']
+
+            print(actor)
+            photo_path = image_path + str(actor['profile_path'])
+            castObject['imageURL'] = photo_path
                 
             casts.append(castObject)
         movieObject['cast'] = casts
@@ -102,6 +108,6 @@ for i in movies:
     movieObject['contentType'] = 'MOVIE'
 
     requests.post(url=linden_url, json=dict(token=sys.argv[1], obj=movieObject))
-    print(movieObject)
+
 
     
