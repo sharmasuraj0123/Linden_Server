@@ -1,5 +1,6 @@
 package com.linden.controllers;
 
+import com.linden.models.accounts.Account;
 import com.linden.models.accounts.User;
 import com.linden.models.content.ContentType;
 import com.linden.models.content.Movie;
@@ -148,13 +149,16 @@ public class MovieController {
         Movie movie = movieService.getMovie(movieId);
         HashMap<String, Serializable> response = new HashMap<>();
         if(request.getHeader("token") != null && !request.getHeader("token").equalsIgnoreCase("null")) {
-            User user = (User) accountTokenService.getAccount(request.getHeader("token"));
-            response.put("isWantToSee", user.getWantsToSee().stream().anyMatch(
-                wantsToSee -> (wantsToSee.getContentId() == movieId) && (wantsToSee.getContentType() == ContentType.MOVIE))
-            );
-            response.put("isNotInterested", user.getNotInterested().stream().anyMatch(
-                notInterested -> (notInterested.getContentId() == movieId) && (notInterested.getContentType() == ContentType.MOVIE))
-            );
+            Account account = accountTokenService.getAccount(request.getHeader("token"));
+            if(account instanceof User) {
+                User user = (User) account;
+                response.put("isWantToSee", user.getWantsToSee().stream().anyMatch(
+                        wantsToSee -> (wantsToSee.getContentId() == movieId) && (wantsToSee.getContentType() == ContentType.MOVIE))
+                );
+                response.put("isNotInterested", user.getNotInterested().stream().anyMatch(
+                        notInterested -> (notInterested.getContentId() == movieId) && (notInterested.getContentType() == ContentType.MOVIE))
+                );
+            }
         }
         response.put("movie", movie);
         return response;

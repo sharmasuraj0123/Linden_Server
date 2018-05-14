@@ -1,5 +1,6 @@
 package com.linden.controllers;
 
+import com.linden.models.accounts.Account;
 import com.linden.models.accounts.User;
 import com.linden.models.content.*;
 import com.linden.services.AccountTokenService;
@@ -40,13 +41,16 @@ public class TvShowController {
         TvShow show = tvShowService.getTvShow(id);
         HashMap<String, Serializable> response = new HashMap<>();
         if(request.getHeader("token") != null) {
-            User user = (User) accountTokenService.getAccount(request.getHeader("token"));
-            response.put("isWantToSee", user.getWantsToSee().stream().anyMatch(
-                    wantsToSee -> (wantsToSee.getContentId() == id) && (wantsToSee.getContentType() == ContentType.TVSHOW))
-            );
-            response.put("isNotInterested", user.getNotInterested().stream().anyMatch(
-                    notInterested -> (notInterested.getContentId() == id) && (notInterested.getContentType() == ContentType.TVSHOW))
-            );
+            Account account = accountTokenService.getAccount(request.getHeader("token"));
+            if(account instanceof User) {
+                User user = (User) account;
+                response.put("isWantToSee", user.getWantsToSee().stream().anyMatch(
+                        wantsToSee -> (wantsToSee.getContentId() == id) && (wantsToSee.getContentType() == ContentType.TVSHOW))
+                );
+                response.put("isNotInterested", user.getNotInterested().stream().anyMatch(
+                        notInterested -> (notInterested.getContentId() == id) && (notInterested.getContentType() == ContentType.TVSHOW))
+                );
+            }
         }
         response.put("tvShow", show);
         return response;

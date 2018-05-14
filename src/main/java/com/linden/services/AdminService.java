@@ -2,6 +2,7 @@ package com.linden.services;
 
 import com.linden.models.accounts.Account;
 import com.linden.models.accounts.Admin;
+import com.linden.models.accounts.PromotionApplication;
 import com.linden.models.content.Movie;
 import com.linden.models.content.ReviewReport;
 import com.linden.models.content.Season;
@@ -13,7 +14,9 @@ import com.linden.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.beans.Transient;
 import java.util.List;
 
 @Service
@@ -24,6 +27,8 @@ public class AdminService {
     @Autowired
     private AdminRepository adminRepository;
     @Autowired
+    private UserRepository userRepository;
+    @Autowired
     private MovieRepository movieRepository;
     @Autowired
     private CastRepository castRepository;
@@ -32,9 +37,13 @@ public class AdminService {
     @Autowired
     private SeasonRepository seasonRepository;
     @Autowired
+    private ReviewRepository reviewRepository;
+    @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
     private ReviewReportRepository reviewReportRepository;
+    @Autowired
+    private PromotionApplicationRepository promotionApplicationRepository;
 
     public Admin getAdminByEmail(String email){
         return adminRepository.findByEmail(email);
@@ -70,7 +79,25 @@ public class AdminService {
         return reviewReportRepository.findAll();
     }
 
-    public void editMovie(long movieId, Movie newMovie) {
+    public List<PromotionApplication> getPromotionApplications() {
+        return promotionApplicationRepository.findAll();
+    }
 
+    public void editMovie(long movieId, Movie newMovie) {
+        // TODO: finish
+    }
+
+    @Transactional
+    public void deleteReview(long reviewId) {
+        if(reviewRepository.findById(reviewId).isPresent()) {
+            reviewRepository.deleteById(reviewId);
+        }
+    }
+
+    @Transactional
+    public void deleteUser(long accountId) {
+        if(userRepository.findById(accountId).isPresent()) {
+            userRepository.deleteById(accountId);
+        }
     }
 }
