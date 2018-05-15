@@ -88,6 +88,15 @@ public class AdminService {
 
     public void editMovie(long movieId, Movie newMovie) {
         // TODO: finish
+        Movie oldMovie = movieRepository.findById(movieId).orElse(null);
+        if(oldMovie != null) {
+            // Necessary Fields
+            oldMovie.setAcademyWinner(newMovie.isAcademyWinner);
+            oldMovie.setDuration(newMovie.getDuration());
+            oldMovie.setFeatured(newMovie.isFeatured());
+            oldMovie.setRevenue(newMovie.getRevenue());
+            //Unnecessary Fields
+        }
     }
 
     @Transactional

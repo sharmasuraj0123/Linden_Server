@@ -121,10 +121,10 @@ public class AdminController {
         return new StatusResponse("ERROR", "Invalid token!");
     }
 
-    @RequestMapping(value = "/deleteUser/{userId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/deleteUser/{userId}", method = RequestMethod.POST)
     @ResponseBody
-    public StatusResponse deleteUser(@PathVariable("userId") long userId, HttpServletRequest request) {
-        Admin admin = (Admin) accountTokenService.getAccount(request.getHeader("token"));
+    public StatusResponse deleteUser(@PathVariable("userId") long userId, @RequestBody Token token) {
+        Admin admin = (Admin) accountTokenService.getAccount(token.getToken());
         if(admin != null) {
             adminService.deleteUser(userId);
             return new StatusResponse("OK");
@@ -147,7 +147,7 @@ public class AdminController {
 
     @RequestMapping(value = "/deleteMovie/{movieId}", method = RequestMethod.POST)
     @ResponseBody
-    public StatusResponse deleteUser(@PathVariable("movieId") long movieId, @RequestBody Token token) {
+    public StatusResponse deleteMovie(@PathVariable("movieId") long movieId, @RequestBody Token token) {
         Admin admin = (Admin) accountTokenService.getAccount(token.getToken());
         if(admin != null) {
             adminService.deleteMovie(movieId);
