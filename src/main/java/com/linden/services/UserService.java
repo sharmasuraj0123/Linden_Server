@@ -427,4 +427,10 @@ public class UserService {
         user.setProfileImage(data);
         userRepository.saveAndFlush(user);
     }
+
+    public List<Review> getLastestReviews(){
+        List<Review> reviews = reviewRepository.findAllByOrderByDateDesc();
+
+        return reviews.subList(0, Math.min(5,reviews.size()));
+    }
 }
