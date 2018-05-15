@@ -139,10 +139,14 @@ public class TvShowService {
 
         if(criticReviewCount!=0) {
             show.setLindenMeter((sumOfLindenmeter / criticReviewCount));
+        }else{
+            show.setLindenMeter(0);
         }
 
         if(audienceReviewCount!=0) {
             show.setScore((sumOfScores / audienceReviewCount));
+        }else{
+            show.setScore(0);
         }
 
     }

@@ -163,11 +163,14 @@ public class MovieService {
 
         if(criticReviewCount!=0){
             movie.setLindenMeter((sumOfLindenmeter/criticReviewCount));
+        }else{
+            movie.setLindenMeter(0);
         }
 
         if(audienceReviewCount!=0){
             movie.setScore((sumOfScores/audienceReviewCount));
-
+        }else{
+            movie.setLindenMeter(0);
         }
 
     }
