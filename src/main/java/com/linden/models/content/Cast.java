@@ -77,7 +77,7 @@ public class Cast implements Serializable {
     public boolean equals(Object obj) {
         if(obj instanceof Cast) {
             Cast cast = (Cast) obj;
-            return this.firstName.equals(cast.firstName) && this.lastName.equals(cast.lastName);
+            return this.firstName.equalsIgnoreCase(cast.firstName) && this.lastName.equalsIgnoreCase(cast.lastName);
         }
         else {
             return false;
