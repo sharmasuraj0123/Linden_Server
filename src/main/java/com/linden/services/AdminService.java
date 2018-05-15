@@ -115,6 +115,7 @@ public class AdminService {
         }
     }
 
+    @Transactional
     public void deleteMovie(long movieId) {
         Movie movie = movieRepository.findById(movieId).orElse(null);
         if(movie != null) {
