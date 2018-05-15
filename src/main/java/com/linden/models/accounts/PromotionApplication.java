@@ -18,6 +18,10 @@ public class PromotionApplication implements Serializable {
 
     private String reason;
 
+    private String firstName;
+
+    private String lastName;
+
     public PromotionApplication() {
     }
 
@@ -43,5 +47,21 @@ public class PromotionApplication implements Serializable {
 
     public void setReason(String reason) {
         this.reason = reason;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 }

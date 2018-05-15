@@ -90,7 +90,7 @@ public class AdminController {
         }
         else {
             HashMap<String, String> response = new HashMap<>();
-            response.put("status", "OK");
+            response.put("status", "ERROR");
             return response;
         }
     }

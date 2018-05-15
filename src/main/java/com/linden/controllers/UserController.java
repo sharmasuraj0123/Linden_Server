@@ -297,10 +297,10 @@ public class UserController {
         if(user != null) {
             switch (user.getUserType()){
                 case AUDIENCE:
-                    userService.applyForPromotion(user.getId(), form.getReason(), UserType.CRITIC);
+                    userService.applyForPromotion(user, form.getReason(), UserType.CRITIC);
                     break;
                 case CRITIC:
-                    userService.applyForPromotion(user.getId(), form.getReason(), UserType.TOPCRITIC);
+                    userService.applyForPromotion(user, form.getReason(), UserType.TOPCRITIC);
                     break;
             }
             return new StatusResponse("OK");

@@ -368,11 +368,13 @@ public class UserService {
 
 
     @Transactional
-    public void applyForPromotion(long userId, String reason, UserType promotionType) {
+    public void applyForPromotion(User user, String reason, UserType promotionType) {
         PromotionApplication promotionApplication = new PromotionApplication();
-        promotionApplication.setUserId(userId);
+        promotionApplication.setUserId(user.getId());
         promotionApplication.setPromotionType(promotionType);
         promotionApplication.setReason(reason);
+        promotionApplication.setFirstName(user.getFirstName());
+        promotionApplication.setLastName(user.getLastName());
         promotionApplicationRepository.save(promotionApplication);
     }
 
