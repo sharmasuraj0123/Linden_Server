@@ -178,8 +178,7 @@ public class MovieService {
             System.out.println("3");
             movie.setScore((sumOfScores/audienceReviewCount));
         }else{
-            System.out.println("4");
-            movie.setLindenMeter(0);
+            movie.setScore(0);
         }
 
         return (Content)movie;

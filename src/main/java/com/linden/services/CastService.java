@@ -6,10 +6,12 @@ import com.linden.util.search.rank.Ranker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 @Service
 public class CastService {
@@ -32,16 +34,19 @@ public class CastService {
     public List<Cast> searchCast(String keywords,
                                  Function<Cast, ? extends Comparable> pairingFunction,
                                  boolean desc) {
-        Set<Cast> result = new HashSet<>();
+        List<Cast> result = new ArrayList<>();
         String[] tokens = keywords.split("[ ]");
         if(tokens.length > 1){
             String  firstName = tokens[0],
                     lastName = keywords.substring(keywords.indexOf(' '));
-            result.addAll(castRepository.findCastsByFirstNameContainsAndLastNameContains(firstName, lastName));
+            castRepository.findCastsByFirstNameContainsAndLastNameContains(firstName, lastName)
+                    .stream().distinct().filter(cast -> !result.contains(cast)).forEach(result::add);
         }
         else if (tokens.length == 1){
-            result.addAll(castRepository.findCastsByFirstNameContains(tokens[0]));
-            result.addAll(castRepository.findCastsByLastNameContains(tokens[0]));
+            castRepository.findCastsByFirstNameContains(tokens[0]).stream().distinct()
+                .filter(cast -> !result.contains(cast)).forEach(result::add);
+            castRepository.findCastsByLastNameContains(tokens[0]).stream().distinct()
+                .filter(cast -> !result.contains(cast)).forEach(result::add);
         }
         return (new Ranker<>(pairingFunction)).order(result, desc);
     }
