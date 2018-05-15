@@ -60,7 +60,9 @@ public class AdminService {
     }
 
     public void addMovie(Movie movie){
-        movie.getCast().forEach(castRepository::save);
+        if(movie.getCast() != null) {
+            movie.getCast().forEach(castRepository::save);
+        }
         movieRepository.save(movie);
     }
 
