@@ -106,40 +106,39 @@ public class TvShowService {
         return  tvShowRepository.findFreshTvShows();
     }
 
-    public void updateLindenmeterForTvShow(Review rev, TvShow show){
-        int rating = rev.getRating();
+    public void updateLindenmeterForTvShow( TvShow show){
+
         List<Review> reviews = show.getReviews();
 
         int criticReviewCount = 0;
+        int sumOfLindenmeter = 0;
+
+        int audienceReviewCount = 0;
+        int sumOfScores = 0;
+
         for(Review review: reviews){
-            if(review.getReviewType().equals("CRITIC") || review.getReviewType().equals("TOPCRITIC")){
+            if(review.getReviewType().equals(ReviewType.CRITIC) || review.getReviewType().equals(ReviewType.TOP_CRITIC)){
                 criticReviewCount++;
+
+                if(review.getRating() >= 3){
+                    sumOfLindenmeter += 100;
+                }else{
+                    sumOfLindenmeter += 0;
+                }
+
+            }else{
+                audienceReviewCount++;
+
+                if(review.getRating() >= 3){
+                    sumOfScores += 100;
+                }else{
+                    sumOfScores += 0;
+                }
             }
         }
 
-        if(rev.getReviewType().equals("AUDIENCE")){
-
-            double newRating = 0;
-            int audienceReviewCount= reviews.size()-criticReviewCount;
-            if(rating > 3){
-                newRating = (100+(show.getScore()*criticReviewCount))/(audienceReviewCount+1);
-            }else{
-                newRating = ((show.getScore()*criticReviewCount))/(audienceReviewCount+1);
-            }
-
-            show.setScore(newRating);
-
-        }else{
-            double newRating = 0;
-            if(rating > 3){
-                newRating = (100+(show.getLindenMeter()*criticReviewCount))/(criticReviewCount+1);
-            }else{
-                newRating = ((show.getLindenMeter()*criticReviewCount))/(criticReviewCount+1);
-            }
-
-            show.setLindenMeter(newRating);
-        }
-
+        show.setLindenMeter((sumOfLindenmeter/criticReviewCount));
+        show.setScore((sumOfScores/audienceReviewCount));
 
     }
 
