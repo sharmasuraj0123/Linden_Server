@@ -125,7 +125,7 @@ public class UserService {
                     review.setContentImage(content.getPoster());
                     content.getReviews().add(review);
                     // update linden meter of the movie
-                    movieService.updateLindenmeterForMovie(review,(Movie) content);
+                    movieService.updateLindenmeterForMovie((Movie) content);
                     movieRepository.save((Movie) content);
                 }
                 break;
@@ -134,7 +134,7 @@ public class UserService {
                 if (content != null) {
                     review.setContentImage(content.getPoster());
                     content.getReviews().add(review);
-                    tvShowService.updateLindenmeterForTvShow(review,(TvShow) content);
+                    tvShowService.updateLindenmeterForTvShow((TvShow) content);
                     tvShowRepository.save((TvShow) content);
                 }
                 break;
@@ -171,6 +171,7 @@ public class UserService {
                     content = movieRepository.findById(review.getContentId()).orElse(null);
                     if (content != null) {
                         updateReviewList(content);
+                        movieService.updateLindenmeterForMovie((Movie) content);
                         movieRepository.save((Movie) content);
                     }
                     break;
@@ -178,6 +179,7 @@ public class UserService {
                     content = tvShowRepository.findById(review.getContentId()).orElse(null);
                     if (content != null) {
                         updateReviewList(content);
+                        tvShowService.updateLindenmeterForTvShow((TvShow) content);
                         tvShowRepository.save((TvShow) content);
                     }
                     break;
@@ -223,6 +225,7 @@ public class UserService {
                     if (content != null) {
                         updateReviewList(content);
                         content.getReviews().remove(review);
+                        movieService.updateLindenmeterForMovie((Movie) content);
                         movieRepository.save((Movie) content);
                     }
                     break;
@@ -231,6 +234,7 @@ public class UserService {
                     if (content != null) {
                         updateReviewList(content);
                         content.getReviews().remove(review);
+                        tvShowService.updateLindenmeterForTvShow((TvShow) content);
                         tvShowRepository.save((TvShow) content);
                     }
                     break;

@@ -130,41 +130,39 @@ public class MovieService {
         return movies;
     }
 
-    public void updateLindenmeterForMovie(Review rev, Movie movie){
+    public void updateLindenmeterForMovie(Movie movie){
 
-        int rating = rev.getRating();
         List<Review> reviews = movie.getReviews();
 
         int criticReviewCount = 0;
+        int sumOfLindenmeter = 0;
+
+        int audienceReviewCount = 0;
+        int sumOfScores = 0;
+
         for(Review review: reviews){
             if(review.getReviewType().equals(ReviewType.CRITIC) || review.getReviewType().equals(ReviewType.TOP_CRITIC)){
                  criticReviewCount++;
+
+                 if(review.getRating() >= 3){
+                     sumOfLindenmeter += 100;
+                 }else{
+                     sumOfLindenmeter += 0;
+                 }
+
+            }else{
+                audienceReviewCount++;
+
+                if(review.getRating() >= 3){
+                    sumOfScores += 100;
+                }else{
+                    sumOfScores += 0;
+                }
             }
         }
 
-        if(rev.getReviewType().equals(ReviewType.AUDIENCE)){
-            double newRating = 0;
-            int audienceReviewCount= reviews.size()-criticReviewCount;
-            if(rating > 3){
-                newRating = (100+(movie.getScore()*criticReviewCount))/(audienceReviewCount+1);
-            }else{
-                newRating = ((movie.getScore()*criticReviewCount))/(audienceReviewCount+1);
-            }
-
-            movie.setScore(newRating);
-
-        }else{
-            double newRating = 0;
-
-            if(rating > 3){
-                newRating = (100+(movie.getLindenMeter()*criticReviewCount))/(criticReviewCount+1);
-            }else{
-                newRating = ((movie.getLindenMeter()*criticReviewCount))/(criticReviewCount+1);
-            }
-
-            movie.setLindenMeter(newRating);
-        }
-
+        movie.setLindenMeter((sumOfLindenmeter/criticReviewCount));
+        movie.setScore((sumOfScores/audienceReviewCount));
 
     }
 }
