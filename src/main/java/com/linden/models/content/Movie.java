@@ -12,8 +12,6 @@ public class Movie extends Content implements Serializable{
 
     private long duration;
 
-    private boolean isFeatured;
-
     public boolean isAcademyWinner;
 
     @Enumerated(EnumType.STRING)
@@ -34,14 +32,6 @@ public class Movie extends Content implements Serializable{
         this.revenue = revenue;
         this.duration = duration;
         this.contentType = ContentType.MOVIE;
-    }
-
-    public boolean isFeatured() {
-        return isFeatured;
-    }
-
-    public void setFeatured(boolean featured) {
-        isFeatured = featured;
     }
 
     public boolean isAcademyWinner() {

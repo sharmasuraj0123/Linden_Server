@@ -16,6 +16,8 @@ public abstract class Content implements Serializable{
     protected String details;
     protected Date releaseDate;
 
+    protected boolean isFeatured;
+
     @ElementCollection
     @CollectionTable(
             name="content_videos",
@@ -178,5 +180,13 @@ public abstract class Content implements Serializable{
 
     public void setLindenMeter(double lindenMeter) {
         this.lindenMeter = lindenMeter;
+    }
+
+    public boolean isFeatured() {
+        return isFeatured;
+    }
+
+    public void setFeatured(boolean featured) {
+        isFeatured = featured;
     }
 }

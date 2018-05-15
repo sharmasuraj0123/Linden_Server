@@ -186,6 +186,14 @@ public class UserService {
         return review;
     }
 
+    public User getUserOfReview(long reviewId) {
+        Review review = reviewRepository.findById(reviewId).orElse(null);
+        if(review != null) {
+            return review.getPostedBy();
+        }
+        return null;
+    }
+
     private void updateReviewList(Content content) {
         List<Review> updatedReviewList = content.getReviews().stream().map(
                 review -> reviewRepository.findById(review.getId()).get()

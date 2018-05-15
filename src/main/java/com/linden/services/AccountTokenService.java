@@ -46,16 +46,13 @@ public class AccountTokenService {
 
     public Account getAccount(String token) {
         List<AccountToken> accountTokens = accountTokenRepository.findByToken(token);
-        if(accountTokens.size() == 1) {
-            AccountToken accountToken = accountTokens.get(0);
-            if(accountToken.isAdmin()) {
-                return adminRepository.findById(accountToken.getAccountId()).orElse(null);
-            }
-            else {
-                return userRepository.findById(accountToken.getAccountId()).orElse(null);
-            }
+        AccountToken accountToken = accountTokens.get(accountTokens.size()-1);
+        if(accountToken.isAdmin()) {
+            return adminRepository.findById(accountToken.getAccountId()).orElse(null);
         }
-        else throw new SecurityException();
+        else {
+            return userRepository.findById(accountToken.getAccountId()).orElse(null);
+        }
     }
 
     public String saveAccount(long accountId) {
@@ -76,7 +73,6 @@ public class AccountTokenService {
         accountToken.setToken(token);
         accountToken.setAdmin(isAdmin);
         accountTokenRepository.save(accountToken);
-        System.out.println("TOKEN IN SAVE ACCOUNT = "+token);
         return token;
     }
 

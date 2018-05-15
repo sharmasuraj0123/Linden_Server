@@ -72,7 +72,7 @@ public class AdminController {
         }
         else {
             HashMap<String, String> response = new HashMap<>();
-            response.put("status", "OK");
+            response.put("status", "ERROR");
             return response;
         }
     }
@@ -138,7 +138,6 @@ public class AdminController {
         if(admin != null) {
             adminService.editMovie(movieId, (Movie)contentContainer.getContent());
             // Description
-
             return new StatusResponse("OK");
         }
         return new StatusResponse("ERROR", "Invalid token!");

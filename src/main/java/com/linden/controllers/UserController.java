@@ -84,7 +84,7 @@ public class UserController {
             return new StatusResponse("OK");
         }
         else if(account instanceof Admin) {
-            adminService.deleteReview(reviewId);
+            userService.deleteReview(userService.getUserOfReview(reviewId),reviewId);
             return new StatusResponse("OK");
         }
         return new StatusResponse("ERROR", "Not logged in!");
