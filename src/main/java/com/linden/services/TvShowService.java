@@ -137,8 +137,13 @@ public class TvShowService {
             }
         }
 
-        show.setLindenMeter((sumOfLindenmeter/criticReviewCount));
-        show.setScore((sumOfScores/audienceReviewCount));
+        if(criticReviewCount!=0) {
+            show.setLindenMeter((sumOfLindenmeter / criticReviewCount));
+        }
+
+        if(audienceReviewCount!=0) {
+            show.setScore((sumOfScores / audienceReviewCount));
+        }
 
     }
 

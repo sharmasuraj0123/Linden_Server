@@ -161,8 +161,14 @@ public class MovieService {
             }
         }
 
-        movie.setLindenMeter((sumOfLindenmeter/criticReviewCount));
-        movie.setScore((sumOfScores/audienceReviewCount));
+        if(criticReviewCount!=0){
+            movie.setLindenMeter((sumOfLindenmeter/criticReviewCount));
+        }
+
+        if(audienceReviewCount!=0){
+            movie.setScore((sumOfScores/audienceReviewCount));
+
+        }
 
     }
 }
