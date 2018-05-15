@@ -445,9 +445,8 @@ public class UserService {
         userRepository.saveAndFlush(user);
     }
 
-    public List<Review> getLastestReviews(){
+    public List<Review> getLatestReviews(){
         List<Review> reviews = reviewRepository.findAllByOrderByDateDesc();
-
         return reviews.subList(0, Math.min(5,reviews.size()));
     }
 }

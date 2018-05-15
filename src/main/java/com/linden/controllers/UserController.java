@@ -416,11 +416,10 @@ public class UserController {
         }
     }
 
-    @RequestMapping(value = {"/getLastestReviews"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/getLatestReviews"}, method = RequestMethod.GET)
     @ResponseBody
-    public List<Review> getLastReviews() {
-
-        return userService.getLastestReviews();
+    public List<Review> getLatestReviews() {
+        return userService.getLatestReviews();
 
     }
 
