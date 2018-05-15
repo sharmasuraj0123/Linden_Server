@@ -145,7 +145,7 @@ public class AdminController {
         return new StatusResponse("ERROR", "Invalid token!");
     }
 
-    @RequestMapping(value = "/deleteMovie/{movieId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/deleteMovie/{movieId}", method = RequestMethod.POST)
     @ResponseBody
     public StatusResponse deleteUser(@PathVariable("movieId") long movieId, @RequestBody Token token) {
         Admin admin = (Admin) accountTokenService.getAccount(token.getToken());
