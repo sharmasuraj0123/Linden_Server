@@ -1,12 +1,14 @@
 package com.linden.controllers;
 
 import com.linden.models.accounts.Admin;
+import com.linden.models.accounts.PromotionApplication;
 import com.linden.models.content.Movie;
 import com.linden.models.content.TvShow;
 import com.linden.services.AccountTokenService;
 import com.linden.services.AdminService;
 import com.linden.util.StatusResponse;
 import com.linden.util.ContentContainer;
+import com.linden.util.Token;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -71,7 +73,7 @@ public class AdminController {
         }
         else {
             HashMap<String, String> response = new HashMap<>();
-            response.put("status", "OK");
+            response.put("status", "ERROR");
             return response;
         }
     }
@@ -89,8 +91,21 @@ public class AdminController {
         }
         else {
             HashMap<String, String> response = new HashMap<>();
-            response.put("status", "OK");
+            response.put("status", "ERROR");
             return response;
+        }
+    }
+
+    @RequestMapping(value = "/approvePromotion/", method = RequestMethod.POST)
+    @ResponseBody
+    public StatusResponse approvePromotion(@RequestBody PromotionApplication promotionApplication, HttpServletRequest request) {
+        Admin admin = (Admin) accountTokenService.getAccount(request.getHeader("token"));
+        if(admin != null) {
+            adminService.approvePromotion(promotionApplication);
+            return new StatusResponse("OK");
+        }
+        else {
+            return new StatusResponse("ERROR", "Error validating token!");
         }
     }
 
@@ -99,6 +114,7 @@ public class AdminController {
     public StatusResponse deleteReview(@PathVariable("reviewId") long reviewId, HttpServletRequest request) {
         Admin admin = (Admin) accountTokenService.getAccount(request.getHeader("token"));
         if(admin != null) {
+
             adminService.deleteReview(reviewId);
             return new StatusResponse("OK");
         }
@@ -123,10 +139,20 @@ public class AdminController {
         Admin admin = (Admin) accountTokenService.getAccount(contentContainer.getToken());
         if(admin != null) {
             adminService.editMovie(movieId, (Movie)contentContainer.getContent());
+            // Description
             return new StatusResponse("OK");
         }
         return new StatusResponse("ERROR", "Invalid token!");
     }
 
-
+    @RequestMapping(value = "/deleteMovie/{movieId}", method = RequestMethod.GET)
+    @ResponseBody
+    public StatusResponse deleteUser(@PathVariable("movieId") long movieId, @RequestBody Token token) {
+        Admin admin = (Admin) accountTokenService.getAccount(token.getToken());
+        if(admin != null) {
+            adminService.deleteMovie(movieId);
+            return new StatusResponse("OK");
+        }
+        return new StatusResponse("ERROR", "Invalid token!");
+    }
 }

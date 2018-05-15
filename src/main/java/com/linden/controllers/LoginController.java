@@ -15,6 +15,7 @@ import com.linden.util.VerificationToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -101,7 +102,7 @@ public class LoginController {
         if(adminService.checkCredentials(admin)){
             Admin adminInDb = adminService.getAdminByEmail(admin.getEmail());
             session.setAttribute("admin", adminInDb);
-            adminInDb.setToken(accountTokenService.saveAccount(admin.getId(), true));
+            adminInDb.setToken(accountTokenService.saveAccount(adminInDb.getId(), true));
             return new ObjectStatusResponse<>(adminInDb, "OK");
         }
         else {

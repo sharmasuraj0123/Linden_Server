@@ -15,6 +15,8 @@ public class Account implements Serializable{
     protected String password;
     protected String token;
 
+    @Column(columnDefinition="MEDIUMTEXT")
+    protected String profileImage;
 
     public Account(){
 
@@ -71,5 +73,13 @@ public class Account implements Serializable{
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public String getProfileImage() {
+        return profileImage;
+    }
+
+    public void setProfileImage(String profileImage) {
+        this.profileImage = profileImage;
     }
 }

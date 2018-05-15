@@ -116,12 +116,13 @@ public class UserService {
                 review.setReviewType(ReviewType.TOP_CRITIC);
                 break;
         }
-        reviewRepository.saveAndFlush(review);
         Content content;
+        reviewRepository.save(review);
         switch (review.getContentType()) {
             case MOVIE:
                 content = movieRepository.findById(review.getContentId()).orElse(null);
                 if (content != null) {
+                    review.setContentImage(content.getPoster());
                     content.getReviews().add(review);
                     // update linden meter of the movie
                     movieService.updateLindenmeterForMovie((Movie) content);
@@ -131,12 +132,14 @@ public class UserService {
             case TVSHOW:
                 content = tvShowRepository.findById(review.getContentId()).orElse(null);
                 if (content != null) {
+                    review.setContentImage(content.getPoster());
                     content.getReviews().add(review);
                     tvShowService.updateLindenmeterForTvShow((TvShow) content);
                     tvShowRepository.save((TvShow) content);
                 }
                 break;
         }
+        reviewRepository.save(review);
         return review;
     }
 
@@ -186,6 +189,14 @@ public class UserService {
         return review;
     }
 
+    public User getUserOfReview(long reviewId) {
+        Review review = reviewRepository.findById(reviewId).orElse(null);
+        if(review != null) {
+            return review.getPostedBy();
+        }
+        return null;
+    }
+
     private void updateReviewList(Content content) {
         List<Review> updatedReviewList = content.getReviews().stream().map(
                 review -> reviewRepository.findById(review.getId()).get()
@@ -228,6 +239,7 @@ public class UserService {
                     }
                     break;
             }
+            reviewReportRepository.findByReview(review).forEach(reviewReportRepository::delete);
             reviewRepository.delete(review);
         }
     }
@@ -362,11 +374,13 @@ public class UserService {
 
 
     @Transactional
-    public void applyForPromotion(long userId, String reason, UserType promotionType) {
+    public void applyForPromotion(User user, String reason, UserType promotionType) {
         PromotionApplication promotionApplication = new PromotionApplication();
-        promotionApplication.setUserId(userId);
+        promotionApplication.setUserId(user.getId());
         promotionApplication.setPromotionType(promotionType);
         promotionApplication.setReason(reason);
+        promotionApplication.setFirstName(user.getFirstName());
+        promotionApplication.setLastName(user.getLastName());
         promotionApplicationRepository.save(promotionApplication);
     }
 
@@ -381,10 +395,12 @@ public class UserService {
                         case MOVIE:
                             content = movieRepository.findById(review.getContentId()).get();
                             reviewHistory.setContentType(ContentType.MOVIE);
+                            reviewHistory.setContentImage(content.getPoster());
                             break;
                         case TVSHOW:
                             content = tvShowRepository.findById(review.getContentId()).get();
                             reviewHistory.setContentType(ContentType.TVSHOW);
+                            reviewHistory.setContentImage(content.getPoster());
                             break;
                     }
                     reviewHistory.setContentName(content.getName());
@@ -405,5 +421,10 @@ public class UserService {
         else{
             return null;
         }
+    }
+
+    public void uploadImage(User user, String data) {
+        user.setProfileImage(data);
+        userRepository.saveAndFlush(user);
     }
 }

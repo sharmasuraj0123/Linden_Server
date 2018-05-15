@@ -84,7 +84,7 @@ public class UserController {
             return new StatusResponse("OK");
         }
         else if(account instanceof Admin) {
-            adminService.deleteReview(reviewId);
+            userService.deleteReview(userService.getUserOfReview(reviewId),reviewId);
             return new StatusResponse("OK");
         }
         return new StatusResponse("ERROR", "Not logged in!");
@@ -194,6 +194,17 @@ public class UserController {
         return new ObjectStatusResponse<>(null, "Not logged in!");
     }
 
+    @RequestMapping(value = {"/profile/uploadImage"}, method = RequestMethod.POST)
+    @ResponseBody
+    public StatusResponse uploadProfilePicture(@RequestBody HashMap<String, String> data) {
+        User user = (User) accountTokenService.getAccount(data.get("token"));
+        if (user != null) {
+            userService.uploadImage(user, data.get("image"));
+            return new StatusResponse("OK");
+        }
+        return new StatusResponse("ERROR", "Not logged in!");
+    }
+
     @RequestMapping(value = {"/{userId}"}, method = RequestMethod.GET)
     @ResponseBody
     public ObjectStatusResponse<?> getUserProfile(@PathVariable("userId") long userId) {
@@ -220,13 +231,13 @@ public class UserController {
 
     @RequestMapping(value = {"/forgotPassword"}, method = RequestMethod.POST)
     @ResponseBody
-    public StatusResponse forgotPassword(@RequestBody Token token) {
-        User user = (User) accountTokenService.getAccount(token.getToken());
+    public StatusResponse forgotPassword(@RequestBody UserCredentials userCredentials ) {
+        User user = userService.getUserByEmail(userCredentials.getEmail());
         if(user != null) {
             String temporaryPassword = verificationService.generateToken();
-            UserCredentials userCredentials = new UserCredentials();
-            userCredentials.setPassword(temporaryPassword);
-            userService.changeUserCredentials(user, userCredentials);
+            UserCredentials newCredentials = new UserCredentials();
+            newCredentials.setPassword(temporaryPassword);
+            userService.changeUserCredentials(user, newCredentials);
             sendResetPasswordEmail(user, temporaryPassword);
         }
         return new StatusResponse("Error", "Invalid user token.");
@@ -286,10 +297,10 @@ public class UserController {
         if(user != null) {
             switch (user.getUserType()){
                 case AUDIENCE:
-                    userService.applyForPromotion(user.getId(), form.getReason(), UserType.CRITIC);
+                    userService.applyForPromotion(user, form.getReason(), UserType.CRITIC);
                     break;
                 case CRITIC:
-                    userService.applyForPromotion(user.getId(), form.getReason(), UserType.TOPCRITIC);
+                    userService.applyForPromotion(user, form.getReason(), UserType.TOPCRITIC);
                     break;
             }
             return new StatusResponse("OK");

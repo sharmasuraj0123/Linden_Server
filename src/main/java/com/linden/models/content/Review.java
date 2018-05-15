@@ -33,6 +33,8 @@ public class Review implements Serializable{
 
     private String token;
 
+    private String contentImage;
+
     public Review(){}
 
     public Review(Date date, User postedBy, @NotNull ContentType contentType, long contentId, String details,
@@ -118,5 +120,11 @@ public class Review implements Serializable{
         this.token = token;
     }
 
+    public String getContentImage() {
+        return contentImage;
+    }
 
+    public void setContentImage(String contentImage) {
+        this.contentImage = contentImage;
+    }
 }

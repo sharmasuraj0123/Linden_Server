@@ -14,6 +14,8 @@ public class ReviewHistory {
 
     private ContentType contentType;
 
+    private String contentImage;
+
     public ReviewHistory() {
     }
 
@@ -55,5 +57,13 @@ public class ReviewHistory {
 
     public void setContentType(ContentType contentType) {
         this.contentType = contentType;
+    }
+
+    public String getContentImage() {
+        return contentImage;
+    }
+
+    public void setContentImage(String contentImage) {
+        this.contentImage = contentImage;
     }
 }
