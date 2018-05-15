@@ -117,13 +117,26 @@ public class TvShowService {
         int sumOfScores = 0;
 
         for(Review review: reviews){
-            if(review.getReviewType().equals(ReviewType.CRITIC) || review.getReviewType().equals(ReviewType.TOP_CRITIC)){
-                criticReviewCount++;
+            if(review.getReviewType().equals(ReviewType.CRITIC) ){
+
 
                 if(review.getRating() >= 3){
+                    criticReviewCount++;
                     sumOfLindenmeter += 100;
                 }else{
                     sumOfLindenmeter += 0;
+                    criticReviewCount++;
+                }
+
+            }else if(review.getReviewType().equals(ReviewType.TOP_CRITIC)){
+
+                if(review.getRating() >= 3){
+
+                    sumOfLindenmeter += 200;
+                    criticReviewCount+=2;
+                }else{
+                    sumOfLindenmeter += 0;
+                    criticReviewCount+=2;
                 }
 
             }else{
@@ -137,18 +150,21 @@ public class TvShowService {
             }
         }
 
-        if(criticReviewCount!=0) {
-            show.setLindenMeter((sumOfLindenmeter / criticReviewCount));
+        if(criticReviewCount!=0){
+            show.setLindenMeter((sumOfLindenmeter/criticReviewCount));
+
+            System.out.println("1");
         }else{
             show.setLindenMeter(0);
+            System.out.println("2");
         }
 
-        if(audienceReviewCount!=0) {
-            show.setScore((sumOfScores / audienceReviewCount));
+        if(audienceReviewCount!=0){
+            System.out.println("3");
+            show.setScore((sumOfScores/audienceReviewCount));
         }else{
             show.setScore(0);
         }
-
     }
 
 

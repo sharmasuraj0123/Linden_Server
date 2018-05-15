@@ -130,7 +130,7 @@ public class MovieService {
         return movies;
     }
 
-    public Content updateLindenmeterForMovie(Movie movie){
+    public void updateLindenmeterForMovie(Movie movie){
 
         List<Review> reviews = movie.getReviews();
 
@@ -141,15 +141,27 @@ public class MovieService {
         int sumOfScores = 0;
 
         for(Review review: reviews){
-            if(review.getReviewType().equals(ReviewType.CRITIC) || review.getReviewType().equals(ReviewType.TOP_CRITIC)){
-                 criticReviewCount++;
+            if(review.getReviewType().equals(ReviewType.CRITIC) ){
 
-                 if(review.getRating() >= 3){
 
-                     sumOfLindenmeter += 100;
-                 }else{
-                     sumOfLindenmeter += 0;
-                 }
+                if(review.getRating() >= 3){
+                    criticReviewCount++;
+                    sumOfLindenmeter += 100;
+                }else{
+                    sumOfLindenmeter += 0;
+                    criticReviewCount++;
+                }
+
+            }else if(review.getReviewType().equals(ReviewType.TOP_CRITIC)){
+
+                if(review.getRating() >= 3){
+
+                    sumOfLindenmeter += 200;
+                    criticReviewCount+=2;
+                }else{
+                    sumOfLindenmeter += 0;
+                    criticReviewCount+=2;
+                }
 
             }else{
                 audienceReviewCount++;
@@ -161,9 +173,6 @@ public class MovieService {
                 }
             }
         }
-
-        System.out.println("crictic count" + criticReviewCount);
-        System.out.println("sumOfLindenmeter" + sumOfLindenmeter);
 
         if(criticReviewCount!=0){
             movie.setLindenMeter((sumOfLindenmeter/criticReviewCount));
@@ -180,8 +189,6 @@ public class MovieService {
         }else{
             movie.setScore(0);
         }
-
-        return movie;
     }
 
     public List<Movie> getLindenTopPicks()  {
