@@ -170,7 +170,7 @@ public class MovieService {
         if(audienceReviewCount!=0){
             movie.setScore((sumOfScores/audienceReviewCount));
         }else{
-            movie.setLindenMeter(0);
+            movie.setScore(0);
         }
 
     }
