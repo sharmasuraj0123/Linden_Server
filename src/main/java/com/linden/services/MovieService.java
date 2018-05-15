@@ -190,4 +190,13 @@ public class MovieService {
             movie.setScore(0);
         }
     }
+
+    public List<Movie> getLindenTopPicks()  {
+        List<Movie> movieList = movieRepository.findAll();
+        return (new Ranker<>(Movie::getLindenMeter)).order(movieList).subList(0, Math.min(3, movieList.size()));
+    }
+
+    public List<Movie> getFreshPicks() {
+        return movieRepository.findAll().stream().filter(movie -> movie.getLindenMeter() >= 75).collect(Collectors.toList());
+    }
 }

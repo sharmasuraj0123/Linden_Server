@@ -284,5 +284,54 @@ public class MovieController {
         );
     }
 
+    @RequestMapping(
+            value = "/getLindenTopPicks",
+            method = RequestMethod.GET
+    )
+    @ResponseBody
+    public HashMap<String, ?> getLindenTopPicks(){
+        HashMap<String, List<Movie>> result = new HashMap<>();
+        result.put("topPicks", movieService.getLindenTopPicks());
+        return result;
+    }
 
+    @RequestMapping(
+            value = "/getFreshMovies",
+            method = RequestMethod.GET
+    )
+    @ResponseBody
+    public SearchResponse getFreshMovies() {
+        return getFreshMovies(1);
+    }
+
+    @RequestMapping(
+            value = "/getFreshMovies",
+            params = {"page"},
+            method = RequestMethod.GET
+    )
+    @ResponseBody
+    public SearchResponse getFreshMovies(int page) {
+        List<Movie> movies = movieService.getFreshPicks();
+        movies = (movies == null) ? Collections.EMPTY_LIST : movies;
+
+        if (page > 0) {
+            if ((page - 1) * RESULT_LIMIT <= movies.size()) {
+                movies = movies.subList(
+                        (page - 1) * RESULT_LIMIT,
+                        (page * RESULT_LIMIT > movies.size()) ?
+                                movies.size() : page * RESULT_LIMIT
+                );
+            }
+        }
+
+        return new SearchResponse(
+                movies,
+                Collections.EMPTY_LIST,
+                Collections.EMPTY_LIST,
+                movies.size(),
+                0,
+                0,
+                movies.size()
+        );
+    }
 }
