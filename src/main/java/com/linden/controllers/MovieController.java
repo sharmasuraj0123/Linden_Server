@@ -284,5 +284,14 @@ public class MovieController {
         );
     }
 
-
+    @RequestMapping(
+            value = "/getLindenTopPicks",
+            method = RequestMethod.GET
+    )
+    @ResponseBody
+    public HashMap<String, ?> getLindenTopPicks(){
+        HashMap<String, List<Movie>> result = new HashMap<>();
+        result.put("topPicks", movieService.getLindenTopPicks());
+        return result;
+    }
 }

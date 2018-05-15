@@ -174,4 +174,9 @@ public class MovieService {
         }
 
     }
+
+    public List<Movie> getLindenTopPicks()  {
+        List<Movie> movieList = movieRepository.findAll();
+        return (new Ranker<>(Movie::getLindenMeter)).order(movieList).subList(0, Math.min(3, movieList.size()));
+    }
 }
