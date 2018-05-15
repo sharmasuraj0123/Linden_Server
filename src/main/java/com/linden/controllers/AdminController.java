@@ -8,6 +8,7 @@ import com.linden.services.AccountTokenService;
 import com.linden.services.AdminService;
 import com.linden.util.StatusResponse;
 import com.linden.util.ContentContainer;
+import com.linden.util.Token;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -144,5 +145,14 @@ public class AdminController {
         return new StatusResponse("ERROR", "Invalid token!");
     }
 
-
+    @RequestMapping(value = "/deleteMovie/{movieId}", method = RequestMethod.GET)
+    @ResponseBody
+    public StatusResponse deleteUser(@PathVariable("movieId") long movieId, @RequestBody Token token) {
+        Admin admin = (Admin) accountTokenService.getAccount(token.getToken());
+        if(admin != null) {
+            adminService.deleteMovie(movieId);
+            return new StatusResponse("OK");
+        }
+        return new StatusResponse("ERROR", "Invalid token!");
+    }
 }

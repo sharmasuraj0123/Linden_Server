@@ -114,4 +114,14 @@ public class AdminService {
             promotionApplicationRepository.delete(promotionApplication);
         }
     }
+
+    public void deleteMovie(long movieId) {
+        Movie movie = movieRepository.findById(movieId).orElse(null);
+        if(movie != null) {
+            movie.getCast().stream().filter(
+                cast -> movieRepository.getMoviesByCastId(cast.getId()).isEmpty()
+            ).forEach(castRepository::delete);
+            movieRepository.deleteMovieById(movieId);
+        }
+    }
 }

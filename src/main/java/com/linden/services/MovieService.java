@@ -84,7 +84,7 @@ public class MovieService {
                     System.out.println(duration.toDays());
                     return duration.toDays() <= 7;
                 }
-        ).limit(limit).collect(Collectors.toCollection(HashSet::new));
+        ).limit(limit).collect(Collectors.toCollection(ArrayList::new));
     }
 
     public List<Movie> getHighestRated() {

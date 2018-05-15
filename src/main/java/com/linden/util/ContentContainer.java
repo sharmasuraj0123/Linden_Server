@@ -61,7 +61,6 @@ public class ContentContainer {
                     ((Movie)content).isAcademyWinner = obj.isAcademyWinner();
                     ((Movie)content).setRevenue(obj.getRevenue());
                     ((Movie)content).setDuration(obj.getDuration());
-                    ((Movie)content).setFeatured(obj.isFeatured());
                     ((Movie)content).setAcademyWinner(obj.isAcademyWinner());
                     break;
                 case TVSHOW:
@@ -70,6 +69,7 @@ public class ContentContainer {
                     ((TvShow)content).setSeasons(obj.getSeasons());
                     break;
             }
+            content.setFeatured(obj.isFeatured());
             content.setId(this.obj.getId());
             content.setBoxOffice(this.obj.getBoxOffice());
             content.setCast(this.obj.getCast());
