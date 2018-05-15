@@ -220,6 +220,9 @@ public class UserController {
     public StatusResponse editCredentials(@RequestBody UserCredentials userCredentials) {
         User user = (User) accountTokenService.getAccount(userCredentials.getToken());
         if(user != null) {
+            if(userCredentials.getEmail() != null && userService.getUserByEmail(userCredentials.getEmail()) != null){
+                new StatusResponse("Error", "Email already taken!");
+            }
             userService.changeUserCredentials(user, userCredentials);
             return new StatusResponse("OK");
         }
