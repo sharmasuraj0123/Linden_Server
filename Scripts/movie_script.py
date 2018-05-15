@@ -18,10 +18,12 @@ cast_url2 = '/casts?api_key=89a57552ff989080c44c82c3078fb543'
 image_path = 'https://image.tmdb.org/t/p/w500'
 youtube_path = 'https://www.youtube.com/watch?v='
 
-movies = {299536, 284054, 284053, 333339, 343611, 374720, 244786, 399055, 399035, 407451, 383498, 439015, 429300, 22}
+movies = {299536, 284054, 284053, 333339, 343611, 374720, 244786, 399055, 399035, 407451, 383498, 439015, 429300, 22, 76203, 37799, 4347, 98, 453, 857, 597, 380, 1366, 510, 216015}
 # infinity war, black-panther, thor-ragnarok, ready-player-one, jack-reacher-never-go-back, dunkirk, whiplash,
 # the-shape-of-water, The Commuter, a-wrinkle-in-time,
 # Dead pool 2, slender man, adrift, pirates-of-the-caribbean-the-curse-of-the-black-pearl
+# 12 years a slave, the social network, atonement, gladiator, a-beautiful-mind, saving-private-ryan, titanic
+# rain man, rocky, one-flew-over-the-cuckoo-s-nest, 50 shades of grey
 
 for i in movies:
 
