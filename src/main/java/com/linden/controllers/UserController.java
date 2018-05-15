@@ -4,10 +4,7 @@ import com.linden.models.accounts.Account;
 import com.linden.models.accounts.Admin;
 import com.linden.models.accounts.User;
 import com.linden.models.accounts.UserType;
-import com.linden.models.content.Content;
-import com.linden.models.content.ContentType;
-import com.linden.models.content.Review;
-import com.linden.models.content.ReviewReport;
+import com.linden.models.content.*;
 import com.linden.services.AccountTokenService;
 import com.linden.services.AdminService;
 import com.linden.services.UserService;
@@ -414,6 +411,14 @@ public class UserController {
             response.put("status", "ERROR");
             return response;
         }
+    }
+
+    @RequestMapping(value = {"/getLastestReviews"}, method = RequestMethod.GET)
+    @ResponseBody
+    public List<Review> getLastReviews() {
+
+        return userService.getLastestReviews();
+
     }
 
 
