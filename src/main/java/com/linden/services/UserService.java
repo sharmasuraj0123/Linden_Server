@@ -235,6 +235,7 @@ public class UserService {
                     }
                     break;
             }
+            reviewReportRepository.findByReview(review).forEach(reviewReportRepository::delete);
             reviewRepository.delete(review);
         }
     }

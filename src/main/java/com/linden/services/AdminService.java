@@ -109,6 +109,7 @@ public class AdminService {
         if (user != null) {
             user.setUserType(promotionApplication.getPromotionType());
             userRepository.save(user);
+            promotionApplicationRepository.delete(promotionApplication);
         }
     }
 }
