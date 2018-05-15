@@ -113,6 +113,7 @@ public class AdminController {
     public StatusResponse deleteReview(@PathVariable("reviewId") long reviewId, HttpServletRequest request) {
         Admin admin = (Admin) accountTokenService.getAccount(request.getHeader("token"));
         if(admin != null) {
+
             adminService.deleteReview(reviewId);
             return new StatusResponse("OK");
         }

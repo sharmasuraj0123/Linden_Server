@@ -117,6 +117,7 @@ public class UserService {
                 break;
         }
         Content content;
+        reviewRepository.save(review);
         switch (review.getContentType()) {
             case MOVIE:
                 content = movieRepository.findById(review.getContentId()).orElse(null);
@@ -138,7 +139,7 @@ public class UserService {
                 }
                 break;
         }
-        reviewRepository.saveAndFlush(review);
+        reviewRepository.save(review);
         return review;
     }
 
