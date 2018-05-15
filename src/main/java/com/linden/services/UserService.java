@@ -126,7 +126,7 @@ public class UserService {
                     content.getReviews().add(review);
                     // update linden meter of the movie
                     movieService.updateLindenmeterForMovie((Movie) content);
-                    System.out.println("from yuser service gof"+((Movie)content).getLindenMeter());
+//                    System.out.println("from yuser service gof"+((Movie)content).getLindenMeter());
                     movieRepository.save((Movie) content);
                 }
                 break;
@@ -382,11 +382,11 @@ public class UserService {
     }
 
     public List<User> getAllCritics(){
-        return userRepository.findUserByUserTypeOrUserType("CRITIC","TOPCRITIC");
+        return userRepository.findUserByUserTypeOrUserType(UserType.CRITIC, UserType.TOPCRITIC);
     }
 
     public List<User> getAllTopCritics(){
-        return userRepository.findUserByUserType("TOPCRITIC");
+        return userRepository.findUserByUserType(UserType.TOPCRITIC);
     }
 
 
