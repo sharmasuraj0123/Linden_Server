@@ -45,6 +45,8 @@ public class AdminService {
     private ReviewReportRepository reviewReportRepository;
     @Autowired
     private PromotionApplicationRepository promotionApplicationRepository;
+    @Autowired
+    private UserService userService;
 
     public Admin getAdminByEmail(String email){
         return adminRepository.findByEmail(email);
@@ -108,9 +110,7 @@ public class AdminService {
 
     @Transactional
     public void deleteUser(long accountId) {
-        if(userRepository.findById(accountId).isPresent()) {
-            userRepository.deleteById(accountId);
-        }
+        userService.deleteAccount(userService.getUserById(accountId));
     }
 
     @Transactional

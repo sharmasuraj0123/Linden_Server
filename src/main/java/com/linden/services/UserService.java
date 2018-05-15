@@ -362,7 +362,22 @@ public class UserService {
         userRepository.saveAndFlush(user);
     }
 
+    @Transactional
     public void deleteAccount(User user) {
+        reviewRepository.findByPostedBy(user).forEach(
+            review -> {
+                reviewReportRepository.findByReview(review).forEach(reviewReportRepository::delete);
+                switch (review.getContentType()) {
+                    case MOVIE:
+                        movieRepository.deleteMovieById(review.getContentId());
+                        break;
+                    case TVSHOW:
+                        tvShowRepository.deleteById(review.getContentId());
+                        break;
+                }
+            }
+        );
+        promotionApplicationRepository.findByUserId(user.getId()).forEach(promotionApplicationRepository::delete);
         userRepository.delete(user);
     }
 
