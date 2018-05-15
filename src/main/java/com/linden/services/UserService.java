@@ -126,6 +126,7 @@ public class UserService {
                     content.getReviews().add(review);
                     // update linden meter of the movie
                     movieService.updateLindenmeterForMovie((Movie) content);
+                    System.out.println("from yuser service gof"+((Movie)content).getLindenMeter());
                     movieRepository.save((Movie) content);
                 }
                 break;
@@ -172,6 +173,7 @@ public class UserService {
                     if (content != null) {
                         updateReviewList(content);
                         movieService.updateLindenmeterForMovie((Movie) content);
+
                         movieRepository.save((Movie) content);
                     }
                     break;
